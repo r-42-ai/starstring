@@ -8,6 +8,26 @@
 
 ---
 
+## 0. New Ideas From Nea — being folded in
+
+Three changes she made after the first draft. Recorded here word-for-word
+so nothing gets lost; the sections below are being updated to match.
+
+1. **Four heroes, each with their own superpower.** ✅ folded into §3 and §5b.
+   Two girls, two boys: grappling hook, super dash, wall climbing, long jump.
+   Swappable mid-level. Turns one game into four.
+
+2. **Every planet has its own blob to rescue.** ✅ folded into §4.
+   All different — the Crystal Caves one has diamonds on its head.
+
+3. **Anchors recharge.** ✅ folded into §5. Four seconds rather than a
+   minute, with the reasoning written out so Nea can judge it herself.
+
+*All three are now part of the spec proper. This section can be deleted
+once everyone has read it.*
+
+---
+
 ## 1. The Pitch
 
 You and your pet glowing blob crash-land in an alien star system. In the crash, your blob gets scared and runs off — leaving a trail of glowing footprints across strange planets. You have a space suit and a grappling hook. Go find your friend.
@@ -34,44 +54,74 @@ You're a kid in a space suit. Every suit has a **clear round helmet visor** — 
 
 ### Choosing your character
 
-At the start you pick from **7 characters**:
+Four kids crash-landed together: **two girls and two boys**. Each of them can do something the others can't.
 
-**People (4):**
+### The four heroes and their powers
 
-| # | Hair |
-|---|------|
-| 1 | Long dark hair |
-| 2 | Short curly hair |
-| 3 | Blonde ponytail |
-| 4 | Red hair in two buns |
+| Hero | Power | What it does |
+|---|---|---|
+| 1 | 🪝 **Grappling hook** | Fires a rope at glowing anchors and swings from them. The signature move of the game — the one the game is named after. |
+| 2 | 💨 **Super dash** | A fast burst forward that smashes straight through cracked crystal walls, opening secret rooms nobody else can reach. |
+| 3 | 🧗 **Wall climbing** | Sticks to walls and climbs straight up them. Turns the Crystal Caves' tall shafts into staircases. |
+| 4 | 🦘 **Long jump** | A huge leap across distances a normal jump can't cross. Recharges every **7 seconds**, so you have to pick your moment. |
 
-**Animals (3):**
+Everyone can run and jump. The power is the *extra*.
 
-| # | Animal |
-|---|--------|
-| 5 | Cat |
-| 6 | Fox |
-| 7 | Rabbit |
+### Swapping
 
-Animals wear space suits too, with their ears folded inside the helmet.
+**You can change hero at any time, in the middle of a level.** Press the swap button and you become someone else instantly, right where you're standing.
+
+### Every hero has their own path
+
+*(Nea's rule, and it's the heart of the game.)*
+
+A level is **not** one route with optional extras. It's **four routes braided together**.
+
+Some parts can *only* be crossed by one hero:
+
+| Obstacle | Only crossable by |
+|---|---|
+| A canyon with rings above it | 🪝 the grappler |
+| A cracked crystal wall | 💨 the dasher |
+| A tall smooth shaft | 🧗 the climber |
+| A gap too wide to jump | 🦘 the long-jumper |
+
+So you don't pick a hero and hope. You read what's in front of you, work out *who you need to be*, and become them.
+
+**And because swapping is free and instant, you can never get stuck.** That's what makes hard locks fair — the lock is a puzzle, not a punishment.
+
+> ⚠️ **The one level design rule that must never be broken:**
+> every place you can reach must be escapable by *at least one* of the four.
+> Break this and the player is trapped forever and has to restart. It's the
+> single most important thing to check when building a level.
+
+### Their own levels too
+
+As well as the braided main levels, each hero gets **bonus levels built entirely around their power** — a whole level of nothing but swinging, a whole level of nothing but climbing. Unlocked by finding that planet's Blob Traces.
+
+> ⚙️ *Build note: the code stays simple — one character controller with a `power` setting, plus four sets of pictures. All the design work lives in the levels, which is exactly where you want it.*
 
 ### Suit colour
 
-Separately from your character, you pick a **suit colour**: orange, blue, green, purple, pink, or white. So 7 characters × 6 colours = **42 combinations**.
+You also pick a **suit colour**: orange, blue, green, purple, pink, or white. So 4 heroes × 6 colours = **24 looks**.
 
-> ⚙️ *Build note: this only works if the suit is drawn **white/light grey** in the artwork, so the code can tint it any colour. Tinting an orange suit blue is impossible. Same rule for Blob — draw it pale, colour it in code.*
+> ⚙️ *Build note: this only works if the suit is drawn **white/light grey** in the artwork, so the code can tint it any colour. Tinting an orange suit blue is impossible. Same rule for the blobs — draw them pale, colour them in code.*
 
 ### Unlocking
 
-You start with 2 characters and 2 colours. The rest are bought with **Star Bits** you collect while playing. This gives collecting a point.
+All four heroes are available from the start — the game doesn't work if you can't swap. **Star Bits** buy suit colours and power upgrades instead (a longer rope, a faster dash recharge).
 
-> ⚙️ *Build note: the character-select screen is a later feature. The game gets built with one character first.*
+> ⚙️ *Build note: the swap screen is a later feature. The game gets built with one hero and the grappling hook first, and the other three powers get added one at a time.*
 
 ---
 
-## 4. Blob (Your Pet)
+## 4. The Blobs
 
-A round, squishy, glowing creature about the size of a football. It bounces instead of walking, and squashes and stretches when it lands.
+Round, squishy, glowing creatures about the size of a football. They bounce instead of walking, and squash and stretch when they land.
+
+### Your blob
+
+The one you're chasing. It ran off when you crashed, and it's frightened. You don't catch it until the very end.
 
 **It glows differently depending on its mood:**
 
@@ -82,11 +132,25 @@ A round, squishy, glowing creature about the size of a football. It bounces inst
 | Pink | Excited |
 | Green | It has spotted something hidden |
 
-### What Blob does in the game
+### One blob to rescue on every planet
 
-**Before you rescue it (most of the game):** Blob is what you're chasing. You see its glowing trail through the level, and at the end of each planet you get a short scene where you almost reach it.
+**Every planet has its own blob, and they all look different.** They live there, and each one is stuck or trapped somehow. You rescue one per planet, and it joins you.
 
-**After you rescue it (final planet, and free-play afterwards):** Blob follows you around, lights up dark areas, and glows green when there's a secret nearby.
+By the end of the game you have a whole crew of blobs bouncing along behind you — and then you finally catch your own.
+
+| Planet | Its blob |
+|---|---|
+| Crystal Caves | **Crystal blob** — diamonds growing out of its head, deep glowing purple |
+| Jungle Moon | Leafy green, little vines trailing off it |
+| Ice Moon | Pale blue, frosted, snowflakes drifting around it |
+| Machine Planet | Metallic, bolts and a flickering screen for a face |
+| Storm Planet | Crackling yellow, sparks jumping across it |
+
+> ⚙️ *Build note: cheap to build, big payoff. It's one drawing per planet and one colour value — the bouncing, squashing and following code is written once and shared by all of them.*
+
+### What a rescued blob does
+
+It follows you, lights up dark areas, and glows green when there's a secret nearby. The more blobs you've rescued, the brighter your little parade gets.
 
 ---
 
@@ -127,6 +191,33 @@ This is the signature move of the game.
 - **The rope snaps if you swing into a wall.** Clear, fair, and it stops the game glitching.
 - You can shorten the rope while hanging — and just like a real swing, pulling yourself in makes you go *faster*
 - You can jump off the rope for a little extra boost
+
+### Anchors have to recharge
+
+**Once you let go of an anchor, it goes dim and stops working for a few seconds.** Then it lights back up and you can use it again.
+
+This stops you swinging back and forth on the same ring forever, and turns a row of anchors into a proper challenge: you have to keep moving forward, because the one behind you has gone out.
+
+| | |
+|---|---|
+| Recharge time | **4 seconds** *(Nea originally said a minute — see below)* |
+| Recharging anchor | dark, dull, obviously not usable |
+| Nearly ready | starts to flicker back on |
+| Ready | glowing brightly again |
+
+> 🎮 *A note on why not a minute: a minute is an extremely long time in a game. You'd swing once and then stand still doing nothing for the next fifty-five seconds. Four seconds is long enough that you can't cheat by swinging on the same ring over and over, but short enough that you never wait around. It'll be a number in `config.js` — set it to 60 and feel the difference. This is the kind of thing you can only judge by playing it.*
+
+---
+
+## 5b. The Other Three Powers
+
+| Power | How it works | Rules |
+|---|---|---|
+| 💨 **Super dash** | A fast burst forward. Smashes through cracked crystal walls that nothing else can break. | Short recharge. Can't change direction mid-dash. |
+| 🧗 **Wall climbing** | Hold towards a wall to stick to it, then climb up. | You slide down slowly rather than climbing forever — otherwise there's no challenge in a tall shaft. |
+| 🦘 **Long jump** | An enormous leap forwards, much further than a normal jump. | Recharges every **7 seconds**. Only works from the ground, not in mid-air. |
+
+**Design rule for every level:** a normal run-and-jump route must exist all the way to the end. The powers are for reaching *extra* places — secrets, shortcuts, Blob Traces — never for basic progress.
 
 **Why swinging is worth the effort:** it's the only move in the game that rewards *timing* rather than accuracy. Anyone can learn to jump. Learning to swing well takes practice — and that's what makes the game feel good months later.
 
@@ -210,11 +301,65 @@ You only need to build Planet 1 to have a real game. Everything after that is mo
 ## 11. Planet 1 — The Crystal Caves
 
 **Gravity:** 0.8×
-**Mood:** underground, glowing, beautiful, a bit echoey and mysterious
-**Colours:** deep purple and near-black rock; hot pink, cyan and white crystals that give off light; pools of glowing liquid
+
+**Where you are:** *one enormous cavern with holes in the roof.* You're underground — closed in, cosy, echoey — but great shafts of sunlight pour down from far above, and you can see sky through the gaps. Best of both: the safety of a cave and something beautiful to look up at.
+
+**Colours:** deep green rock, gold crystals. Rich and ancient, like somewhere valuable.
+
+### The planet itself, seen from space
+
+A **cut crystal**, not a ball: hundreds of flat faces, each lit on its
+own, with shards breaking the outline. Gold and teal running in veins.
+
+> ⚙️ *The lesson from getting this wrong first time: a smooth gradient
+> reads as something SOFT, whatever colour you make it. Our first planet
+> was green and smooth and looked like grass. Colour wasn't the problem —
+> smoothness was. Flat faces and sharp edges are what say "mineral".*
+
+### The level plays tricks on you
+
+*(Nea's idea.)* Some blocks look **exactly** like solid rock and aren't
+there at all. Not drawn differently, not see-through — painted by the
+very same code as every other block in the cave, because anything else
+would give it away.
+
+Use them two ways:
+
+- a **wall** hiding a shortcut nobody would guess at
+- a **ledge or floor** that drops you when you trust it
+
+Plus paths that simply lead nowhere, which need no code at all — just a
+tempting ledge and the nerve to leave it empty.
+
+> ⚠️ **The rule: an illusion must be a trick, not a wall.** Put a fake
+> floor on the only route through a level and you haven't made it
+> tricky, you've made it impossible. `tests/playable.test.js` checks this
+> by actually playing the level.
+
+Once you've walked through an illusion it shimmers from then on. The
+trick is delightful once and infuriating every time after that.
+
+### The one thing people will remember: the glittering
+
+The crystals **twinkle**. Not a background effect — the whole cavern shimmers as you move through it, hundreds of tiny glints catching the light at different moments.
+
+> ⚙️ *Build note: already built, and it costs almost nothing. Each sparkle's spot and timing is worked out from the block it sits on, so nothing has to be stored or remembered — a whole cave of glitter is free.*
+
+### ⚠️ The readability problem gold created
+
+Gold crystals and gold **Star Bits** look the same. That's a real problem: you can't tell treasure from scenery.
+
+The rule that solves it:
+
+> **Decoration never moves. Anything you can pick up always does.**
+
+So gold rock crystals are dark, dull and perfectly still. Star Bits are bright, glowing, and bob and spin. Players learn this in seconds without being told a thing.
+
+And the grapple rings stay **cyan** — a colour used for nothing else on the whole planet, so they can never be mistaken for scenery.
 
 **What's in it:**
 
+- **Shafts of sunlight** falling through holes in the roof, drifting and breathing
 - Solid crystal ledges and rocky ground
 - Crumbling crystal platforms
 - Crystal spikes on floors and ceilings

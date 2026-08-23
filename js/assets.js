@@ -43,7 +43,20 @@ const Assets = {
     this.load('btn_jump',    'assets/ui/btn_jump.png');
     this.load('btn_grapple', 'assets/ui/btn_grapple.png');
 
-    // Hero (art batch 3) — not used yet, arrives at Step 6
-    // this.load('hero_idle_1', 'assets/sprites/hero_idle_1.png');
+    // Cut out of the style bible, so we have real art to look at early.
+    // Proper versions arrive with art batch 3.
+    this.load('hero_idle_1', 'assets/sprites/hero_idle_1.png');
+    this.load('anchor',      'assets/sprites/anchor_idle.png');
+    this.load('blob',        'assets/sprites/blob_idle_1.png');
+
+    // Not drawn yet. The moment this file appears in the folder, the
+    // game starts using it for swinging — no code change needed.
+    // The prompt for it is in docs/ART_PROMPTS.md ("hero_grapple.png").
+    this.load('hero_grapple', 'assets/sprites/hero_grapple.png');
+
+    // Not used by the game yet, but ready and waiting:
+    //   assets/sprites/blob_idle_1.png    (Blob)
+    //   assets/sprites/starbit.png        (collectible — Step 12)
+    //   assets/sprites/tile_platform.png  (needs a tileable version first)
   },
 };

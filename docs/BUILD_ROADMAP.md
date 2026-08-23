@@ -46,9 +46,16 @@ A handful of platforms to land on. Collision resolved **X first, then Y, separat
 Coyote time, jump buffering, faster falling than rising, and **corner forgiveness** — if you clip the corner of a platform by a pixel or two, you get nudged past it instead of stopping dead. Put every number in `config.js`.
 **Playable result:** the same game, but suddenly it feels right. Spend real time here. Change one number at a time and feel the difference — this is the most instructive step in the entire project.
 
-### ☐ Step 5 — Camera
+### ☑ Step 5 — Camera ✅ DONE
 The view follows the hero, with a bit of lag so it feels smooth. Bigger level to move through.
 **Playable result:** a world instead of a screen.
+
+Three things made it feel right, all tunable in `config.js`:
+- it **lags behind** rather than locking on, so it isn't stiff
+- it **looks ahead** the way you're running, so you can see what's coming
+- it **ignores jumping** — it remembers the last ground height, so the
+  world doesn't bounce every time you hop. Without this the game is
+  genuinely unpleasant to play. Try `VERTICAL_SPEED: 30` to feel why.
 
 **🎨 Art batch 3 goes in here** — hero frames, ground tiles, all three background layers.
 
@@ -68,7 +75,22 @@ Three layers scrolling at different speeds.
 
 **🎨 Art batch 4 goes in first** — anchors and `hero_grapple`.
 
-### ☐ Step 8 — Anchors exist
+### ☑ Steps 8, 9, 10 and 10b ✅ DONE — THE GRAPPLING HOOK 🪝
+
+Anchors, aiming, line of sight, the pendulum swing, pumping, releasing
+with your momentum intact, jumping off the rope, the rope snapping on
+walls, and anchors recharging — all built and tested.
+
+The swing uses the **polar-pendulum** method from `SPEC.md §14`, not the
+obvious position-based one. That decision is the difference between a
+swing that works and a swing that mysteriously dies out. There's a test
+(`tests/grapple.test.js`) that measures how high it swings after ten
+seconds specifically to catch that bug if anyone ever "simplifies" it.
+
+*The original step-by-step plan is kept below, because the order it
+describes is still the right way to build it if it ever needs redoing.*
+
+### ☑ Step 8 — Anchors exist
 Place glowing anchor points in the level. They pulse brighter when the hero is close enough to reach one. Also build the two rules about *which* anchor you get: **nearest one within grapple range**, and **line of sight** — a raycast that refuses the shot if a wall is in the way.
 **Playable result:** nothing new to do, but you can see where the rope will be able to go.
 
@@ -84,9 +106,18 @@ Follow the polar-pendulum method in **SPEC.md section 14** exactly — track the
 Left and right *pump* the swing, and the timing matters. Releasing keeps all your momentum. The rope snaps if you swing into a wall.
 **Playable result:** the game you actually designed. This is the big one.
 
-### ☐ Step 11 — Swing polish
-Shorten the rope while hanging — and make it speed you up, like tucking your legs on a real swing. Jump off the rope for extra height. Star Bits placed in arcs that show you where a good swing goes.
-**Playable result:** swinging that feels skilful instead of random.
+### ☐ Step 10b — Anchors recharge
+After you let go, the anchor goes dark for 4 seconds, flickers, then relights. Three pictures, one timer.
+**Playable result:** you can't cheat by swinging on the same ring forever. Suddenly a row of anchors is a proper challenge.
+
+### ☑ Step 11 — Swing polish ✅ MOSTLY DONE
+**Up and down** shorten and lengthen the rope while hanging — and shortening really does speed you up, exactly like a spinning skater pulling their arms in. The effect goes with the *square* of the length, so halving the rope makes you swing four times as fast. That's a genuine skill: reel in at the bottom of a swing and you launch much further.
+
+On a tablet, two extra buttons appear on the left **only while you're hanging** — there isn't room for six buttons all the time.
+
+Jumping off the rope for extra height: done.
+
+☐ Still to do: Star Bits placed in arcs that show you where a good swing goes *(needs Step 12 first)*.
 
 ---
 
@@ -100,8 +131,10 @@ Star Bits you pick up, a counter on screen.
 ### ☐ Step 13 — Hearts and dying
 Health, losing hearts, respawning, the hurt animation. Falling in a pit.
 
-### ☐ Step 14 — Beacons (checkpoints)
-They light up when passed. You respawn at the last one.
+### ☑ Step 14 — Flags (checkpoints) ✅ DONE
+They light up when passed, and wave. You respawn at the last one.
+Nea's rule: **only before the hard parts.** A flag every few blocks means
+never really being in danger, and the danger is the game.
 
 ### ☐ Step 15 — Hazards
 Spikes. Crumbling platforms that shake, crack and fall.
@@ -124,11 +157,24 @@ Now it's pure design work. *First Steps*, *The Rings*, *Deep Down*, *The Great C
 
 **🎨 Art batch 6 goes in here.**
 
-### ☐ Step 19 — Level start and finish
-A goal marker at the end. A level-complete screen showing Star Bits and Blob Traces found.
+### ☑ Step 19 — The portal ✅ DONE
+A spinning portal at the end. Touch it and the level is finished.
+Where it sits is the last puzzle: put it over a drop and only a
+well-timed swing gets you in.
+☐ Still to do: a proper level-complete screen with Star Bits and Blob Traces.
 
 ### ☐ Step 20 — Two modes
 Relaxed and Challenge, from one settings object: hearts, checkpoint frequency, whether pits cost a heart. Mostly just numbers.
+
+### ☑ Step 20b — A clock ✅ DONE
+Every level has a time limit. Flags wind it back up; **running out sends
+you right back to the start**, flags and all.
+
+Two mistakes, two punishments, and keeping them different is the point:
+falling in a hole costs you a stretch, the clock costs you the level. If
+a flag saved you from the clock as well, nobody would ever fear it. The number comes from `tools/measure_time.js`, which
+plays the level and times it — a guessed time limit is how you end up with
+an impossible level.
 
 ### ☐ Step 21 — Challenge medals
 A level timer, target times per level, gold/silver/bronze on the level-complete screen. Challenge mode only. *(Separate step because it's real code, not a setting.)*
@@ -136,8 +182,26 @@ A level timer, target times per level, gold/silver/bronze on the level-complete 
 ### ☐ Step 22 — Blob Traces
 Three hidden per level, plus Blob's glowing trail as decoration showing the path it took. A counter. Finding all three on a planet unlocks a bonus level.
 
-### ☐ Step 23 — Title screen and star map
-Blob on the title screen. A map with Crystal Caves unlocked and the other planets locked.
+### ☑ Step 23 — The planet map ✅ DONE
+Not a flat star map in the end — Nea wanted **the whole planet**, turning
+in space, that you can drag to rotate and pinch to zoom, with fifteen
+levels on a path around it. Levels unlock one at a time.
+
+Built with plain 2D canvas: a spot on the ball becomes a spot on screen
+with three lines of trigonometry, and anything whose depth is negative is
+round the back and simply isn't drawn.
+
+### ☑ Step 23b — A title screen and a tutorial ✅ DONE
+The name, Blob, and "tap anywhere to begin". And **level 1 is now a
+teaching level**, not a text page: nothing in it can kill you, there's no
+clock, and short hints float in the world right where each new thing is.
+"The Way Out" moved to level 2, which is where a level that hard belongs.
+
+The rule for a tutorial, and it's stricter than for any other level:
+**every** playing style must be able to finish it. `playable.test.js`
+checks all thirty.
+
+☐ Still to do: the star map BETWEEN planets.
 
 ### ☐ Step 24 — Saving
 Progress, Star Bits and unlocks saved on the device so they survive closing the game.
@@ -155,6 +219,22 @@ The scene where you see Blob and it darts away.
 ---
 
 ## Phase 5 — More
+
+### ☐ Step 27b — THE OTHER THREE POWERS 🎉
+One at a time, each on its own: **super dash** (smashes cracked walls), **wall climbing** (stick and climb, sliding slowly down), **long jump** (huge leap, 7 second recharge).
+
+Build them as four settings of one character, not four separate characters — otherwise you end up maintaining the same movement code four times over.
+
+### ☐ Step 27c — Swapping hero mid-level
+A swap button. You become someone else instantly, right where you're standing.
+
+⚠️ **Check every existing level can still be finished by all four.** The rule from the spec: powers are for reaching extra places, never for basic progress.
+
+**Playable result:** four games in one. The biggest single jump in how much game there is.
+
+### ☐ Step 27d — Places only one hero can reach
+Cracked walls only the dasher breaks, ledges only the climber reaches, gaps only the long-jumper crosses. Put Blob Traces and Star Bits behind them.
+**Playable result:** a reason to replay every level as somebody else.
 
 ### ☐ Step 28 — Blob as a companion
 Once rescued, Blob follows you, lights up dark areas, and glows green when a secret is nearby. Needs following behaviour, a light effect, and secret-detection.

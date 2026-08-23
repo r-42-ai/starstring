@@ -16,7 +16,7 @@ If you skip this, you get twenty assets that each look nice on their own and loo
 
 Generate this **one image** and keep re-rolling it until Nea genuinely loves it. This might take twenty tries. It is worth every one of them, because everything else in the game inherits from it.
 
-> A single reference sheet for a 2D mobile platformer game, bold colourful cartoon style. Shown on one image: a child astronaut with long dark hair, wearing a **white and light grey** space suit with a large clear round glass helmet, a small round **pale white glowing** blob creature, a chunk of purple crystal cave rock platform, a glowing cyan crystal ring, and a small gold star collectible. Art style: bold flat colours, thick dark outlines around every shape, minimal shading with only one or two tones per colour, very high contrast, clean readable silhouettes, modern mobile game art, vector-like. Side view, orthographic, no perspective. Solid flat magenta background, hex FF00FF. No text, no labels, no watermark.
+> A single reference sheet for a 2D mobile platformer game, bold colourful cartoon style. Shown on one image: a child astronaut with long dark hair, wearing a **white and light grey** space suit with a large clear round glass helmet, a small round **pale white glowing** blob creature, a chunk of deep green crystal cave rock platform, a glowing cyan crystal ring, and a small gold star collectible. Art style: bold flat colours, thick dark outlines around every shape, minimal shading with only one or two tones per colour, very high contrast, clean readable silhouettes, modern mobile game art, vector-like. Side view, orthographic, no perspective. Solid flat magenta background, hex FF00FF. No text, no labels, no watermark.
 
 > ⚠️ **The suit must be white/light grey and the blob pale white — not orange, not yellow.** The game colours them in code, which is how 7 characters turn into 42 combinations and how Blob changes mood colour. You cannot tint an orange suit blue. This is the one prompt detail that, if you get it wrong, costs you every character asset in the game.
 
@@ -62,17 +62,52 @@ Generate these **10 frames**. Same character, same size, feet always at the same
 
 > 💡 **The suit is white/light grey in the art and gets tinted in code** — so this one set of frames gives all six suit colours for free.
 
-**Character 1 is the long-dark-hair girl** — the same one in the Style Bible. She's character #1 of the 7 in the spec.
+**Hero 1 is the long-dark-hair girl** — the same one in the Style Bible. She carries the **grappling hook**.
 
-### The other 6 characters (much later)
+### The other 3 heroes
 
-Same 10 frames each, always referencing the Style Bible **and** the finished character 1 frames:
+Four kids: **two girls, two boys**, each with their own power.
 
-> Using the attached references — the same astronaut suit, same proportions and identical pose, but with short curly hair visible through the helmet visor.
+| Hero | Look | Power |
+|---|---|---|
+| 1 | Girl, long dark hair | 🪝 Grappling hook |
+| 2 | Boy, short curly hair | 💨 Super dash |
+| 3 | Girl, blonde ponytail | 🧗 Wall climbing |
+| 4 | Boy, short red hair | 🦘 Long jump |
 
-Remaining 6: short curly hair · blonde ponytail · red hair in two buns · cat · fox · rabbit. For the animals: *"the same astronaut suit and pose, but the character is a cartoon cat with ears folded down inside the round glass helmet."*
+Same 10 frames each, always referencing the Style Bible **and** the finished hero 1 frames:
 
-**Don't do this until the game works.** It's 60 more images.
+> Using the attached references — the same astronaut suit, same proportions and identical pose and framing, but the character is a boy with short curly dark hair visible through the helmet visor.
+
+**Don't do this until the game works.** It's 30 more images.
+
+> 💡 Give each hero one small visual tell of their power — a coil of rope on the belt, scuffed boots, climbing gloves, big springy soles. Nothing that changes the silhouette; just enough that you can tell who you're playing at a glance.
+
+---
+
+## THE PLANET BLOBS
+
+One per planet, all the same shape as your own blob so they read as the same kind of creature. Reference the Style Bible **and** `blob_idle_1.png` every time.
+
+| File | Prompt |
+|---|---|
+| `blob_crystal.png` | ...the same round glowing blob creature, same shape and same big friendly eyes, but with small sharp gold crystals growing out of the top of its head like a little crown, and a deep glowing green body. |
+| `blob_jungle.png` | ...the same blob creature, leafy green, with tiny vines and a single small leaf sprouting from its head. |
+| `blob_ice.png` | ...the same blob creature, pale icy blue with a frosted surface and small snowflakes drifting around it. |
+| `blob_machine.png` | ...the same blob creature but metallic, with bolts around its edge and a small flickering screen instead of a face. |
+| `blob_storm.png` | ...the same blob creature, crackling electric yellow with small sparks jumping across its surface. |
+
+---
+
+## ANCHOR STATES
+
+Anchors go dim after use and recharge, so they need three looks, not two.
+
+| File | Prompt |
+|---|---|
+| `anchor_ready.png` | *(already have this — `anchor_idle.png`, cut from the Style Bible)* |
+| `anchor_used.png` | ...the same crystal ring but dark and dull, the glow completely gone, clearly switched off and unusable. |
+| `anchor_charging.png` | ...the same crystal ring, faintly and unevenly lit as if it is powering back up, dimmer than full brightness. |
 
 ---
 
@@ -91,20 +126,26 @@ Remaining 6: short curly hair · blonde ponytail · red hair in two buns · cat 
 
 ---
 
-## CRYSTAL CAVES — Tiles
+## THE CRYSTAL PLANET — Tiles
+
+> 🎨 **The planet is DEEP GREEN rock with GOLD crystals** (Nea's choice), not
+> purple and pink. The Style Bible you already generated is still fine for
+> the hero, Blob, the star and the cyan ring — only the rock changes colour.
+> You don't need to redo it. Just say "same style, but the rock is deep
+> green and the crystals are gold" when you attach it.
 
 All tiles: **square canvas, 512×512**, designed to sit edge-to-edge with no visible seam.
 
 | File | Prompt |
 |---|---|
-| `tile_ground_top.png` | ...a square tile of dark purple alien cave rock with a flat top surface, small glowing pink crystals growing along the top edge. Tileable horizontally, edges must match seamlessly. |
-| `tile_ground_fill.png` | ...a square tile of solid dark purple alien cave rock interior, subtle darker cracks, no crystals, no top surface. Tileable in all directions. |
-| `tile_platform.png` | ...a small floating platform of purple crystal rock, flat top, chunky rounded shape, glowing cyan crystal edge underneath. |
+| `tile_ground_top.png` | ...a square tile of deep green alien cave rock with a flat top surface, small gold crystals growing along the top edge. Tileable horizontally, edges must match seamlessly. |
+| `tile_ground_fill.png` | ...a square tile of solid deep green alien cave rock interior, subtle darker cracks, no crystals, no top surface. Tileable in all directions. |
+| `tile_platform.png` | ...a small floating platform of deep green crystal rock, flat top, chunky rounded shape, gold crystal edge underneath. |
 | `tile_crumble_1.png` | ...the same floating crystal platform, intact and solid. |
 | `tile_crumble_2.png` | ...the same platform with visible cracks spreading across it and small chips breaking off, still whole. |
 | `tile_crumble_3.png` | ...the same platform badly shattered and falling apart into chunks. |
-| `spikes_floor.png` | ...a row of sharp jagged pink crystal spikes pointing upward, growing from a rocky base. Dangerous looking. |
-| `spikes_ceiling.png` | ...a row of sharp jagged pink crystal spikes pointing downward, hanging from rocky cave ceiling. |
+| `spikes_floor.png` | ...a row of sharp jagged gold crystal spikes pointing upward, growing from a deep green rocky base. Dangerous looking. |
+| `spikes_ceiling.png` | ...a row of sharp jagged gold crystal spikes pointing downward, hanging from a deep green rocky cave ceiling. |
 
 ---
 
@@ -152,9 +193,10 @@ These are the most important objects in the game to make readable. They must be 
 
 | File | Prompt |
 |---|---|
-| `bg_far.png` | ...a distant cave background, very dark deep purple, huge faint crystal formations barely visible in shadow, soft glow in the far distance. Very low contrast, muted, hazy, no sharp outlines. Seamlessly tileable horizontally. |
-| `bg_mid.png` | ...a middle-distance cave layer, dark purple rock walls with medium glowing pink and cyan crystal clusters, moderately dark, softer outlines than foreground objects. Seamlessly tileable horizontally. |
-| `bg_near.png` | ...a near foreground cave layer, large dark rock formations and big crystal clusters in silhouette, dark and mostly shadowed, framing the top and bottom edges of the screen. Seamlessly tileable horizontally. The open middle of the image is flat magenta so it becomes see-through. |
+| `bg_far.png` | ...a distant cave background, very dark deep green, huge faint crystal formations barely visible in shadow, warm golden light glowing in the far distance. Very low contrast, muted, hazy, no sharp outlines. Seamlessly tileable horizontally. |
+| `bg_mid.png` | ...a middle-distance cave layer, deep green rock walls with medium gold crystal clusters, moderately dark, softer outlines than foreground objects. Seamlessly tileable horizontally. |
+| `bg_light.png` | ...beams of warm sunlight falling steeply from above through holes in a cave roof, soft golden light, semi-transparent, nothing else in the image. Seamlessly tileable horizontally. *(Optional — the game already draws these itself.)* |
+| `bg_near.png` | ...a near foreground cave layer, large dark green rock formations and big gold crystal clusters in silhouette, dark and mostly shadowed, framing the top and bottom edges of the screen. Seamlessly tileable horizontally. The open middle of the image is flat magenta so it becomes see-through. |
 
 ---
 
@@ -175,9 +217,9 @@ These are the most important objects in the game to make readable. They must be 
 
 | File | Prompt |
 |---|---|
-| `title_art.png` | ...a title screen illustration: the child astronaut standing on a purple crystal ledge reaching out toward a small glowing blob creature floating just out of reach, alien starry sky behind, dramatic and warm. Wide 1920×1080. Leave clear empty space in the upper third for the game's name. |
+| `title_art.png` | ...a title screen illustration: the child astronaut standing on a deep green crystal ledge reaching out toward a small glowing blob creature floating just out of reach, shafts of golden light falling from above, alien starry sky beyond, dramatic and warm. Wide 1920×1080. Leave clear empty space in the upper third for the game's name **Starstring**. |
 | `starmap_bg.png` | ...a star map background, deep space, purple and blue nebula clouds, scattered stars, calm and beautiful. Wide 1920×1080. |
-| `planet_crystal.png` | ...a small round planet icon for a star map, a purple world covered in glowing pink and cyan crystals, viewed from space, bold cartoon style with a thick outline. |
+| `planet_crystal.png` | ...a small round planet icon for a star map, a deep green world covered in glowing gold crystals, viewed from space, bold cartoon style with a thick outline. |
 | `planet_locked.png` | ...a small round planet icon for a star map, entirely dark grey silhouette with a simple padlock symbol on it, clearly not yet available. |
 | `ui_panel.png` | ...a rounded rectangular menu panel for a game UI, dark translucent purple with a glowing cyan border, empty in the middle, bold cartoon style. |
 | `ui_lock.png` | ...a small gold padlock icon, chunky and bold with a thick outline. |

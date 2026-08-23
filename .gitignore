@@ -1,0 +1,21 @@
+# Raw generated art before the magenta background is removed.
+# Keep these locally, but they don't belong in the repo — they're big
+# and they get replaced by the cleaned versions in assets/ui and
+# assets/sprites. Delete this line if you'd rather keep them.
+assets/raw/
+
+# Saved "this version worked" snapshots
+v[0-9]*_*/
+
+# Operating system clutter
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# scratch renders written by the tools in tools/
+/tmp_render/
