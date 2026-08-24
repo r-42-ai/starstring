@@ -26,6 +26,7 @@ check('they are numbered 1 to 15',
       Planet.levels.every((l,i) => l.number === i+1));
 check('level 1 is the tutorial', Planet.levels[0].key === 'tutorial');
 check('level 2 is The Way Out',  Planet.levels[1].key === 'crystal-caves-1');
+check('level 3 is The Illusions', Planet.levels[2].key === 'illusions');
 check('they spiral round the planet rather than sitting in a heap',
       new Set(Planet.levels.map(l => Math.round(l.lat*10))).size > 8);
 

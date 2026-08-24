@@ -25,7 +25,7 @@ function makeGame() {
 }
 
 // One attempt at a level, in one particular playing style.
-function attempt(style, levelKey) {
+function attempt(style, levelKey, onFrame) {
   const { CONFIG, Level, Grapple, Input, Player } = makeGame();
   Level.load(levelKey);
   const p = new Player();
@@ -137,6 +137,7 @@ function attempt(style, levelKey) {
     p.update(S);
     if (p.justRespawned) { p.justRespawned = false; deaths++; }
     if (p.x > maxX) maxX = p.x;
+    if (onFrame) onFrame(p, Grapple, i);
     if (Level.touchingPortal(p)) {
       return { maxX, deaths, reachedPortal: true, seconds: i * S };
     }

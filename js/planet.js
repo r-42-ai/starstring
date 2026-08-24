@@ -72,6 +72,7 @@ const Planet = {
       const built = [
         { key: 'tutorial',        name: 'First Steps' },
         { key: 'crystal-caves-1', name: 'The Way Out' },
+        { key: 'illusions',       name: 'The Illusions' },
       ];
 
       this.levels.push({

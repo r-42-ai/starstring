@@ -88,5 +88,29 @@ check('every single playing style finishes the tutorial',
       tutWins === tutRuns.length,
       `only ${tutWins} of ${tutRuns.length} managed it \u2014 a teaching level must be unfailable`);
 
+console.log('\n=== LEVEL 3: The Illusions ===');
+const ill = makeGame();
+ill.Level.load('illusions');
+console.log(`  ${ill.Level.illusions.length} illusion blocks, ${ill.Level.anchors.length} rings`);
+check('it is full of illusions', ill.Level.illusions.length > 40,
+      `only ${ill.Level.illusions.length}`);
+
+const illRuns = playAll('illusions');
+const illBest = illRuns[0];
+const illBlock = Math.round(illBest.maxX / 64);
+console.log(`  best run reached block ${illBlock} of ${ill.Level.cols}` +
+            (illBest.reachedPortal ? ` in ${illBest.seconds.toFixed(1)}s` : ''));
+check('The Illusions can be finished at all', illBest.reachedPortal,
+      `stuck at block ${illBlock}`);
+check('...inside its time limit', illBest.reachedPortal && illBest.seconds < ill.Level.timeLimit,
+      `${illBest.seconds.toFixed(1)}s of ${ill.Level.timeLimit}s`);
+
+// Harder than level 2, but not by so much that it stops being fun
+const easyWins = playAll('crystal-caves-1').filter(r => r.reachedPortal).length;
+const hardWins = illRuns.filter(r => r.reachedPortal).length;
+console.log(`  level 2: ${easyWins}/30 styles finish   level 3: ${hardWins}/30`);
+check('it is HARDER than level 2', hardWins <= easyWins,
+      `level 3 was finished by ${hardWins} styles, level 2 by ${easyWins} — that makes it easier`);
+
 console.log(`\n${pass} passed, ${fail} failed\n`);
 process.exit(fail?1:0);

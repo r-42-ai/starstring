@@ -35,9 +35,28 @@ to be frightened.
 and right where you first meet it: the clock, green rings, flags, the
 illusions, red rings, and the six-ring finale.
 
+**Level 3 — "The Illusions"** stops teaching and starts lying. Seven
+traps in a row: a wall you walk through, a floor that isn't there, a
+whole bridge across a chasm that doesn't exist, three thick walls each
+with a fake tunnel, stepping stones where every other one is a lie, and
+a landing spot by the portal that will drop you into nothing.
+
+It gets **one** hint, right at the start — *"this whole place lies to
+you"* — and then says nothing else for two hundred blocks.
+
+> That was Nea's correction. The first version signposted every single
+> trap, and she said: **"in the illusions there are too many clues."**
+> She's right — a level that warns you about all of its illusions never
+> tricks you once, it just gives you instructions. So the hint tells you
+> the *rule* and never an answer. Three flags make being wrong
+> survivable; the clock is 2:45 instead of 3:00, because it's meant to
+> be harder.
+
 > `playable.test.js` checks something stricter for level 1 than for any
 > other level: **all thirty** playing styles must finish it, not just
-> one. A teaching level that a bad player can fail isn't teaching.
+> one. A teaching level that a bad player can fail isn't teaching. For
+> level 3 it checks the opposite — that *fewer* styles can finish it
+> than level 2, so "harder" is measured rather than hoped for.
 
 **On a laptop:**
 
