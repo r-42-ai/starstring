@@ -126,33 +126,36 @@ def the_long_fall():
     doing it here first would spoil it. The portal sits at the very TOP
     of the arc you fly after the last ring, so you have to launch at the
     right moment -- a beat late and you sail underneath it.
+
+    Nea, after playing it: "level 4 is to hard." She was right, and the
+    packer was why: it filled the level to one monster every FOUR blocks,
+    denser than levels 5 and 6 -- the entrance to the climb was the
+    cruellest room in it. The packer only knows "finishable"; it has no
+    idea of "fair". So level 4 is thinned by hand now:
+
+      - a flag on EVERY island, not just two of them
+      - mostly cyan rings; red only turns up in the last chain
+      - monsters one every ~9 blocks, none of them on the starting pad
+      - flyers under every OTHER ring, not all sixteen
     """
     m = Map(300)
     c = m.pad(0)
     m.put(2, 12, 'P')
     last = 0
-    for i, (n, ty) in enumerate([(3, 'oro'), (4, 'oro'), (4, 'ror'), (5, 'ror')]):
+    for i, (n, ty) in enumerate([(3, 'ooo'), (4, 'oro'), (4, 'oro'), (5, 'ror')]):
         if i:
             c = m.pad(last + 3)
-            if i in (1, 3):
-                m.put(last + 5, 12, 'F')
+            m.put(last + 5, 12, 'F')     # a flag on every island
         last = m.chain(c, n, ty)
     cyan_finish(m, last)
-    # Monsters. Every one of these was checked by the robot: the
-    # packer proposes a lot and keeps only the ones that leave the
-    # level finishable. See tools/make_levels.py notes.
-    m.guard(0, '^'); m.guard(7, '^'); m.guard(11, 'c'); m.guard(33, 'c')
-    m.guard(42, '^'); m.guard(44, 'c'); m.guard(70, '^'); m.guard(77, '^')
-    m.guard(5, '^'); m.guard(9, 'c'); m.guard(10, '^'); m.guard(36, 'c')
-    m.guard(40, '^'); m.guard(72, 'c'); m.guard(75, '^'); m.guard(80, '^')
-    m.guard(81, 'c'); m.guard(108, 'c'); m.guard(115, '^'); m.guard(117, 'c')
-    m.guard(120, '^')
-    m.hang(39, 6, 'v'); m.hang(78, 6, 'v'); m.hang(17, 9, '~')
-    m.hang(23, 9, '~'); m.hang(29, 9, '~'); m.hang(49, 9, '~')
-    m.hang(55, 9, '~'); m.hang(61, 9, '~'); m.hang(67, 9, '~')
-    m.hang(87, 9, '~'); m.hang(93, 9, '~'); m.hang(99, 9, '~')
-    m.hang(105, 9, '~'); m.hang(125, 9, '~'); m.hang(131, 9, '~')
-    m.hang(137, 9, '~'); m.hang(143, 9, '~'); m.hang(149, 9, '~')
+    # Monsters, thinned BY HAND after Nea's verdict -- the packer only
+    # knows "finishable", not "fair". None on the starting pad, flyers
+    # under every other ring.
+    m.guard(33, 'c'); m.guard(42, '^'); m.guard(72, 'c'); m.guard(77, '^')
+    m.guard(108, 'c'); m.guard(115, '^'); m.guard(120, 'c')
+    m.hang(39, 6, 'v'); m.hang(78, 6, 'v')
+    for col in (17, 29, 55, 67, 93, 105, 131, 143):
+        m.hang(col, 9, '~')
     m.put(last + 2, 7, 'X')          # measured: the peak of the flight
     return m, last + 8
 
@@ -285,16 +288,16 @@ def shafts(width, n):
 # fastest of thirty playing styles.
 #
 #            robot   limit   a person gets
-#   level 3   29.2s   165s      5.6x
-#   level 4   27.2s   130s      4.8x
-#   level 5   33.1s   125s      3.8x
-#   level 6   19.8s    70s      3.5x
+#   level 3   29.9s   165s      5.5x
+#   level 4   27.4s   145s      5.3x   (was 130 -- Nea: "level 4 is to hard")
+#   level 5   33.9s   125s      3.7x
+#   level 6   19.4s    70s      3.6x
 #
 # If level 6 turns out to be cruel rather than hard, THIS is the number
 # to loosen first -- it's one line and it changes nothing else.
 LEVELS = [
     # key, name, builder, seconds, one hint
-    ('the-long-fall', 'The Long Fall', the_long_fall, 130,
+    ('the-long-fall', 'The Long Fall', the_long_fall, 145,
      (5, 11, 'nothing to land on out there')),
     ('nothing-underneath', 'Nothing Underneath', nothing_underneath, 125,
      (5, 11, 'the ledges keep getting smaller')),

@@ -121,14 +121,30 @@ barely meet one. There are **193** now:
 
 | | monsters | one every |
 |---|---|---|
-| 1. First Steps | 6 | 19 blocks |
+| 1. First Steps | 4 | 29 blocks |
 | 2. The Way Out | 44 | 5 blocks |
 | 3. The Illusions | 38 | 5 blocks |
-| 4. The Long Fall | 39 | 4 blocks |
+| 4. The Long Fall | 16 | 10 blocks |
 | 5. Nothing Underneath | 49 | 6 blocks |
 | 6. The Last Jump | 30 | 5 blocks |
 
 The tutorial stays the quiet one — it's still teaching.
+
+### The packer only knows "finishable" — it has no idea of "fair"
+
+> **"level 4 is to hard"** and **"lev 1 should be easier because it's the
+> first level"** — Nea
+
+Both true, and both the same lesson. The packer stuffed level 4 to one
+monster every **four** blocks — denser than levels 5 and 6 — so the
+*entrance* to the climb was the cruellest room in it. "The robot can
+still finish" is a floor, not a target. Level 4 is thinned **by hand**
+now: a flag on *every* island instead of two, mostly cyan rings with red
+only in the last chain, flyers under every other ring rather than all
+sixteen, nothing at all on the starting pad, and the clock loosened from
+2:10 to 2:25 (the curve still tightens — 18.9% needed vs level 3's
+18.1%). Level 1 dropped from three spikes to one: the first level's only
+job is teaching, and one spike teaches exactly as well as three.
 
 They aren't placed by hand. `tools/make_levels.py` **proposes** a lot of
 them and the robot throws out only the ones that make a level
@@ -166,6 +182,19 @@ the hero just had nowhere to begin. Both helpers now refuse to write over
 anything that isn't empty air — declining to place something is always
 better than quietly deleting something.
 
+### Draw icons, never type them
+
+> **"when you complete the level it still shows the number but the
+> button is green"** — Nea
+
+The finished-level tick was the *character* `'✓'` pushed through
+`fillText` — and a text glyph is only as reliable as whatever font the
+device resolves `system-ui` to. Canvas gives no warning when a glyph is
+missing; it just draws the wrong thing, differently wrong on every
+machine — Nea's tablet showed the number, the test renderer showed
+nothing. The tick is three stroked lines now, identical everywhere.
+Numbers are safe to *type* — every font has digits. Icons are not.
+
 ### Three bugs the tests caught
 
 **A limit only enforced when something else happens is not a limit.**
@@ -199,7 +228,7 @@ a step further.
 | | ground | rings | clock | the portal |
 |---|---|---|---|---|
 | **3. The Illusions** | 125 | 9 | 2:45 | |
-| **4. The Long Fall** | 52 | 16 | 2:10 | at the **top of the arc** — launch late and you sail under it |
+| **4. The Long Fall** | 52 | 16 | 2:25 | at the **top of the arc** — launch late and you sail under it |
 | **5. Nothing Underneath** | 35 | **38** | 2:05 | behind a **two-row slot** — too high you hit the roof, too low the floor |
 | **6. The Last Jump** | 29 | 21 | 1:10 | in a **pocket** with rock above, below and behind. One way in. |
 
@@ -262,8 +291,8 @@ themselves, on Nea's own two numbers:
 
 ```
 less ground   125  ->   52  ->   35  ->   29   columns to stand on
-less time    165s  -> 130s  -> 125s  ->  70s   on the clock
-less slack   17.7% -> 20.9% -> 26.5% -> 28.3%  of it the robot needs
+less time    165s  -> 145s  -> 125s  ->  70s   on the clock
+less slack   18.1% -> 18.9% -> 27.1% -> 27.7%  of it the robot needs
 ```
 
 Her third pick isn't a number — "hard to reach" is a shape — so the test

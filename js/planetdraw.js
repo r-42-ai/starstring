@@ -403,12 +403,38 @@ const PlanetDraw = {
       ctx.strokeStyle = l.done ? '#c9ffe2' : unlocked ? '#fff4d6' : '#2a3531';
       ctx.stroke();
 
-      // A tick on finished levels, a padlock on locked ones
-      ctx.fillStyle = '#0a1a12';
-      ctx.font = `bold ${Math.round(r * 1.1)}px system-ui, sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(l.done ? '✓' : unlocked ? String(l.number) : '', p.x, p.y + 1);
+      /*
+         A TICK on finished levels -- DRAWN, not typed.
+
+         The first version put the character '✓' through fillText, and
+         Nea's tablet showed the number on a green button instead; the
+         headless renderer showed nothing at all. A text glyph is only
+         as reliable as whatever font the device happens to resolve
+         'system-ui' to, and canvas gives you no warning when a glyph is
+         missing -- it just draws the wrong thing, differently wrong on
+         every machine.
+
+         Three lines through ctx.stroke() look identical everywhere,
+         which for an icon is the entire job. Numbers are safe to type:
+         every font since the dawn of fonts has digits.
+      */
+      if (l.done) {
+        ctx.strokeStyle = '#0a1a12';
+        ctx.lineWidth = Math.max(2.5, r * 0.22);
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.beginPath();
+        ctx.moveTo(p.x - r * 0.42, p.y + r * 0.05);
+        ctx.lineTo(p.x - r * 0.10, p.y + r * 0.38);
+        ctx.lineTo(p.x + r * 0.45, p.y - r * 0.32);
+        ctx.stroke();
+      } else if (unlocked) {
+        ctx.fillStyle = '#0a1a12';
+        ctx.font = `bold ${Math.round(r * 1.1)}px system-ui, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(String(l.number), p.x, p.y + 1);
+      }
 
       if (!unlocked) {
         ctx.strokeStyle = '#6d7d76';
