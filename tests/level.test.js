@@ -43,6 +43,42 @@ for (const key of Object.keys(LEVELS)) {
         `ended at y=${p.y.toFixed(0)}`);
   check('she does not start inside a wall', p._overlappingTiles().length===0);
 
+  if (Level.hints.length) {
+    console.log('\n--- can you actually SEE the hints? ---');
+    /*
+       A hint placed too high is invisible: the camera deliberately
+       stays low so jumping doesn't bounce the view, so anything near
+       the roof is off the top of the screen. An instruction you can't
+       read is worse than none, because you don't know it's there.
+
+       So: stand the hero on the nearest ground below each hint, put
+       the camera where it would really be, and check the hint is on
+       screen.
+    */
+    const Camera2 = g('Camera');
+    const unreadable = [];
+    for (const h of Level.hints) {
+      // the ground under this hint
+      let standRow = -1;
+      for (let r = h.row; r < Level.rows; r++) {
+        if (Level.isSolidAt(h.col, r)) { standRow = r; break; }
+      }
+      if (standRow < 0) continue;
+
+      p.x = h.col * CONFIG.TILE;
+      p.y = standRow * CONFIG.TILE - p.h;
+      p.vx = 0; p.vy = 0;
+      Camera2.init(p);
+
+      const hy = h.row * CONFIG.TILE + CONFIG.TILE / 2;
+      if (hy < Camera2.y + 40 || hy > Camera2.y + CONFIG.HEIGHT - 40) {
+        unreadable.push(`"${h.text}" at row ${h.row}`);
+      }
+    }
+    check('every hint is on screen from where you read it',
+          unreadable.length === 0, unreadable.join('; '));
+  }
+
   if (Level.flags.length) {
     console.log('\n--- falling in a hole vs running out of time ---');
     // These are two DIFFERENT punishments and must not do the same thing.

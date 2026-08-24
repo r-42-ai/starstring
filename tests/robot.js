@@ -31,7 +31,8 @@ function attempt(style, levelKey) {
   const p = new Player();
   const S = CONFIG.STEP, T = CONFIG.TILE;
 
-  let maxX = p.x, hold = 0, grappleHeld = false, deaths = 0, stuck = 0, bestX = p.x;
+  let maxX = p.x, hold = 0, grappleHeld = false, deaths = 0, stuck = 0, bestX = p.x, hanging = 0;
+  let onRing = null, lastRing = null, avoidFor = 0;
 
   for (let i = 0; i < 6000; i++) {
     const inReach = !!Grapple.anchorInReach(p);
@@ -40,21 +41,60 @@ function attempt(style, levelKey) {
     const gapAhead = !Level.isSolidAt(aheadCol, footRow);
 
     if (Grapple.attached) {
+      hanging++;
+      onRing = Grapple.anchor;
       Input.left  = Grapple.angVel < 0;
       Input.right = Grapple.angVel > 0;
       Input.grapple = true; Input.grapplePressed = false;
 
       const ready = Grapple.swings >= style.minSwings ||
                     Grapple.swings >= Grapple.maxSwings() - 1;
-      const launch = ready && Grapple.angVel > 0 && Grapple.angle > style.release;
+
+      /*
+         GIVE UP AND DROP after a few seconds.
+
+         Without this the robot could hang forever, and it did. A GREEN
+         ring never breaks, so if the swing damps down before reaching
+         the angle it was waiting for, nothing ever makes it let go —
+         it just dangles there until the level times out.
+
+         A real player would obviously drop off. Green rings are safe
+         to rest on, not somewhere to get stuck, and the robot should
+         behave like a person rather than like something with infinite
+         patience.
+      */
+      const boredOf = hanging > 4 * 60;
+
+      const launch = (ready && Grapple.angVel > 0 && Grapple.angle > style.release) || boredOf;
       Input.jumpPressed = launch && (i % 2 === 0);
       Input.jump = Input.jumpPressed;
     } else {
+      if (hanging > 0) { lastRing = onRing; avoidFor = 70; }
+      hanging = 0;
+      if (avoidFor > 0) avoidFor--; else lastRing = null;
       Input.left = false; Input.right = true;
 
       // Grab the rope only once AIRBORNE and falling. Grappling from
       // the ledge swings you straight back into that same ledge.
-      Input.grapplePressed = inReach && !p.grounded && p.vy > 0 &&
+      /*
+         Don't grab THE SAME ring again the instant you've let go of it.
+
+         GREEN rings never go dark, so nothing stops you re-grabbing
+         the one you just dropped off — and the robot did exactly that,
+         over and over in the same spot, until the level ran out.
+
+         The first attempt at this refused ALL rings for a moment after
+         letting go, which fixed the tutorial and broke the big level:
+         chaining six rings in a row depends on grabbing the NEXT one
+         immediately. Refuse only the ring you just left.
+
+         (Worth knowing as a designer too: a green ring is the one kind
+         you can hang on indefinitely. That's the point of it, but it
+         means a green ring is somewhere a stuck player can stay stuck.)
+      */
+      const target = Grapple.anchorInReach(p);
+      const canGrab = target && target !== lastRing;
+      Input.grapplePressed = canGrab && !p.grounded && p.vy > 0 &&
                              !grappleHeld && (i % 2 === 0);
       Input.grapple = Input.grapplePressed;
       grappleHeld = Input.grapple;

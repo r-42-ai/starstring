@@ -25,14 +25,9 @@ const ROOT=path.join(__dirname,'..');
     blob:'assets/sprites/blob_idle_1.png'})) Assets.images[n]=await loadImage(path.join(ROOT,r));
 
   const shots=[];
-  // 1 — the title
-  Title.init(); Title.time=1.6; Title.draw(canvas.getContext('2d'));
-  shots.push(canvas.toBuffer('image/png'));
-
-  // 2,3,4 — the tutorial, at each hint
   Planet.init();
   Game.startLevel('tutorial');
-  const spots = [[4,10],[15,10],[30,7]];
+  const spots = [[40,10],[48,7],[58,7],[86,7]];
   for(const [col,row] of spots){
     Game.player.x=col*64; Game.player.y=row*64-92; Game.player.vx=0; Game.player.vy=0;
     Camera.snap(Game.player); Game.clock=1.1;

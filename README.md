@@ -21,10 +21,15 @@ There is no page of instructions, and that's deliberate: nobody reads
 them. Instead the hints float **in the world**, right where the thing
 they're about is, and only when you get near.
 
-**Level 1 — "First Steps"** teaches running, jumping and your first
-swing. It has no clock and nothing in it can kill you: the dip in the
-middle can be walked through and jumped back out of. A tutorial that
-punishes you teaches you to be frightened.
+**Level 1 — "First Steps"** teaches, in this order and one at a time:
+run, jump, grapple, **let go**, a golden **flag**, a **cyan** ring, a
+**green** ring, a **red** ring, the portal. Each of the three rings gets
+a dip of its own, with its hint right beside it — naming all three at
+once teaches nobody anything.
+
+It has no clock and nothing in it can kill you: every dip has a floor
+and can be jumped back out of. A tutorial that punishes you teaches you
+to be frightened.
 
 **Level 2 — "The Way Out"** teaches the rest, again one thing at a time
 and right where you first meet it: the clock, green rings, flags, the
