@@ -87,14 +87,23 @@ class Map:
         return c + width + 4
 
     # A monster standing on top of whatever is at this column.
+    #
+    # Both of these REFUSE to overwrite anything that is already there.
+    # Without that guard a monster landed on top of a level's P and the
+    # start point simply vanished -- the level still loaded, the hero
+    # just had nowhere to begin. Silently deleting something is much
+    # worse than declining to place something.
     def guard(self, c, ch):
         for r in range(H):
             if self.g[r][c] == '#':
-                self.put(c, r - 1, ch)
+                if r > 0 and self.g[r - 1][c] == '.':
+                    self.put(c, r - 1, ch)
                 return
+
     # A monster hanging in mid-air (flyers and fallers)
     def hang(self, c, r, ch):
-        self.put(c, r, ch)
+        if 0 <= r < H and self.g[r][c] == '.':
+            self.put(c, r, ch)
 
     def chain(self, c, n, types='o', row=RING_ROW):
         """n rings, six columns apart. Returns the column of the last."""
@@ -129,8 +138,21 @@ def the_long_fall():
                 m.put(last + 5, 12, 'F')
         last = m.chain(c, n, ty)
     cyan_finish(m, last)
-    m.guard(6, 'c'); m.guard(64, 'c'); m.guard(126, 'z')
-    m.hang(96, 8, '~'); m.hang(140, 8, '~')
+    # Monsters. Every one of these was checked by the robot: the
+    # packer proposes a lot and keeps only the ones that leave the
+    # level finishable. See tools/make_levels.py notes.
+    m.guard(0, '^'); m.guard(7, '^'); m.guard(11, 'c'); m.guard(33, 'c')
+    m.guard(42, '^'); m.guard(44, 'c'); m.guard(70, '^'); m.guard(77, '^')
+    m.guard(5, '^'); m.guard(9, 'c'); m.guard(10, '^'); m.guard(36, 'c')
+    m.guard(40, '^'); m.guard(72, 'c'); m.guard(75, '^'); m.guard(80, '^')
+    m.guard(81, 'c'); m.guard(108, 'c'); m.guard(115, '^'); m.guard(117, 'c')
+    m.guard(120, '^')
+    m.hang(39, 6, 'v'); m.hang(78, 6, 'v'); m.hang(17, 9, '~')
+    m.hang(23, 9, '~'); m.hang(29, 9, '~'); m.hang(49, 9, '~')
+    m.hang(55, 9, '~'); m.hang(61, 9, '~'); m.hang(67, 9, '~')
+    m.hang(87, 9, '~'); m.hang(93, 9, '~'); m.hang(99, 9, '~')
+    m.hang(105, 9, '~'); m.hang(125, 9, '~'); m.hang(131, 9, '~')
+    m.hang(137, 9, '~'); m.hang(143, 9, '~'); m.hang(149, 9, '~')
     m.put(last + 2, 7, 'X')          # measured: the peak of the flight
     return m, last + 8
 
@@ -160,9 +182,26 @@ def nothing_underneath():
                 m.put(pc + 2, 8, 'F')
         last = m.chain(c, n, ty)
     cyan_finish(m, last)
-    m.guard(6, 'c')
-    for col in (40, 96, 160, 216):
-        m.hang(col, 8, '~')
+    # Monsters. Every one of these was checked by the robot: the
+    # packer proposes a lot and keeps only the ones that leave the
+    # level finishable. See tools/make_levels.py notes.
+    m.guard(0, '^'); m.guard(7, '^'); m.guard(11, 'c'); m.guard(63, '^')
+    m.guard(66, 'c'); m.guard(126, '^'); m.guard(264, 'c'); m.guard(266, '^')
+    m.guard(5, '^'); m.guard(9, 'c'); m.guard(10, '^'); m.guard(125, '^')
+    m.guard(260, '^'); m.guard(261, 'c'); m.guard(265, '^')
+    m.hang(65, 5, 'v'); m.hang(17, 9, '~'); m.hang(23, 9, '~')
+    m.hang(29, 9, '~'); m.hang(35, 9, '~'); m.hang(41, 9, '~')
+    m.hang(47, 9, '~'); m.hang(53, 9, '~'); m.hang(59, 9, '~')
+    m.hang(71, 9, '~'); m.hang(77, 9, '~'); m.hang(83, 9, '~')
+    m.hang(89, 9, '~'); m.hang(95, 9, '~'); m.hang(101, 9, '~')
+    m.hang(107, 9, '~'); m.hang(113, 9, '~'); m.hang(119, 9, '~')
+    m.hang(131, 9, '~'); m.hang(137, 9, '~'); m.hang(143, 9, '~')
+    m.hang(149, 9, '~'); m.hang(155, 9, '~'); m.hang(161, 9, '~')
+    m.hang(167, 9, '~'); m.hang(173, 9, '~'); m.hang(179, 9, '~')
+    m.hang(185, 9, '~'); m.hang(197, 9, '~'); m.hang(203, 9, '~')
+    m.hang(209, 9, '~'); m.hang(215, 9, '~'); m.hang(221, 9, '~')
+    m.hang(227, 9, '~'); m.hang(233, 9, '~'); m.hang(239, 9, '~')
+    m.hang(245, 9, '~'); m.hang(251, 9, '~'); m.hang(257, 9, '~')
     s = last + 3
     m.block(s, s + 6, 4, 6)          # roof
     m.block(s, s + 6, 9, 11)         # floor -- leaves rows 7 and 8 open
@@ -195,8 +234,20 @@ def the_last_jump():
                 m.put(pc + 1, 8, 'F')
         last = m.chain(c, n, 'ror')
     cyan_finish(m, last)
-    m.guard(8, 'c')
-    m.hang(70, 8, '~'); m.hang(130, 8, '~')
+    # Monsters. Every one of these was checked by the robot: the
+    # packer proposes a lot and keeps only the ones that leave the
+    # level finishable. See tools/make_levels.py notes.
+    m.guard(0, '^'); m.guard(5, '^'); m.guard(9, 'c'); m.guard(10, '^')
+    m.guard(52, 'z'); m.guard(99, 'c'); m.guard(100, '^'); m.guard(150, '^')
+    m.guard(153, 'c'); m.guard(155, '^'); m.guard(156, 'z')
+    m.hang(11, 3, 'v'); m.hang(154, 1, 'v'); m.hang(17, 9, '~')
+    m.hang(23, 9, '~'); m.hang(29, 9, '~'); m.hang(35, 9, '~')
+    m.hang(41, 9, '~'); m.hang(47, 9, '~'); m.hang(58, 9, '~')
+    m.hang(64, 9, '~'); m.hang(70, 9, '~'); m.hang(76, 9, '~')
+    m.hang(82, 9, '~'); m.hang(88, 9, '~'); m.hang(94, 9, '~')
+    m.hang(105, 9, '~'); m.hang(111, 9, '~'); m.hang(117, 9, '~')
+    m.hang(123, 9, '~'); m.hang(129, 9, '~'); m.hang(135, 9, '~')
+    m.hang(141, 9, '~'); m.hang(147, 9, '~')
     a = last + 2
     m.block(a, a + 7, 5, 6)          # roof
     m.block(a, a + 7, 10, 11)        # floor

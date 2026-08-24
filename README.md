@@ -111,6 +111,38 @@ one that belongs to *this* game — it turns the grapple from a way of
 crossing gaps into a weapon, and a monster under a ring becomes a target
 instead of a wall.
 
+### How many
+
+> **"more monsters there are much to little"** — Nea
+
+She was right. The first pass put **four** monsters in a level 236 blocks
+long — one every sixty blocks, so you could play the whole thing and
+barely meet one. There are **193** now:
+
+| | monsters | one every |
+|---|---|---|
+| 1. First Steps | 6 | 19 blocks |
+| 2. The Way Out | 44 | 5 blocks |
+| 3. The Illusions | 38 | 5 blocks |
+| 4. The Long Fall | 39 | 4 blocks |
+| 5. Nothing Underneath | 49 | 6 blocks |
+| 6. The Last Jump | 30 | 5 blocks |
+
+The tutorial stays the quiet one — it's still teaching.
+
+They aren't placed by hand. `tools/make_levels.py` **proposes** a lot of
+them and the robot throws out only the ones that make a level
+unfinishable — 13 rejected on level 3 alone. Testing all thirty playing
+styles for every candidate was far too slow to search with, so the search
+asks only the two or three styles that currently finish that level, and
+the full thirty run once at the end to confirm.
+
+`flow.test.js` now keeps a **floor** under the count: one monster every
+ten blocks or better, outside the tutorial. That matters more than it
+sounds, because monsters are the first thing to get thrown out when a
+level stops being finishable — and without a floor, *"make it work
+again"* and *"take the monsters out"* are the same move.
+
 ### Where to put them — three rules that cost me three broken levels
 
 Placing monsters is where all the mistakes were, and every one of them
@@ -126,6 +158,13 @@ isn't difficult, it's a wall.**
   after it is a locked door.
 - **Don't let a crawler reach somewhere you can't fight it.** One of
   mine walked into an illusion tunnel one block high and camped there.
+
+And one that isn't about placement at all: **never silently overwrite.**
+The helper that drops a monster onto a ledge landed one on top of a
+level's `P`, and the start point simply vanished. The level still loaded;
+the hero just had nowhere to begin. Both helpers now refuse to write over
+anything that isn't empty air — declining to place something is always
+better than quietly deleting something.
 
 ### Three bugs the tests caught
 

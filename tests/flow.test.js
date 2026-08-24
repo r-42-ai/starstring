@@ -218,6 +218,40 @@ console.log('\n--- the teaching level teaches monsters too ---');
   check('every level after the tutorial has some too',
         BUILT.slice(1).every(([k]) => count(k) > 0),
         BUILT.slice(1).filter(([k]) => !count(k)).map(([, n]) => n).join(', '));
+
+  /*
+     Nea: "more monsters there are much to little."
+
+     She was right -- the first pass put four in a level two hundred and
+     thirty-six blocks long, which is a monster every sixty blocks, so
+     you could play the whole thing and barely meet one. The rule now is
+     roughly one every ten blocks outside the tutorial, and this test is
+     what stops it quietly drifting back down: monsters are the first
+     thing to get thrown out when a level stops being finishable, and
+     without a floor under the count, "make it work again" and "take the
+     monsters out" are the same move.
+  */
+  const width = key => { Level.load(key); return Level.cols; };
+  console.log('  one monster every:  ' +
+              BUILT.map(([k, n]) => `${n} ${(width(k) / count(k)).toFixed(0)}`).join('   '));
+  for (const [k, n] of BUILT.slice(1))
+    check(`${n} is properly infested`, width(k) / count(k) <= 10,
+          `one every ${(width(k) / count(k)).toFixed(1)} blocks`);
+
+  // The tutorial is deliberately the quiet one -- it is still teaching.
+  check('...but the tutorial stays calmer than the rest',
+        width('tutorial') / count('tutorial') >
+        Math.max(...BUILT.slice(1).map(([k]) => width(k) / count(k))));
+
+  const kindsIn = key => {
+    Level.load(key);
+    return new Set(Level.map.join('').split('').filter(ch => kinds.includes(ch)));
+  };
+  const everywhere = new Set();
+  for (const [k] of BUILT) for (const ch of kindsIn(k)) everywhere.add(ch);
+  check('all five kinds are actually used somewhere',
+        everywhere.size === kinds.length,
+        `missing ${kinds.filter(c => !everywhere.has(c)).join(' ')}`);
 }
 
 console.log(`\n${pass} passed, ${fail} failed\n`);
