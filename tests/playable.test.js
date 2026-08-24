@@ -144,18 +144,32 @@ function measure(key) {
   const g = makeGame();
   g.Level.load(key);
   const map = g.Level.map, W = g.Level.cols, H = g.Level.rows;
-  let air = 0;
+  /*
+     Ground measured as COLUMNS YOU CAN STAND ON, not as a percentage.
+
+     A percentage sounds tidier and is the wrong number. Nea asked for
+     level 5 to be the one with all the rings and for 4 and 6 to have
+     fewer -- and a level with fewer rings has to be shorter, which
+     shrinks the total and inflates the percentage even though there is
+     LESS floor in it. The ratio measured level length as much as level
+     design. The count is what a player actually feels: how many places
+     there are to put your feet down in the whole level.
+  */
+  let stand = 0, rings = 0;
   for (let c = 0; c < W; c++) {
     let solid = false;
-    for (let r = 0; r < H; r++) if (map[r][c] === '#') { solid = true; break; }
-    if (!solid) air++;
+    for (let r = 0; r < H; r++) {
+      if (map[r][c] === '#') solid = true;
+      if ('org'.includes(map[r][c])) rings++;
+    }
+    if (solid) stand++;
   }
   const runs = playAll(key);
   const won = runs.filter(r => r.reachedPortal);
   return {
     name: g.Level.name, cols: W, limit: g.Level.timeLimit,
     portal: g.Level.portal,
-    air: 100 * air / W,
+    stand, rings,
     fastest: won.length ? Math.min(...won.map(r => r.seconds)) : Infinity,
     best: runs[0],
     map,
@@ -168,7 +182,8 @@ const m = curve.map(measure);
 for (const L of m) {
   const block = Math.round(L.best.maxX / 64);
   console.log(`  ${L.name.padEnd(20)} ${String(L.cols).padStart(3)} wide  ` +
-              `${L.air.toFixed(1)}% air  ` +
+              `${String(L.stand).padStart(3)} to stand on  ` +
+              `${String(L.rings).padStart(2)} rings  ` +
               `${L.fastest === Infinity ? '  --  ' : L.fastest.toFixed(1) + 's'} of ${L.limit}s`);
   check(`${L.name} can be finished at all`, L.best.reachedPortal,
         `stuck at block ${block} of ${L.cols}`);
@@ -178,17 +193,34 @@ for (const L of m) {
 }
 
 console.log('\n--- less and less ground ---');
-const air3 = measure('illusions').air;
-console.log('  ' + [air3, ...m.map(L => L.air)].map(a => a.toFixed(1) + '%').join('  ->  '));
+const l3g = measure('illusions');
+console.log('  columns to stand on:  ' +
+            [l3g, ...m].map(L => L.stand).join('  ->  '));
 for (let i = 0; i < m.length; i++) {
-  const before = i ? m[i-1] : { name: 'The Illusions', air: air3 };
+  const before = i ? m[i-1] : l3g;
   check(`${m[i].name} has less ground than ${before.name}`,
-        m[i].air > before.air,
-        `${m[i].air.toFixed(1)}% vs ${before.air.toFixed(1)}%`);
+        m[i].stand < before.stand,
+        `${m[i].stand} columns vs ${before.stand}`);
 }
 
+console.log('\n--- level 5 is THE ring level ---');
+/*
+   Nea: "aendere das es nur bei lev fuenf so viel ringe gibt bei 4 und 6
+   it shouldnt have so much rings." Level 5 is the one that asks you to
+   keep a swing going forever; levels 4 and 6 get their difficulty from
+   somewhere else, and doing level 5's trick early would spoil it.
+*/
+console.log('  rings:  ' + m.map(L => `${L.name} ${L.rings}`).join('   '));
+check('level 5 has more rings than level 4', m[1].rings > m[0].rings,
+      `${m[1].rings} vs ${m[0].rings}`);
+check('level 5 has more rings than level 6', m[1].rings > m[2].rings,
+      `${m[1].rings} vs ${m[2].rings}`);
+check('level 5 has more than 4 and 6 put together',
+      m[1].rings > m[0].rings + m[2].rings,
+      `${m[1].rings} vs ${m[0].rings + m[2].rings}`);
+
 console.log('\n--- less and less time ---');
-const l3 = measure('illusions');
+const l3 = l3g;
 const press = L => 100 * L.fastest / L.limit;
 console.log('  seconds:  ' + [l3, ...m].map(L => L.limit + 's').join('  ->  '));
 console.log('  pressure: ' + [l3, ...m].map(L => press(L).toFixed(1) + '%').join('  ->  '));

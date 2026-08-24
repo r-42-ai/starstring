@@ -81,16 +81,37 @@ the clock**, **less and less ground**, and — her own addition — **the
 portal in more difficult places to reach**. Each level takes all three
 a step further.
 
-| | | | |
-|---|---|---|---|
-| **4. The Long Fall** | 79% thin air | 2:10 | portal at the **top of the arc** — launch late and you sail under it |
-| **5. Nothing Underneath** | 85% thin air | 2:05 | portal behind a **two-row slot** — too high you hit the roof, too low the floor |
-| **6. The Last Jump** | 88% thin air | 1:30 | portal in a **pocket** with rock above, below and behind. One way in. |
+| | ground | rings | clock | the portal |
+|---|---|---|---|---|
+| **3. The Illusions** | 125 | 9 | 2:45 | |
+| **4. The Long Fall** | 52 | 16 | 2:10 | at the **top of the arc** — launch late and you sail under it |
+| **5. Nothing Underneath** | 35 | **38** | 2:05 | behind a **two-row slot** — too high you hit the roof, too low the floor |
+| **6. The Last Jump** | 29 | 21 | 1:10 | in a **pocket** with rock above, below and behind. One way in. |
+
+*ground = how many columns in the whole level you can stand on.*
 
 Level 4 still has islands of floor. Level 5 shrinks them to ledges five
-blocks wide with nothing at all underneath. Level 6 cuts them to three,
-runs chains of ten, eleven and twelve rings, and gives you **one flag in
-the whole level**.
+blocks wide with nothing at all underneath. Level 6 cuts them to two
+ledges four wide, and gives you **one flag in the whole level**.
+
+**Level 5 is the ring level** — and only level 5:
+
+> **"ändere das es nur bei lev fünf so viel ringe gibt, bei 4 und 6 it
+> shouldn't have so much rings"** — Nea
+
+She's right, and it's a real design point: if levels 4 and 6 also ran
+endless chains, level 5 would have no trick of its own. So level 4 hops
+between its islands in threes and fours, level 6 is hard because there's
+nowhere to stand and the portal is in a box — and level 5 alone has more
+rings than both of them put together.
+
+That correction broke the way difficulty was being measured, which was
+useful. Ground was a **percentage** of the level, and a level with fewer
+rings has to be shorter, which shrinks the total and *inflates* the
+percentage even while containing less floor. The ratio was measuring
+level length as much as level design. Counting the columns you can stand
+on is what a player actually feels — and it's what she'd say out loud:
+**125 → 52 → 35 → 29**.
 
 ### These levels were not drawn by hand
 
@@ -125,15 +146,15 @@ inside its own clock* — and the curve is measured from the levels
 themselves, on Nea's own two numbers:
 
 ```
-less ground   39%  ->  79%  ->  85%  ->  88%   of the level is thin air
-less time    165s  -> 130s  -> 125s  ->  90s   on the clock
-less slack   17.7% -> 24.7% -> 30.8% -> 32.1%  of it the robot needs
+less ground   125  ->   52  ->   35  ->   29   columns to stand on
+less time    165s  -> 130s  -> 125s  ->  70s   on the clock
+less slack   17.7% -> 20.9% -> 26.5% -> 28.3%  of it the robot needs
 ```
 
 Her third pick isn't a number — "hard to reach" is a shape — so the test
 counts how many **sides** of the portal are walled off: `0 → 2 → 3`.
 
-> If level 6 turns out cruel rather than hard, the 90-second clock is the
+> If level 6 turns out cruel rather than hard, the 70-second clock is the
 > number to loosen. It's one line in `make_levels.py` and it changes
 > nothing else.
 

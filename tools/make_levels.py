@@ -102,16 +102,17 @@ def the_long_fall():
     """
     LEVEL 4 -- less ground, and the portal is above you.
 
-    Four islands of floor in the whole level; everything between them is
-    a ring chain over nothing. The portal sits at the very TOP of the arc
-    you fly after the last ring, so you have to launch at the right
-    moment -- a beat late and you sail underneath it.
+    Four islands of floor, and SHORT hops between them -- three or four
+    rings, not a chain that goes on forever. That's level 5's trick, and
+    doing it here first would spoil it. The portal sits at the very TOP
+    of the arc you fly after the last ring, so you have to launch at the
+    right moment -- a beat late and you sail underneath it.
     """
     m = Map(300)
     c = m.pad(0)
     m.put(2, 12, 'P')
     last = 0
-    for i, (n, ty) in enumerate([(7, 'oro'), (8, 'oro'), (8, 'ror'), (9, 'ror')]):
+    for i, (n, ty) in enumerate([(3, 'oro'), (4, 'oro'), (4, 'ror'), (5, 'ror')]):
         if i:
             c = m.pad(last + 3)
             if i in (1, 3):
@@ -126,6 +127,10 @@ def nothing_underneath():
     """
     LEVEL 5 -- the floor shrinks to ledges, and the portal is in a slot.
 
+    THE ring level. Thirty-eight of them, in chains of eight, nine, ten
+    and eleven -- more than levels 4 and 6 put together, and the only level
+    that asks you to keep a swing going that long.
+
     No pads after the first: you land on ledges five wide, at ring
     height, with nothing at all below them. The portal is behind a
     two-row gap between a roof and a floor of rock -- too high and you
@@ -135,7 +140,7 @@ def nothing_underneath():
     c = m.pad(0)
     m.put(2, 12, 'P')
     last = 0
-    for i, (n, ty) in enumerate([(7, 'ror'), (8, 'ror'), (8, 'ror'), (9, 'ror')]):
+    for i, (n, ty) in enumerate([(8, 'ror'), (9, 'ror'), (10, 'ror'), (11, 'ror')]):
         if i:
             pc = last + 3
             c = m.perch(pc)
@@ -154,19 +159,23 @@ def the_last_jump():
     """
     LEVEL 6 -- barely any ground at all, and the portal is in a pocket.
 
-    Ledges three wide, chains of ten, eleven and twelve rings, and one
-    single flag in the whole level. The portal is inside an alcove with
-    rock above it, below it and behind it: one way in, and if you miss
-    you hit the back wall.
+    Two ledges four wide, and one single flag in the whole level. The
+    portal is inside an alcove with rock above it, below it and behind
+    it: one way in, and if you miss you hit the back wall.
+
+    NOT many rings -- that's level 5's job. Nea: "aendere das es nur bei
+    lev fuenf so viel ringe gibt bei 4 und 6 it shouldnt have so much
+    rings." Level 6 is hard because there is nowhere to stand and the
+    portal is in a box, not because the chains go on forever.
     """
     m = Map(320)
     c = m.pad(0)
     m.put(2, 12, 'P')
     last = 0
-    for i, n in enumerate([10, 11, 12]):
+    for i, n in enumerate([6, 7, 8]):
         if i:
             pc = last + 3
-            c = m.perch(pc, 3)
+            c = m.perch(pc, 4)
             if i == 1:
                 m.put(pc + 1, 8, 'F')
         last = m.chain(c, n, 'ror')
@@ -204,14 +213,14 @@ def shafts(width, n):
 
 
 # The clock gets tighter twice over: fewer seconds each level, AND less
-# slack inside them. `fastest` is what the robot needs, measured; the
-# multiplier is how much longer a person gets.
+# slack inside them. `robot` is measured, not guessed -- it is the
+# fastest of thirty playing styles.
 #
 #            robot   limit   a person gets
 #   level 3   29.2s   165s      5.6x
-#   level 4   32.1s   130s      4.0x
-#   level 5   38.5s   125s      3.2x
-#   level 6   28.9s    90s      3.1x
+#   level 4   27.2s   130s      4.8x
+#   level 5   33.1s   125s      3.8x
+#   level 6   19.8s    70s      3.5x
 #
 # If level 6 turns out to be cruel rather than hard, THIS is the number
 # to loosen first -- it's one line and it changes nothing else.
@@ -221,7 +230,7 @@ LEVELS = [
      (5, 11, 'nothing to land on out there')),
     ('nothing-underneath', 'Nothing Underneath', nothing_underneath, 125,
      (5, 11, 'the ledges keep getting smaller')),
-    ('the-last-jump', 'The Last Jump', the_last_jump, 90,
+    ('the-last-jump', 'The Last Jump', the_last_jump, 70,
      (5, 11, 'one flag. Make it count.')),
 ]
 
