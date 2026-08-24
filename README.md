@@ -143,18 +143,22 @@ The portal hands you straight back out to the planet, with the level
 ticked off — from every level, which `flow.test.js` checks by actually
 playing each ending.
 
-One thing that needed fixing there: finishing level 3 unlocks level 4,
-and level 4 **hasn't been built yet**. The map lit it up gold, pulsed
-it, and said *play me* — and tapping did nothing at all. A button that
-begs to be pressed and then ignores you is worse than no button. So
-*unlocked* ("you've earned it") and *playable* ("and it exists") are now
-two different questions, and only playable levels glow.
+One thing that needed fixing there: finishing the last built level
+unlocks the next one, **which doesn't exist yet**. The map lit it up
+gold, pulsed it, and said *play me* — and tapping did nothing at all. A
+button that begs to be pressed and then ignores you is worse than no
+button. So *unlocked* ("you've earned it") and *playable* ("and it
+exists") are now two different questions, and only playable levels glow.
+
+> The first version of that test named **level 4** as the one that
+> wasn't built — and broke the day level 4 shipped. A test failing
+> because it went out of date, rather than because it found something,
+> is worse than useless: it trains you to shrug at red. It asks the map
+> now, so it will still be right at level 15.
 
 > `playable.test.js` checks something stricter for level 1 than for any
 > other level: **all thirty** playing styles must finish it, not just
-> one. A teaching level that a bad player can fail isn't teaching. For
-> level 3 it checks the opposite — that *fewer* styles can finish it
-> than level 2, so "harder" is measured rather than hoped for.
+> one. A teaching level that a bad player can fail isn't teaching.
 
 **On a laptop:**
 
