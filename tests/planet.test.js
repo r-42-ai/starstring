@@ -109,6 +109,27 @@ check('a tap with no finger ever seen on screen still works',
       Game.started === 'tutorial', `started ${Game.started}`);
 check('and the tap is used up, not repeated', Input.tapped === null);
 
+console.log('\n--- unlocked is not the same as playable ---');
+/*
+   Finishing level 3 unlocks level 4, which hasn't been built. The map
+   used to pulse it gold and say "play me", and tapping did nothing.
+*/
+Planet.levels.forEach(l => { l.done = false; });
+Planet.levels[0].done = true; Planet.levels[1].done = true; Planet.levels[2].done = true;
+check('finishing level 3 unlocks level 4', Planet.isUnlocked(3));
+check('...but level 4 is NOT playable, because it does not exist yet',
+      !Planet.isPlayable(3));
+check('every built level that is unlocked IS playable',
+      [0,1,2].every(i => Planet.isPlayable(i)));
+check('a locked level is never playable',
+      !Planet.isPlayable(4) && !Planet.isUnlocked(4));
+Game.started = null;
+Planet.yaw = -Planet.levels[3].lon; Planet.pitch = Planet.levels[3].lat;
+const notBuilt = Planet.project(Planet.levels[3].lat, Planet.levels[3].lon);
+Planet.tap(notBuilt.x, notBuilt.y);
+check('tapping a level that is not built does nothing at all',
+      Game.started === null, `started ${Game.started}`);
+
 console.log('\n--- nothing has gone to NaN ---');
 check('every level projects to a real number',
       Planet.levels.every(l => {

@@ -373,7 +373,8 @@ const PlanetDraw = {
       .sort((a, b) => a.p.z - b.p.z);
 
     for (const { l, i, p } of order) {
-      const unlocked = Planet.isUnlocked(i);
+      const unlocked = Planet.isPlayable(i);   // earned AND built
+      const soon = Planet.isUnlocked(i) && !l.key;   // earned, not built yet
       const here = (Planet.selected === i);
 
       // Markers shrink as they go round the side — that's what makes
@@ -395,7 +396,8 @@ const PlanetDraw = {
 
       ctx.beginPath();
       ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
-      ctx.fillStyle = l.done ? '#5cff9d' : unlocked ? '#ffdb8a' : '#3c4a44';
+      ctx.fillStyle = l.done ? '#5cff9d' : unlocked ? '#ffdb8a'
+                                         : soon ? '#6b6250' : '#3c4a44';
       ctx.fill();
       ctx.lineWidth = 2.5;
       ctx.strokeStyle = l.done ? '#c9ffe2' : unlocked ? '#fff4d6' : '#2a3531';
@@ -460,7 +462,7 @@ const PlanetDraw = {
       const l = Planet.levels[i];
       const open = Planet.isUnlocked(i);
       ctx.font = 'bold 30px system-ui, sans-serif';
-      ctx.fillStyle = open ? '#ffdb8a' : '#7d8d86';
+      ctx.fillStyle = Planet.isPlayable(i) ? '#ffdb8a' : '#7d8d86';
       ctx.fillText(open ? `${l.number}. ${l.name}` : `${l.number}. Locked`,
                    CONFIG.WIDTH / 2, CONFIG.HEIGHT - 78);
 

@@ -93,6 +93,21 @@ const Planet = {
     return this.levels[i - 1].done;
   },
 
+  /*
+     UNLOCKED and PLAYABLE are not the same thing.
+
+     Finishing level 3 unlocks level 4 — but level 4 hasn't been built
+     yet, so the map lit it up gold and pulsed it and said "play me",
+     and tapping it did nothing at all. A button that begs to be pressed
+     and then ignores you is worse than no button.
+
+     So: unlocked means "you've earned it", playable means "and it
+     actually exists". Only playable levels glow.
+  */
+  isPlayable(i) {
+    return this.isUnlocked(i) && !!this.levels[i].key;
+  },
+
   complete(key) {
     const lvl = this.levels.find(l => l.key === key);
     if (lvl) lvl.done = true;
@@ -245,10 +260,10 @@ const Planet = {
   tap(sx, sy) {
     const i = this.levelAt(sx, sy);
     if (i < 0) return;
-    if (!this.isUnlocked(i)) return;      // still locked
-    const lvl = this.levels[i];
-    if (!lvl.key) return;                 // not built yet
+    // Locked, or unlocked but not built yet — either way there is
+    // nothing to start. isPlayable() is the single question.
+    if (!this.isPlayable(i)) return;
     this.lastPlayed = i;                  // that's where you'll be standing
-    Game.startLevel(lvl.key);
+    Game.startLevel(this.levels[i].key);
   },
 };

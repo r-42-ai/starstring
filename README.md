@@ -42,15 +42,48 @@ with a fake tunnel, stepping stones where every other one is a lie, and
 a landing spot by the portal that will drop you into nothing.
 
 It gets **one** hint, right at the start — *"this whole place lies to
-you"* — and then says nothing else for two hundred blocks.
+you"* — and then says nothing else for two hundred blocks. Three flags
+make being wrong survivable; the clock is 2:45 instead of 3:00, because
+it's meant to be harder.
 
-> That was Nea's correction. The first version signposted every single
-> trap, and she said: **"in the illusions there are too many clues."**
-> She's right — a level that warns you about all of its illusions never
-> tricks you once, it just gives you instructions. So the hint tells you
-> the *rule* and never an answer. Three flags make being wrong
-> survivable; the clock is 2:45 instead of 3:00, because it's meant to
-> be harder.
+### Say each thing once
+
+Two corrections from Nea, both the same rule:
+
+> **"in the illusions there are too many clues"**
+> **"the rules you had in lev 1 don't have to pop up again in lev 2"**
+
+The hint count now only ever goes **down**:
+
+| | | |
+|---|---|---|
+| **Level 1** | 9 hints | teaches everything, one thing at a time |
+| **Level 2** | 2 hints | only what's new: *the clock*, and *the level can lie* |
+| **Level 3** | 1 hint | the rule, and never an answer |
+
+Level 2 used to re-explain green rings, red rings, flags and the portal
+— all four of which level 1 already teaches properly, with a whole dip
+of its own for each. Repeating them says two things to the player, and
+neither is good: that the game wasn't listening the first time, and that
+hints are noise you can skip. **Once hints are skippable, the two that
+matter get skipped as well.**
+
+`flow.test.js` now enforces this: no level after the first may say the
+words GREEN, RED, FLAG, JUMP, GRAPPLE, run or swing, and the hint count
+can never go back up.
+
+### Finishing a level
+
+The portal hands you straight back out to the planet, with the level
+ticked off — from every level, which `flow.test.js` checks by actually
+playing each ending.
+
+One thing that needed fixing there: finishing level 3 unlocks level 4,
+and level 4 **hasn't been built yet**. The map lit it up gold, pulsed
+it, and said *play me* — and tapping did nothing at all. A button that
+begs to be pressed and then ignores you is worse than no button. So
+*unlocked* ("you've earned it") and *playable* ("and it exists") are now
+two different questions, and only playable levels glow.
 
 > `playable.test.js` checks something stricter for level 1 than for any
 > other level: **all thirty** playing styles must finish it, not just
@@ -284,6 +317,7 @@ node tests/input.test.js       # one finger can only press one button
 node tests/level.test.js       # ★ is my level broken?
 node tests/playable.test.js    # ★★ can my level actually be FINISHED?
 node tests/planet.test.js      # the map: projection, zooming, unlocking
+node tests/flow.test.js        # finishing a level takes you back to the map
 ```
 
 **The last two are the ones for Nea.** Run them whenever you change a level.

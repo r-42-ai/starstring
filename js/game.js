@@ -145,6 +145,34 @@ const Game = {
     // ---- INSIDE A LEVEL ----
     // Do as many identical thinking steps as fit in the time that passed
     while (this.accumulator >= CONFIG.STEP) {
+      this.accumulator -= CONFIG.STEP;
+
+      // The level can END in a step — you got into the portal and the
+      // celebration finished. When that happens we're on the map now,
+      // and there is no level left to keep stepping or to draw.
+      if (this.step()) return;
+    }
+
+    // How far are we between one step and the next? (0 to 1)
+    const alpha = this.accumulator / CONFIG.STEP;
+
+    this.draw(alpha);
+    this._countFps(elapsed);
+  },
+
+
+  /*
+     ONE step of a level: exactly 1/60 of a second of thinking.
+
+     This used to live in the middle of loop(), tangled up with frame
+     timing and drawing, which meant nothing could test it — you can't
+     ask requestAnimationFrame to play a level for you. Pulled out on
+     its own it's a plain function: call it, and time moves forward.
+
+     Returns TRUE if the level is over and we've gone back to the map.
+  */
+  step() {
+    {
       // The reel-in / reel-out buttons only exist while swinging
       Input.swinging = Grapple.attached;
       Input.update();
@@ -212,18 +240,11 @@ const Game = {
         if (this.completed <= 0) {
           this.completed = 0;
           this.returnToPlanet(true);   // out to the map, level ticked off
-          return;
+          return true;
         }
       }
-
-      this.accumulator -= CONFIG.STEP;
     }
-
-    // How far are we between one step and the next? (0 to 1)
-    const alpha = this.accumulator / CONFIG.STEP;
-
-    this.draw(alpha);
-    this._countFps(elapsed);
+    return false;
   },
 
 

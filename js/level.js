@@ -213,13 +213,24 @@ const LEVELS = {
        everything else — and again, one thing at a time, right where
        you first meet it. Never a wall of text before you start.
     */
+    /*
+       ONLY WHAT LEVEL 1 DIDN'T ALREADY SAY.
+
+       Nea: "the rules you had in lev 1 don't have to pop up again in
+       lev 2." She's right — this used to re-explain green rings, red
+       rings, flags and the portal, all four of which level 1 teaches
+       properly, with a whole dip of its own for each. Repeating them
+       here says two things to the player, neither of them good: that
+       the game wasn't listening the first time, and that hints are
+       noise to be skipped. Once hints become skippable, the two that
+       actually matter get skipped too.
+
+       So level 2 says exactly two things, and both are brand new:
+       the clock, and the fact that the level can lie to you.
+    */
     hints: [
       { col: 5,   row: 11, text: 'the clock is running \u2014 don\u2019t dawdle' },
-      { col: 51,  row: 6,  text: 'GREEN rings never break' },
-      { col: 100, row: 2,  text: 'a FLAG saves your place if you fall' },
-      { col: 114, row: 5,  text: 'careful \u2014 not everything here is really there' },
-      { col: 157, row: 4,  text: 'RED rings break fast. Keep moving!' },
-      { col: 193, row: 4,  text: 'six rings, then swing into the portal' },
+      { col: 114, row: 9,  text: 'careful \u2014 not everything here is really there' },
     ],
 
     // Sunlight pouring down through holes in the cavern roof.
