@@ -11,7 +11,7 @@ const ROOT='/sessions/sleepy-vibrant-dirac/mnt/starstring';
   canvas.addEventListener=()=>{}; canvas.style={};
   canvas.getBoundingClientRect=()=>({left:0,top:0,width:1280,height:720});
   vm.createContext(sandbox);
-  for(const f of ['js/config.js','js/assets.js','js/input.js','js/level.js','js/camera.js','js/background.js','js/terrain.js','js/grapple.js','js/player.js','js/game.js'])
+  for(const f of ['js/config.js','js/assets.js','js/input.js','js/level.js','js/camera.js','js/background.js','js/terrain.js','js/grapple.js','js/monsters.js','js/player.js','js/game.js'])
     vm.runInContext(fs.readFileSync(path.join(ROOT,f),'utf8'),sandbox,{filename:f});
   const get=n=>vm.runInContext(n,sandbox);
   const Game=get('Game'),Assets=get('Assets'),Input=get('Input'),Level=get('Level'),CONFIG=get('CONFIG');
@@ -21,7 +21,7 @@ const ROOT='/sessions/sleepy-vibrant-dirac/mnt/starstring';
     '..............................','..............................',
     '..............................','..............................',
     '..P...........................','##############################']};`, sandbox);
-  Level.load('__anim__'); Input._defineButtons(); Game.player=new (get('Player'))();
+  Level.load('__anim__'); vm.runInContext('Monsters.load(Level)', sb); Input._defineButtons(); Game.player=new (get('Player'))();
   Assets.images['hero_idle_1']=await loadImage(path.join(ROOT,'assets/sprites/hero_idle_1.png'));
 
   const step=n=>{for(let i=0;i<n;i++){Input.update();Game.player.update(CONFIG.STEP);}};

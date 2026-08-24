@@ -26,6 +26,7 @@ class Player {
   respawn() {
     if (typeof Grapple !== 'undefined') Grapple.reset();
     if (typeof Level !== 'undefined' && Level.resetAnchors) Level.resetAnchors();
+    if (typeof Monsters !== 'undefined') Monsters.reset();
     // Back to the last flag you lit, or the very start if you
     // haven't reached one yet.
     const back = Level.respawnPoint ? Level.respawnPoint() : { x: Level.spawnX, y: Level.spawnY };

@@ -9,12 +9,12 @@ const ROOT=path.join(__dirname,'..');
   canvas.addEventListener=()=>{}; canvas.style={};
   canvas.getBoundingClientRect=()=>({left:0,top:0,width:1280,height:720});
   vm.createContext(sb);
-  for(const f of ['js/config.js','js/assets.js','js/input.js','js/level.js','js/camera.js','js/background.js','js/terrain.js','js/grapple.js','js/player.js','js/game.js'])
+  for(const f of ['js/config.js','js/assets.js','js/input.js','js/level.js','js/camera.js','js/background.js','js/terrain.js','js/grapple.js','js/monsters.js','js/player.js','js/game.js'])
     vm.runInContext(fs.readFileSync(path.join(ROOT,f),'utf8'),sb,{filename:f});
   const G=n=>vm.runInContext(n,sb);
   const Game=G('Game'),Assets=G('Assets'),Input=G('Input'),Level=G('Level'),CONFIG=G('CONFIG'),Camera=G('Camera');
   Game.canvas=canvas; Game.ctx=canvas.getContext('2d');
-  Level.load('crystal-caves-1'); vm.runInContext('Terrain.build()', sb); Input._defineButtons();
+  Level.load('crystal-caves-1'); vm.runInContext('Monsters.load(Level)', sb); vm.runInContext('Terrain.build()', sb); Input._defineButtons();
   Game.player=new (G('Player'))(); Camera.init(Game.player);
   for(const [n,r] of Object.entries({btn_left:'assets/ui/btn_left.png',btn_right:'assets/ui/btn_right.png',
     btn_jump:'assets/ui/btn_jump.png',btn_grapple:'assets/ui/btn_grapple.png',

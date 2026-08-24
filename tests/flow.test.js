@@ -84,7 +84,7 @@ function makeGame() {
   vm.createContext(sb);
   for (const f of ['js/config.js', 'js/assets.js', 'js/input.js', 'js/level.js',
                    'js/camera.js', 'js/background.js', 'js/terrain.js',
-                   'js/grapple.js', 'js/player.js', 'js/title.js',
+                   'js/grapple.js', 'js/monsters.js', 'js/player.js', 'js/title.js',
                    'js/planetdraw.js', 'js/planet.js', 'js/game.js'])
     vm.runInContext(fs.readFileSync(path.join(ROOT, f), 'utf8'), sb, { filename: f });
   const G = n => vm.runInContext(n, sb);
@@ -182,6 +182,42 @@ console.log('\n--- each level only says what the one before it did not ---');
   for (const l of LEVELS.slice(3))
     check(`${l.name} says one thing and then shuts up`,
           l.hints.length <= 1, `${l.hints.length} hints`);
+}
+
+console.log('\n--- the teaching level teaches monsters too ---');
+{
+  /*
+     Nea: "conclude monsters to the teaching level."
+
+     A thing the game can kill you with, that it never showed you how to
+     deal with, is not difficulty -- it's a trap. Level 1 introduces both
+     of her ways of fighting back, in the order you can use them: a
+     crawler you can land on, and a flyer hanging where you'll swing
+     through it.
+  */
+  const { Level, CONFIG } = makeGame();
+  const kinds = Object.keys(CONFIG.MONSTERS.LETTERS);
+  const count = key => {
+    Level.load(key);
+    return Level.map.join('').split('')
+                .filter(ch => kinds.includes(ch)).length;
+  };
+
+  const tut = count('tutorial');
+  console.log('  monsters per level:  ' +
+              BUILT.map(([k, n]) => `${n} ${count(k)}`).join('   '));
+  check('there are monsters in the tutorial', tut > 0, `${tut}`);
+
+  Level.load('tutorial');
+  const text = Level.hints.map(h => h.text).join(' ');
+  check('and it says what to do about them',
+        /MONSTER/i.test(text), text);
+  check('...both of the ways Nea picked',
+        /HEAD/i.test(text) && /through/i.test(text), text);
+
+  check('every level after the tutorial has some too',
+        BUILT.slice(1).every(([k]) => count(k) > 0),
+        BUILT.slice(1).filter(([k]) => !count(k)).map(([, n]) => n).join(', '));
 }
 
 console.log(`\n${pass} passed, ${fail} failed\n`);

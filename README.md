@@ -23,13 +23,20 @@ they're about is, and only when you get near.
 
 **Level 1 — "First Steps"** teaches, in this order and one at a time:
 run, jump, grapple, **let go**, a golden **flag**, a **cyan** ring, a
-**green** ring, a **red** ring, the portal. Each of the three rings gets
-a dip of its own, with its hint right beside it — naming all three at
-once teaches nobody anything.
+**green** ring, a **monster you swing through**, a **monster you land
+on**, a **red** ring, the portal. Each of the three rings gets a dip of
+its own, with its hint right beside it — naming all three at once
+teaches nobody anything.
 
-It has no clock and nothing in it can kill you: every dip has a floor
-and can be jumped back out of. A tutorial that punishes you teaches you
-to be frightened.
+It has no clock, and every dip has a floor you can jump back out of. A
+tutorial that punishes you teaches you to be frightened.
+
+> **"conclude monsters to the teaching level"** — Nea. She's right: a
+> thing the game can kill you with, that it never showed you how to deal
+> with, isn't difficulty, it's a trap. So level 1 introduces both of her
+> ways of fighting back — a flyer hanging where you'll swing through it,
+> then a crawler you can land on. `playable.test.js` still demands that
+> **all thirty** playing styles finish level 1, monsters and all.
 
 **Level 2 — "The Way Out"** teaches the rest, again one thing at a time
 and right where you first meet it: the clock, green rings, flags, the
@@ -57,7 +64,7 @@ The hint count now only ever goes **down**:
 
 | | | |
 |---|---|---|
-| **Level 1** | 9 hints | teaches everything, one thing at a time |
+| **Level 1** | 11 hints | teaches everything, one thing at a time |
 | **Level 2** | 2 hints | only what's new: *the clock*, and *the level can lie* |
 | **Level 3** | 1 hint | the rule, and never an answer |
 
@@ -71,6 +78,75 @@ matter get skipped as well.**
 `flow.test.js` now enforces this: no level after the first may say the
 words GREEN, RED, FLAG, JUMP, GRAPPLE, run or swing, and the hint count
 can never go back up.
+
+## Monsters
+
+> **"now i want to put monsters in — how do i do that"** — Nea
+
+**You type a letter in the map.** That's the whole answer. Open
+`js/level.js`, find the level, put a letter where you want it, save,
+reload. Same as a ring or a flag — no code.
+
+| | | |
+|---|---|---|
+| `c` | **Crawler** | paces its platform, turns round at the edge |
+| `~` | **Flyer** | bobs up and down in mid-air, in your swing path |
+| `z` | **Lurker** | sits still like a rock until you get close *(that's the `z` — it's asleep)*, then chases |
+| `^` | **Spikes** | never move. Can never be beaten. |
+| `v` | **Faller** | hangs there until you walk underneath, then drops |
+
+The letters look like the thing: `^` points up out of the floor, `v`
+points down at your head, `~` bobs, `z` is asleep.
+
+**Nea's rules.** Touch one and you go back to your last flag — the same
+punishment as falling in a hole, so there's nothing new to learn. **Land
+on its head** and it's squashed, and you bounce. **Hit one while
+swinging** and you smash straight through it. Spikes and fallers can
+never be beaten: one is a rock with a point on it, the other is a rock
+that lets go.
+
+She picked *both* ways of fighting back, and they're both worth having:
+stomping is the answer on foot, and smashing through on the rope is the
+one that belongs to *this* game — it turns the grapple from a way of
+crossing gaps into a weapon, and a monster under a ring becomes a target
+instead of a wall.
+
+### Where to put them — three rules that cost me three broken levels
+
+Placing monsters is where all the mistakes were, and every one of them
+came out the same way: **a monster you cannot fight and cannot dodge
+isn't difficult, it's a wall.**
+
+- **Hang a flyer just BELOW a ring, never in the gap between two.**
+  Under a ring you meet it on the rope and smash through. In the gap
+  you're in mid-air — off the rope so you can't smash it, no ground so
+  you can't dodge. All thirty playing styles died on one I'd put between
+  two rings, and no person could have done better.
+- **A faller needs room to run.** One on a ten-block ledge with a chasm
+  after it is a locked door.
+- **Don't let a crawler reach somewhere you can't fight it.** One of
+  mine walked into an illusion tunnel one block high and camped there.
+
+### Three bugs the tests caught
+
+**A limit only enforced when something else happens is not a limit.**
+`RANGE` said a crawler "never wanders more than this from where it
+started", and it only clamped at the moment the crawler turned round for
+some *other* reason. On a long corridor with no wall and no edge, nothing
+ever turned it — so one patrolled all thirty-seven blocks of level 3.
+
+**A faller has to shudder before it drops.** It falls at 1150 and you run
+at 420, so if it lets go the instant you're underneath, being under it at
+all means being hit. There's no reaction that saves you. It now warns you
+for a third of a second — enough to sprint clear *or* to stop and let it
+go past, so it's a decision instead of a tax. And a *landed* faller is
+just a rock: hurting you while it sat there made it a door with a timer.
+
+**Never `Math.random()` in something a test has to judge.** Flyers got a
+random starting bob, so the same level played differently every run and
+"can this be finished" got a different answer each time. Level 3 looked
+like it passed; it had got lucky. Their phase is worked out from *where
+they are* now — still out of step with each other, identical every run.
 
 ## Levels 4, 5 and 6 — the climb
 
@@ -332,6 +408,7 @@ js/config.js        ★ every number that decides how the game FEELS
 js/level.js         ★ the level, drawn with letters
 js/player.js        running, jumping, bumping into things
 js/grapple.js       the swinging rope
+js/monsters.js      ★ the five monsters
 js/camera.js        which bit of the world you can see
 js/input.js         buttons and keyboard
 js/title.js         the title screen
@@ -393,7 +470,8 @@ docs/               ★ the design documents
       by playing rather than by a page of text
 - [ ] **Step 6** — proper walking frames *(needs art batch 3)*
 - [ ] **Step 12** — collecting Star Bits
-- [ ] **Steps 15–16** — spikes, crumbling platforms, Crystal Crawlers
+- [x] **Steps 15–16** — monsters: crawlers, flyers, lurkers, spikes, fallers
+- [ ] Crumbling platforms
 
 Full list in `docs/BUILD_ROADMAP.md`.
 
@@ -408,6 +486,7 @@ node tests/grapple.test.js     # swinging, aiming, momentum, recharging
 node tests/input.test.js       # one finger can only press one button
 node tests/level.test.js       # ★ is my level broken?
 node tests/playable.test.js    # ★★ can my level actually be FINISHED?
+node tests/monsters.test.js    # ★ crawlers, flyers, lurkers, spikes, fallers
 node tests/planet.test.js      # the map: projection, zooming, unlocking
 node tests/flow.test.js        # finishing a level takes you back to the map
 ```

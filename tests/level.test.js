@@ -32,7 +32,11 @@ for (const key of Object.keys(LEVELS)) {
   const pCount = raw.join('').split('').filter(c=>c==='P').length;
   check('exactly one starting point (P)', pCount===1, `found ${pCount}`);
 
-  const known = new Set(['.','#','?','o','r','g','P','F','X']);
+  // Everything a map is allowed to contain. Adding a monster letter to
+  // CONFIG.MONSTERS.LETTERS and forgetting this line is exactly the kind
+  // of thing that should fail loudly rather than quietly do nothing.
+  const known = new Set(['.','#','?','o','r','g','P','F','X',
+                         ...Object.keys(CONFIG.MONSTERS.LETTERS)]);
   const strange = [...new Set(raw.join('').split(''))].filter(c=>!known.has(c));
   check('no unknown characters', strange.length===0, `found: ${strange.join(' ')}`);
 

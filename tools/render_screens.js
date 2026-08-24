@@ -13,7 +13,7 @@ const ROOT=path.join(__dirname,'..');
   vm.createContext(sb);
   for(const f of ['js/config.js','js/assets.js','js/input.js','js/level.js','js/camera.js',
                   'js/background.js','js/terrain.js','js/title.js','js/planet.js','js/planetdraw.js',
-                  'js/grapple.js','js/player.js','js/game.js'])
+                  'js/grapple.js','js/monsters.js','js/player.js','js/game.js'])
     vm.runInContext(fs.readFileSync(path.join(ROOT,f),'utf8'),sb,{filename:f});
   const G=n=>vm.runInContext(n,sb);
   const Game=G('Game'),Assets=G('Assets'),Input=G('Input'),Level=G('Level'),CONFIG=G('CONFIG'),

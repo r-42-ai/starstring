@@ -19,7 +19,7 @@ const ROOT = '/sessions/sleepy-vibrant-dirac/mnt/starstring';
   canvas.getBoundingClientRect = () => ({left:0,top:0,width:1280,height:720});
   vm.createContext(sandbox);
 
-  for (const f of ['js/config.js','js/assets.js','js/input.js','js/level.js','js/camera.js','js/background.js','js/terrain.js','js/grapple.js','js/player.js','js/game.js'])
+  for (const f of ['js/config.js','js/assets.js','js/input.js','js/level.js','js/camera.js','js/background.js','js/terrain.js','js/grapple.js','js/monsters.js','js/player.js','js/game.js'])
     vm.runInContext(fs.readFileSync(path.join(ROOT,f),'utf8'), sandbox, {filename:f});
 
   const get = n => vm.runInContext(n, sandbox);
@@ -27,7 +27,7 @@ const ROOT = '/sessions/sleepy-vibrant-dirac/mnt/starstring';
 
   // Wire up the real game, then load the real PNGs into its asset store
   Game.canvas = canvas; Game.ctx = canvas.getContext('2d');
-  Level.load('crystal-caves-1'); vm.runInContext('Terrain.build()', sandbox);
+  Level.load('crystal-caves-1'); vm.runInContext('Monsters.load(Level)', sb); vm.runInContext('Terrain.build()', sandbox);
   Input._defineButtons();
   Game.player = new (get('Player'))();
 

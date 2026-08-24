@@ -295,6 +295,74 @@ const CONFIG = {
 
   // The way out at the end of a level. You have to get INTO it, which
   // makes where it's placed the last puzzle of the level.
+  /* ---------- THE MONSTERS ---------- */
+
+  // Five kinds, all Nea's choice. Each is one letter in the map, and the
+  // letters are meant to look like the thing: ^ points up out of the
+  // floor, v points down at your head, ~ bobs about, z is asleep.
+  MONSTERS: {
+    LETTERS: {
+      c: 'crawler',
+      '~': 'flyer',
+      z: 'lurker',
+      '^': 'spikes',
+      v: 'faller',
+    },
+
+    // Landing on a head bounces you back up this much of a full jump.
+    // A whole jump would mean you could cross a level on monsters alone
+    // without ever touching the ground, which is a different game.
+    BOUNCE: 0.72,
+
+    // How far into a monster your feet may be and still count as a
+    // stomp rather than a bump. Too small and stomping feels like luck;
+    // too big and brushing its shoulder kills it.
+    STOMP_DEPTH: 0.55,
+
+    SQUASH_TIME: 0.35,   // how long it stays on screen, flattened
+
+    CRAWLER: {
+      WIDTH: 56, HEIGHT: 44,
+      SPEED: 110,        // slower than you run (420), so you can escape
+      RANGE: 260,        // never wanders more than this from where it started
+      KILLABLE: true,
+    },
+
+    FLYER: {
+      WIDTH: 52, HEIGHT: 52,
+      SPEED: 1.9,        // radians a second -- how fast it bobs
+      RANGE: 96,         // a block and a half up, a block and a half down
+      KILLABLE: true,
+    },
+
+    LURKER: {
+      WIDTH: 60, HEIGHT: 56,
+      SPEED: 190,        // faster than a crawler, still slower than you
+      WAKE_RANGE: 330,   // about five blocks: it wakes before you see it move
+      RANGE: 384,        // its leash. Lead it six blocks and it goes home.
+      KILLABLE: true,
+    },
+
+    // Not alive. A rock with a point on it.
+    SPIKES: { WIDTH: 64, HEIGHT: 40, KILLABLE: false },
+
+    // Also not alive. A rock that lets go.
+    FALLER: {
+      WIDTH: 60, HEIGHT: 60,
+      TRIGGER: 40,       // how far either side of it counts as "under it"
+
+      // It shudders for this long before letting go. Without it the drop
+      // is unavoidable: it falls at 1150 and you run at 420, so being
+      // underneath at all means being hit. A third of a second is enough
+      // to sprint clear OR to stop and let it go past.
+      WARN: 0.35,
+      FALL_SPEED: 1150,  // much faster than gravity. It should be a shock.
+      RISE_SPEED: 150,   // slow going back up, so you get a turn
+      REST: 1.1,         // seconds sat on the floor before it climbs back
+      KILLABLE: false,
+    },
+  },
+
   PORTAL: {
     RADIUS: 46,          // how big it looks
     TOUCH_RADIUS: 52,    // how close you have to get. Slightly generous.

@@ -88,6 +88,7 @@ const Game = {
   // Leave the map and drop into a level.
   startLevel(key) {
     Level.load(key);
+    Monsters.load(Level);          // read the monsters out of the map
     Terrain.build();               // repaint all the rock for this level
     this.player = new Player();
     Camera.init(this.player);
@@ -182,6 +183,22 @@ const Game = {
       // the moment completely.
       if (!this.completed) this.player.update(CONFIG.STEP);
 
+      /*
+         THE MONSTERS move after you do, and only while you're playing.
+
+         Not during the portal celebration and not while "time's up" is
+         on screen: a crawler strolling into you during the cutscene
+         would send you back to a flag on a level you had just finished.
+      */
+      if (!this.completed && !this.outOfTime) {
+        Monsters.update(CONFIG.STEP, this.player);
+        const bump = Monsters.check(this.player, Grapple.attached);
+        if (bump === 'hit') {
+          this.player.respawn();
+          this.player.justRespawned = true;
+        }
+      }
+
       if (this.player.justRespawned) {
         Camera.snap(this.player);
         this.player.justRespawned = false;
@@ -267,6 +284,7 @@ const Game = {
     this._drawFlags(ctx);
     this._drawPortal(ctx);
     this._drawAnchors(ctx);
+    this._drawMonsters(ctx, alpha);
     // The rope is drawn behind her, so her hands are in front of it
     Grapple.draw(ctx, this.player, alpha);
     if (this.completed > 0) this._drawEnteringPortal(ctx);
@@ -334,6 +352,157 @@ const Game = {
   // The rock was all drawn once when the level loaded, so this is a
   // single stamp. Only the glitter is still worked out every frame,
   // because that's the bit that has to move.
+  /* ---------- THE MONSTERS ---------- */
+
+  /*
+     Drawn in code, like everything else in the caves, so there is no
+     waiting on artwork to play with them. Each one is built out of the
+     same crystal the planet is: a faceted body, a bright edge, and eyes.
+
+     The eyes do most of the work. A shape with eyes reads as ALIVE and
+     therefore as dangerous, at any size, on any background -- which is
+     exactly what a monster has to say from across the screen. Spikes and
+     fallers have no eyes, because they aren't alive, and that's the
+     whole difference between the two you can beat and the two you can't.
+  */
+  _drawMonsters(ctx, alpha) {
+    for (const m of Monsters.list) {
+      if (!m.alive && m.squashed <= 0) continue;
+
+      const x = m.prevX + (m.x - m.prevX) * alpha;
+      const y = m.prevY + (m.y - m.prevY) * alpha;
+
+      // Squashed ones flatten into the floor as they fade out
+      let sq = 1, fade = 1;
+      if (m.squashed > 0) {
+        const t = 1 - m.squashed / CONFIG.MONSTERS.SQUASH_TIME;
+        sq = 1 - t * 0.82;
+        fade = 1 - t;
+      }
+      const h = m.h * sq;
+      const top = y + m.h - h;
+
+      ctx.save();
+      ctx.globalAlpha = fade;
+      if (m.kind === 'spikes')      this._drawSpikes(ctx, x, y, m);
+      else if (m.kind === 'faller') this._drawFaller(ctx, x, top, m.w, h, m);
+      else                          this._drawCreature(ctx, x, top, m.w, h, m);
+      ctx.restore();
+    }
+  },
+
+  _drawCreature(ctx, x, y, w, h, m) {
+    const C = CONFIG.PLANET.COLORS;
+    const asleep = m.kind === 'lurker' && !m.awake;
+    const body = m.kind === 'flyer'  ? '#7b4bd6'
+               : m.kind === 'lurker' ? (asleep ? '#4a5a52' : '#c0392b')
+               : '#2f7f52';
+    const edge = m.kind === 'flyer'  ? '#c9a4ff'
+               : m.kind === 'lurker' ? (asleep ? '#7d8d86' : '#ff8a7a')
+               : '#86e8a4';
+
+    // A chunk of crystal: six facets round a centre, not a smooth blob.
+    ctx.beginPath();
+    const cx = x + w / 2, cy = y + h / 2;
+    for (let i = 0; i < 7; i++) {
+      const a = (i / 7) * Math.PI * 2 - Math.PI / 2;
+      const wob = 0.78 + 0.22 * Math.abs(Math.sin(i * 2.3 + m.col));
+      const px = cx + Math.cos(a) * (w / 2) * wob;
+      const py = cy + Math.sin(a) * (h / 2) * wob;
+      i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+    }
+    ctx.closePath();
+    ctx.fillStyle = body;
+    ctx.fill();
+    ctx.strokeStyle = edge;
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+
+    // Flyers get wings, and they beat in time with the bobbing
+    if (m.kind === 'flyer') {
+      const beat = Math.sin(m.phase * 3) * 0.5 + 0.5;
+      ctx.strokeStyle = edge;
+      ctx.lineWidth = 3;
+      for (const s of [-1, 1]) {
+        ctx.beginPath();
+        ctx.moveTo(cx + s * w * 0.28, cy - h * 0.05);
+        ctx.quadraticCurveTo(cx + s * w * 0.85, cy - h * (0.3 + beat * 0.35),
+                             cx + s * w * 0.55, cy + h * 0.18);
+        ctx.stroke();
+      }
+    }
+
+    // Eyes. Shut when a lurker is asleep -- that's the only warning you
+    // get that this particular rock is about to stand up.
+    const eyeY = cy - h * 0.08, dx = w * 0.19, r = w * 0.11;
+    if (asleep) {
+      ctx.strokeStyle = edge; ctx.lineWidth = 2.5;
+      for (const s of [-1, 1]) {
+        ctx.beginPath();
+        ctx.moveTo(cx + s * dx - r, eyeY);
+        ctx.lineTo(cx + s * dx + r, eyeY);
+        ctx.stroke();
+      }
+      return;
+    }
+    for (const s of [-1, 1]) {
+      ctx.beginPath();
+      ctx.arc(cx + s * dx, eyeY, r, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffffff'; ctx.fill();
+      ctx.beginPath();
+      ctx.arc(cx + s * dx + m.dir * r * 0.35, eyeY, r * 0.5, 0, Math.PI * 2);
+      ctx.fillStyle = '#0b1a12'; ctx.fill();
+    }
+  },
+
+  _drawSpikes(ctx, x, y, m) {
+    // Point AWAY from whatever they're growing out of: up from a floor,
+    // down from a ceiling. Working it out from the map means you never
+    // have to think about which way round to type them.
+    const down = Level.isSolidAt(m.col, m.row - 1);
+    const n = 4, w = m.w / n;
+    ctx.beginPath();
+    for (let i = 0; i < n; i++) {
+      const x0 = x + i * w;
+      if (down) {
+        ctx.moveTo(x0, y); ctx.lineTo(x0 + w, y);
+        ctx.lineTo(x0 + w / 2, y + m.h);
+      } else {
+        ctx.moveTo(x0, y + m.h); ctx.lineTo(x0 + w, y + m.h);
+        ctx.lineTo(x0 + w / 2, y);
+      }
+      ctx.closePath();
+    }
+    ctx.fillStyle = CONFIG.PLANET.COLORS.GOLD_LIGHT;
+    ctx.fill();
+    ctx.strokeStyle = '#fff4d6';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  },
+
+  _drawFaller(ctx, x, y, w, h, m) {
+    // A block of crystal with a jagged bottom edge. It shudders and
+    // lights up in the third of a second before it lets go -- that's
+    // your warning, and it's the only one you get.
+    const about = m.state === 'warning';
+    if (about) {
+      const shake = Math.sin(m.timer * 90) * 3;
+      ctx.translate(shake, 0);
+    }
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + w, y);
+    ctx.lineTo(x + w, y + h * 0.7);
+    for (let i = 4; i >= 0; i--)
+      ctx.lineTo(x + (i / 5) * w, y + h * (i % 2 ? 0.7 : 1.0));
+    ctx.closePath();
+    ctx.fillStyle = about ? '#ffdb8a' : '#5b4a22';
+    ctx.fill();
+    ctx.strokeStyle = CONFIG.PLANET.COLORS.GOLD_LIGHT;
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+  },
+
   _drawWorld(ctx) {
     Terrain.draw(ctx);
 

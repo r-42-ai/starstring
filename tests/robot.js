@@ -15,19 +15,20 @@ const ROOT = path.join(__dirname, '..');
 function makeGame() {
   const sandbox = { console: { log(){}, warn(){}, error(){} }, Math, performance: { now: () => 0 } };
   vm.createContext(sandbox);
-  for (const f of ['js/config.js','js/level.js','js/camera.js','js/grapple.js','js/player.js'])
+  for (const f of ['js/config.js','js/level.js','js/camera.js','js/grapple.js','js/monsters.js','js/player.js'])
     vm.runInContext(fs.readFileSync(path.join(ROOT,f),'utf8'), sandbox, { filename: f });
   vm.runInContext('var Input={left:false,right:false,jump:false,jumpPressed:false,' +
                   'grapple:false,grapplePressed:false,up:false,down:false};', sandbox);
   const g = n => vm.runInContext(n, sandbox);
-  return { CONFIG:g('CONFIG'), Level:g('Level'), Grapple:g('Grapple'),
+  return { CONFIG:g('CONFIG'), Level:g('Level'), Grapple:g('Grapple'), Monsters:g('Monsters'),
            Input:g('Input'), Player:g('Player'), Camera:g('Camera') };
 }
 
 // One attempt at a level, in one particular playing style.
 function attempt(style, levelKey, onFrame) {
-  const { CONFIG, Level, Grapple, Input, Player } = makeGame();
+  const { CONFIG, Level, Grapple, Input, Player, Monsters } = makeGame();
   Level.load(levelKey);
+  Monsters.load(Level);
   const p = new Player();
   const S = CONFIG.STEP, T = CONFIG.TILE;
 
@@ -99,6 +100,19 @@ function attempt(style, levelKey, onFrame) {
       Input.grapple = Input.grapplePressed;
       grappleHeld = Input.grapple;
 
+      /*
+         Jump at a MONSTER as well as at a hole.
+
+         A person seeing a crawler ahead jumps -- either over it or onto
+         its head, and either is fine. A robot that walks into it dies,
+         goes back to the flag, walks into it again, and reports a level
+         a child could finish as impossible. The measurement has to be
+         at least as capable as the worst real player, or it isn't
+         measuring the level, it's measuring itself.
+      */
+      const monsterAhead = Monsters.aheadOf(p, style.look + 60);
+      if (p.grounded && monsterAhead) hold = style.jumpHold;
+
       // Jump at a hole — but not if a ring is in reach, because
       // jumping puts you ABOVE the ring and you can't grapple that.
       if (p.grounded && gapAhead && !inReach) hold = style.jumpHold;
@@ -135,6 +149,20 @@ function attempt(style, levelKey, onFrame) {
     }
 
     p.update(S);
+
+    /*
+       THE ROBOT HAS TO MEET THE MONSTERS TOO.
+
+       Without this it would walk straight through a crawler and report
+       every level as finishable no matter what was standing in the way,
+       which is precisely the thing the test exists to catch.
+    */
+    Monsters.update(S, p);
+    if (Monsters.check(p, Grapple.attached) === 'hit') {
+      p.respawn();
+      p.justRespawned = true;
+    }
+
     if (p.justRespawned) { p.justRespawned = false; deaths++; }
     if (p.x > maxX) maxX = p.x;
     if (onFrame) onFrame(p, Grapple, i);

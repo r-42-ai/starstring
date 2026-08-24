@@ -11,12 +11,12 @@ const ROOT='/sessions/sleepy-vibrant-dirac/mnt/starstring';
   canvas.addEventListener=()=>{}; canvas.style={};
   canvas.getBoundingClientRect=()=>({left:0,top:0,width:1280,height:720});
   vm.createContext(sandbox);
-  for(const f of ['js/config.js','js/assets.js','js/input.js','js/level.js','js/camera.js','js/background.js','js/terrain.js','js/grapple.js','js/player.js','js/game.js'])
+  for(const f of ['js/config.js','js/assets.js','js/input.js','js/level.js','js/camera.js','js/background.js','js/terrain.js','js/grapple.js','js/monsters.js','js/player.js','js/game.js'])
     vm.runInContext(fs.readFileSync(path.join(ROOT,f),'utf8'),sandbox,{filename:f});
   const g=n=>vm.runInContext(n,sandbox);
   const Game=g('Game'),Assets=g('Assets'),Input=g('Input'),Level=g('Level'),CONFIG=g('CONFIG'),Camera=g('Camera');
   Game.canvas=canvas; Game.ctx=canvas.getContext('2d');
-  Level.load('crystal-caves-1'); vm.runInContext('Terrain.build()', sandbox); Input._defineButtons();
+  Level.load('crystal-caves-1'); vm.runInContext('Monsters.load(Level)', sb); vm.runInContext('Terrain.build()', sandbox); Input._defineButtons();
   Game.player=new (g('Player'))(); Camera.init(Game.player);
   for(const [n,r] of Object.entries({btn_left:'assets/ui/btn_left.png',btn_right:'assets/ui/btn_right.png',
     btn_jump:'assets/ui/btn_jump.png',btn_grapple:'assets/ui/btn_grapple.png',

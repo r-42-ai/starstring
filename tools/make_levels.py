@@ -86,6 +86,16 @@ class Map:
         self.block(c, c + width - 1, 9, 10)
         return c + width + 4
 
+    # A monster standing on top of whatever is at this column.
+    def guard(self, c, ch):
+        for r in range(H):
+            if self.g[r][c] == '#':
+                self.put(c, r - 1, ch)
+                return
+    # A monster hanging in mid-air (flyers and fallers)
+    def hang(self, c, r, ch):
+        self.put(c, r, ch)
+
     def chain(self, c, n, types='o', row=RING_ROW):
         """n rings, six columns apart. Returns the column of the last."""
         for i in range(n):
@@ -119,6 +129,8 @@ def the_long_fall():
                 m.put(last + 5, 12, 'F')
         last = m.chain(c, n, ty)
     cyan_finish(m, last)
+    m.guard(6, 'c'); m.guard(64, 'c'); m.guard(126, 'z')
+    m.hang(96, 8, '~'); m.hang(140, 8, '~')
     m.put(last + 2, 7, 'X')          # measured: the peak of the flight
     return m, last + 8
 
@@ -148,6 +160,9 @@ def nothing_underneath():
                 m.put(pc + 2, 8, 'F')
         last = m.chain(c, n, ty)
     cyan_finish(m, last)
+    m.guard(6, 'c')
+    for col in (40, 96, 160, 216):
+        m.hang(col, 8, '~')
     s = last + 3
     m.block(s, s + 6, 4, 6)          # roof
     m.block(s, s + 6, 9, 11)         # floor -- leaves rows 7 and 8 open
@@ -180,6 +195,8 @@ def the_last_jump():
                 m.put(pc + 1, 8, 'F')
         last = m.chain(c, n, 'ror')
     cyan_finish(m, last)
+    m.guard(8, 'c')
+    m.hang(70, 8, '~'); m.hang(130, 8, '~')
     a = last + 2
     m.block(a, a + 7, 5, 6)          # roof
     m.block(a, a + 7, 10, 11)        # floor
