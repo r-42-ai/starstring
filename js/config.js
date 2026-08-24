@@ -321,6 +321,21 @@ const CONFIG = {
 
     SQUASH_TIME: 0.35,   // how long it stays on screen, flattened
 
+    /*
+       Seconds of safety after coming back at a flag.
+
+       Nea found the freeze this prevents: on level 6 a lurker lived one
+       block from a flag. Fall, respawn at the flag, and the lurker hits
+       you before you can move -- which respawns you at the flag, which
+       it hits again, every single frame, forever. The game looks frozen;
+       it's actually respawning sixty times a second.
+
+       Any monster that WANDERS near a flag can cause this, so no amount
+       of careful placement fully fixes it. After a respawn you simply
+       cannot be hurt for a moment. You can still squash things.
+    */
+    MERCY: 1.2,
+
     CRAWLER: {
       WIDTH: 56, HEIGHT: 44,
       SPEED: 110,        // slower than you run (420), so you can escape

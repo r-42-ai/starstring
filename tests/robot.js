@@ -158,7 +158,7 @@ function attempt(style, levelKey, onFrame) {
        which is precisely the thing the test exists to catch.
     */
     Monsters.update(S, p);
-    if (Monsters.check(p, Grapple.attached) === 'hit') {
+    if (Monsters.check(p, Grapple.attached) === 'hit' && p.mercy <= 0) {
       p.respawn();
       p.justRespawned = true;
     }

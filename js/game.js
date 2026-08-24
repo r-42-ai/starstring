@@ -202,7 +202,10 @@ const Game = {
       if (!this.completed && !this.outOfTime) {
         Monsters.update(CONFIG.STEP, this.player);
         const bump = Monsters.check(this.player, Grapple.attached);
-        if (bump === 'hit') {
+        // Mercy: fresh from a respawn you can't be hurt (you can still
+        // squash). Without this a monster beside a flag respawns you
+        // every frame, forever, and the game appears to freeze.
+        if (bump === 'hit' && this.player.mercy <= 0) {
           this.player.respawn();
           this.player.justRespawned = true;
         }

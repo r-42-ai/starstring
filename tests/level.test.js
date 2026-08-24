@@ -40,6 +40,32 @@ for (const key of Object.keys(LEVELS)) {
   const strange = [...new Set(raw.join('').split(''))].filter(c=>!known.has(c));
   check('no unknown characters', strange.length===0, `found: ${strange.join(' ')}`);
 
+  /*
+     NO MONSTER NEAR A FLAG OR THE START.
+
+     Nea found what happens otherwise, on level 6: a lurker lived one
+     block from a flag. Fall, respawn at the flag, and it hit you before
+     you could move -- which respawned you at the flag, which it hit
+     again, sixty times a second. "Everything wont move any more."
+
+     The mercy timer stops the FREEZE, but a monster camped on a rescue
+     point is still wrong: the whole promise of a flag is that coming
+     back is safe. Three columns is enough to see it and choose.
+  */
+  {
+    const monsterCols = [], safeCols = [];
+    raw.forEach(row => { [...row].forEach((ch, c) => {
+      if (ch in CONFIG.MONSTERS.LETTERS) monsterCols.push({ ch, c });
+      if (ch === 'F' || ch === 'P') safeCols.push({ ch, c });
+    }); });
+    const tooClose = monsterCols.filter(m =>
+      safeCols.some(s2 => Math.abs(s2.c - m.c) < 3));
+    check('no monster within three columns of a flag or the start',
+          tooClose.length === 0,
+          tooClose.map(m => `${m.ch} at col ${m.c}`).join(', '));
+  }
+
+
   console.log('\n--- the hero can actually stand where she starts ---');
   const p = new (g('Player'))();
   for (let i=0;i<120;i++) p.update(S);

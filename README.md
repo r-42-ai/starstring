@@ -21,7 +21,8 @@ There is no page of instructions, and that's deliberate: nobody reads
 them. Instead the hints float **in the world**, right where the thing
 they're about is, and only when you get near.
 
-**Level 1 — "First Steps"** teaches, in this order and one at a time:
+**First Steps — the teaching level** teaches, in this order and one at a
+time:
 run, jump, grapple, **let go**, a golden **flag**, a **cyan** ring, a
 **green** ring, a **monster you swing through**, a **monster you land
 on**, a **red** ring, the portal. Each of the three rings gets a dip of
@@ -38,11 +39,11 @@ tutorial that punishes you teaches you to be frightened.
 > then a crawler you can land on. `playable.test.js` still demands that
 > **all thirty** playing styles finish level 1, monsters and all.
 
-**Level 2 — "The Way Out"** teaches the rest, again one thing at a time
+**Level 1 — "The Way Out"** teaches the rest, again one thing at a time
 and right where you first meet it: the clock, green rings, flags, the
 illusions, red rings, and the six-ring finale.
 
-**Level 3 — "The Illusions"** stops teaching and starts lying. Seven
+**Level 2 — "The Illusions"** stops teaching and starts lying. Seven
 traps in a row: a wall you walk through, a floor that isn't there, a
 whole bridge across a chasm that doesn't exist, three thick walls each
 with a fake tunnel, stepping stones where every other one is a lie, and
@@ -64,9 +65,9 @@ The hint count now only ever goes **down**:
 
 | | | |
 |---|---|---|
-| **Level 1** | 11 hints | teaches everything, one thing at a time |
-| **Level 2** | 2 hints | only what's new: *the clock*, and *the level can lie* |
-| **Level 3** | 1 hint | the rule, and never an answer |
+| **the teaching level** | 11 hints | teaches everything, one thing at a time |
+| **Level 1** | 2 hints | only what's new: *the clock*, and *the level can lie* |
+| **Level 2** | 1 hint | the rule, and never an answer |
 
 Level 2 used to re-explain green rings, red rings, flags and the portal
 — all four of which level 1 already teaches properly, with a whole dip
@@ -117,18 +118,31 @@ instead of a wall.
 
 She was right. The first pass put **four** monsters in a level 236 blocks
 long — one every sixty blocks, so you could play the whole thing and
-barely meet one. There are **193** now:
+barely meet one. Then she pulled it back where it went too far — *"level 2
+is to hard, it is the first level it should be easey"* — so the first
+real level runs at half the density of the ones after it, mostly flyers
+under rings, where you can always fight back. The count now:
 
 | | monsters | one every |
 |---|---|---|
-| 1. First Steps | 4 | 29 blocks |
-| 2. The Way Out | 44 | 5 blocks |
-| 3. The Illusions | 38 | 5 blocks |
-| 4. The Long Fall | 16 | 10 blocks |
-| 5. Nothing Underneath | 49 | 6 blocks |
-| 6. The Last Jump | 30 | 5 blocks |
+| First Steps (the teaching level) | 4 | 29 blocks |
+| 1. The Way Out | 20 | 12 blocks |
+| 2. The Illusions | 38 | 5 blocks |
+| 3. The Long Fall | 16 | 10 blocks |
+| 4. Nothing Underneath | 49 | 6 blocks |
+| 5. The Last Jump | 29 | 6 blocks |
 
 The tutorial stays the quiet one — it's still teaching.
+
+### The teaching level isn't a number
+
+> **"level 2 changes to 1 — the teaching level isnt a number"** — Nea
+
+She's right about how counting works: nobody says "I'm on level 1" about
+a tutorial. So First Steps has **no number** — its marker on the planet
+is a **star** (drawn with strokes, same lesson as the tick), the score
+says *of 14*, and counting starts at the first real level: **The Way Out
+is level 1.** Everything below uses her numbering.
 
 ### The packer only knows "finishable" — it has no idea of "fair"
 
@@ -175,6 +189,19 @@ isn't difficult, it's a wall.**
 - **Don't let a crawler reach somewhere you can't fight it.** One of
   mine walked into an illusion tunnel one block high and camped there.
 
+- **Never within three columns of a flag.** Nea found what happens
+  otherwise, on the last level: *"if you fall down and respawn by the
+  flag the red monster will bump into you and everything won't move any
+  more."* A lurker lived **one block** from a flag — respawn, get hit
+  before you can move, respawn again, sixty times a second. The game
+  looked frozen; it was respawning every frame. The placement rule is
+  now a test — but placement can't stop a monster *wandering* to a flag,
+  so the real fix is **mercy**: for a moment after any respawn you can't
+  be hurt. You can still squash.
+- **Statics only where the route *runs*, never where it *lands*.** The
+  Way Out's middle is small platforms you jump between; a spike on a
+  landing pad isn't a hazard, it's a wall you meet mid-fall.
+
 And one that isn't about placement at all: **never silently overwrite.**
 The helper that drops a monster onto a ledge landed one on top of a
 level's `P`, and the start point simply vanished. The level still loaded;
@@ -216,7 +243,7 @@ random starting bob, so the same level played differently every run and
 like it passed; it had got lucky. Their phase is worked out from *where
 they are* now — still out of step with each other, identical every run.
 
-## Levels 4, 5 and 6 — the climb
+## Levels 3, 4 and 5 — the climb
 
 > **"make lev 4 5 and 6 every level gets a bit harder"** — Nea
 
@@ -227,10 +254,10 @@ a step further.
 
 | | ground | rings | clock | the portal |
 |---|---|---|---|---|
-| **3. The Illusions** | 125 | 9 | 2:45 | |
-| **4. The Long Fall** | 52 | 16 | 2:25 | at the **top of the arc** — launch late and you sail under it |
-| **5. Nothing Underneath** | 35 | **38** | 2:05 | behind a **two-row slot** — too high you hit the roof, too low the floor |
-| **6. The Last Jump** | 29 | 21 | 1:10 | in a **pocket** with rock above, below and behind. One way in. |
+| **2. The Illusions** | 125 | 9 | 2:45 | |
+| **3. The Long Fall** | 52 | 16 | 2:25 | at the **top of the arc** — launch late and you sail under it |
+| **4. Nothing Underneath** | 35 | **38** | 2:05 | behind a **two-row slot** — too high you hit the roof, too low the floor |
+| **5. The Last Jump** | 29 | 21 | 1:10 | in a **pocket** with rock above, below and behind. One way in. |
 
 *ground = how many columns in the whole level you can stand on.*
 
@@ -238,7 +265,7 @@ Level 4 still has islands of floor. Level 5 shrinks them to ledges five
 blocks wide with nothing at all underneath. Level 6 cuts them to two
 ledges four wide, and gives you **one flag in the whole level**.
 
-**Level 5 is the ring level** — and only level 5:
+**Nothing Underneath is the ring level** — and only it:
 
 > **"ändere das es nur bei lev fünf so viel ringe gibt, bei 4 und 6 it
 > shouldn't have so much rings"** — Nea

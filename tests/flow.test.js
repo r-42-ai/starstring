@@ -94,7 +94,7 @@ function makeGame() {
   G('Planet').init();
   G('Input')._defineButtons();
   return { Game, Planet: G('Planet'), Level: G('Level'), CONFIG: G('CONFIG'),
-           Input: G('Input') };
+           Input: G('Input'), Monsters: G('Monsters') };
 }
 
 // Play a level's ending: stand in the portal and let time run.
@@ -223,6 +223,51 @@ console.log('\n--- your thumb cannot restart the level you just finished ---');
         Game.mode === 'playing', `still in ${Game.mode}`);
 }
 
+console.log('\n--- a monster beside a flag cannot freeze the game ---');
+{
+  /*
+     Nea, on level 6: "if you fall down and respawn by the flag the red
+     monster will bump in to you and everythig wont move any more."
+
+     A lurker lived one block from the flag. Respawn, get hit before you
+     can move, respawn again -- sixty times a second, forever. The game
+     looked frozen; it was actually respawning every frame.
+
+     Two fixes. The placement rule in level.test.js keeps monsters three
+     columns clear of every flag -- but placement can't stop a lurker
+     WANDERING to one, so the real protection is mercy: after a respawn
+     you cannot be hurt for a moment, and this test pins it by parking a
+     hostile monster exactly on the spawn point.
+  */
+  const { Game, Planet, Level, CONFIG, Monsters } = makeGame();
+  Planet.levels.forEach(l => { l.done = true; });
+  Game.startLevel('the-last-jump');
+
+  const spawn = { x: Level.spawnX, y: Level.spawnY };
+  Monsters.list.push({
+    kind: 'crawler', col: 0, row: 0, w: 56, h: 44,
+    x: spawn.x, y: spawn.y + Game.player.h - 44,
+    homeX: spawn.x, homeY: spawn.y + Game.player.h - 44,
+    prevX: spawn.x, prevY: spawn.y, dir: 1, phase: 0,
+    alive: true, awake: false, returning: false,
+    state: 'waiting', timer: 0, squashed: 0,
+  });
+
+  // Put her right on it and let the game run three seconds.
+  Game.player.x = spawn.x; Game.player.y = spawn.y;
+  Game.player.mercy = 0;                     // the first hit is legitimate
+  let respawns = 0;
+  for (let i = 0; i < 60 * 3; i++) {
+    Game.step();
+    if (Game.player.mercy === CONFIG.MONSTERS.MERCY) respawns++;
+  }
+  check('she is not respawned every frame',
+        respawns < 5, `${respawns} respawns in three seconds`);
+  check('after the mercy runs out she can be hit again',
+        CONFIG.MONSTERS.MERCY < 3, 'mercy so long it is invulnerability');
+  check('the game is still running', Game.mode === 'playing', Game.mode);
+}
+
 console.log('\n--- finishing level 3 does not promise a level 4 ---');
 {
   const { Game, Planet } = makeGame();
@@ -325,8 +370,14 @@ console.log('\n--- the teaching level teaches monsters too ---');
   const width = key => { Level.load(key); return Level.cols; };
   console.log('  one monster every:  ' +
               BUILT.map(([k, n]) => `${n} ${(width(k) / count(k)).toFixed(0)}`).join('   '));
-  for (const [k, n] of BUILT.slice(1))
-    check(`${n} is properly infested`, width(k) / count(k) <= 10,
+  /*
+     The FIRST real level gets a gentler floor. Nea: "level 2 is to hard
+     it is the first level it should be easey" -- and she renumbered it
+     while she was at it, so The Way Out IS level 1 now. It keeps enough
+     monsters to matter, but nothing like the levels after it.
+  */
+  for (const [i, [k, n]] of BUILT.slice(1).entries())
+    check(`${n} is properly infested`, width(k) / count(k) <= (i === 0 ? 15 : 10),
           `one every ${(width(k) / count(k)).toFixed(1)} blocks`);
 
   // The tutorial is deliberately the quiet one -- it is still teaching.

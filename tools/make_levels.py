@@ -151,8 +151,9 @@ def the_long_fall():
     # Monsters, thinned BY HAND after Nea's verdict -- the packer only
     # knows "finishable", not "fair". None on the starting pad, flyers
     # under every other ring.
-    m.guard(33, 'c'); m.guard(42, '^'); m.guard(72, 'c'); m.guard(77, '^')
-    m.guard(108, 'c'); m.guard(115, '^'); m.guard(120, 'c')
+    # No monster within three columns of a flag -- the flag rule.
+    m.guard(38, 'c'); m.guard(42, '^'); m.guard(72, 'c'); m.guard(77, '^')
+    m.guard(118, 'c'); m.guard(115, '^'); m.guard(120, 'c')
     m.hang(39, 6, 'v'); m.hang(78, 6, 'v')
     for col in (17, 29, 55, 67, 93, 105, 131, 143):
         m.hang(col, 9, '~')
@@ -188,11 +189,13 @@ def nothing_underneath():
     # Monsters. Every one of these was checked by the robot: the
     # packer proposes a lot and keeps only the ones that leave the
     # level finishable. See tools/make_levels.py notes.
-    m.guard(0, '^'); m.guard(7, '^'); m.guard(11, 'c'); m.guard(63, '^')
-    m.guard(66, 'c'); m.guard(126, '^'); m.guard(264, 'c'); m.guard(266, '^')
+    # Spike off the start, crawler and faller off the flag at 66 --
+    # the flag rule again.
+    m.guard(13, '^'); m.guard(7, '^'); m.guard(11, 'c'); m.guard(60, '^')
+    m.guard(126, '^'); m.guard(264, 'c'); m.guard(266, '^')
     m.guard(5, '^'); m.guard(9, 'c'); m.guard(10, '^'); m.guard(125, '^')
     m.guard(260, '^'); m.guard(261, 'c'); m.guard(265, '^')
-    m.hang(65, 5, 'v'); m.hang(17, 9, '~'); m.hang(23, 9, '~')
+    m.hang(17, 9, '~'); m.hang(23, 9, '~')
     m.hang(29, 9, '~'); m.hang(35, 9, '~'); m.hang(41, 9, '~')
     m.hang(47, 9, '~'); m.hang(53, 9, '~'); m.hang(59, 9, '~')
     m.hang(71, 9, '~'); m.hang(77, 9, '~'); m.hang(83, 9, '~')
@@ -240,8 +243,13 @@ def the_last_jump():
     # Monsters. Every one of these was checked by the robot: the
     # packer proposes a lot and keeps only the ones that leave the
     # level finishable. See tools/make_levels.py notes.
-    m.guard(0, '^'); m.guard(5, '^'); m.guard(9, 'c'); m.guard(10, '^')
-    m.guard(52, 'z'); m.guard(99, 'c'); m.guard(100, '^'); m.guard(150, '^')
+    m.guard(6, '^'); m.guard(5, '^'); m.guard(9, 'c'); m.guard(10, '^')
+    # The lurker was at column 52 -- ONE BLOCK from the flag at 51.
+    # Fall, respawn at the flag, and it hit you before you could move,
+    # which respawned you again, sixty times a second: Nea's "everything
+    # wont move any more". The mercy timer fixes the freeze in general;
+    # this fixes the insult of a monster camped on a rescue point.
+    m.guard(70, 'z'); m.guard(99, 'c'); m.guard(100, '^'); m.guard(150, '^')
     m.guard(153, 'c'); m.guard(155, '^'); m.guard(156, 'z')
     m.hang(11, 3, 'v'); m.hang(154, 1, 'v'); m.hang(17, 9, '~')
     m.hang(23, 9, '~'); m.hang(29, 9, '~'); m.hang(35, 9, '~')

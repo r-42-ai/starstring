@@ -428,6 +428,22 @@ const PlanetDraw = {
         ctx.lineTo(p.x - r * 0.10, p.y + r * 0.38);
         ctx.lineTo(p.x + r * 0.45, p.y - r * 0.32);
         ctx.stroke();
+      } else if (unlocked && l.number === 0) {
+        // The teaching level isn't a number (Nea's rule), so it gets a
+        // four-pointed star -- drawn with strokes, like the tick,
+        // because typed icons render differently on every device.
+        ctx.strokeStyle = '#0a1a12';
+        ctx.lineWidth = Math.max(2.5, r * 0.2);
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y - r * 0.45); ctx.lineTo(p.x, p.y + r * 0.45);
+        ctx.moveTo(p.x - r * 0.45, p.y); ctx.lineTo(p.x + r * 0.45, p.y);
+        ctx.stroke();
+        ctx.lineWidth = Math.max(2, r * 0.14);
+        ctx.beginPath();
+        ctx.moveTo(p.x - r * 0.26, p.y - r * 0.26); ctx.lineTo(p.x + r * 0.26, p.y + r * 0.26);
+        ctx.moveTo(p.x + r * 0.26, p.y - r * 0.26); ctx.lineTo(p.x - r * 0.26, p.y + r * 0.26);
+        ctx.stroke();
       } else if (unlocked) {
         ctx.fillStyle = '#0a1a12';
         ctx.font = `bold ${Math.round(r * 1.1)}px system-ui, sans-serif`;
@@ -476,10 +492,12 @@ const PlanetDraw = {
     ctx.font = 'bold 34px system-ui, sans-serif';
     ctx.fillText('THE CRYSTAL PLANET', CONFIG.WIDTH / 2, 58);
 
-    const done = Planet.levels.filter(l => l.done).length;
+    const done = Planet.levels.filter(l => l.done && l.number > 0).length;
     ctx.fillStyle = 'rgba(190,220,205,0.75)';
     ctx.font = '20px system-ui, sans-serif';
-    ctx.fillText(`${done} of ${Planet.levels.length} levels finished`,
+    // "of 14", not 15: the teaching level isn't a number, so it isn't
+    // counted in the score either. Finishing school isn't beating a level.
+    ctx.fillText(`${done} of ${Planet.levels.length - 1} levels finished`,
                  CONFIG.WIDTH / 2, 90);
 
     // What's under your finger
@@ -489,7 +507,9 @@ const PlanetDraw = {
       const open = Planet.isUnlocked(i);
       ctx.font = 'bold 30px system-ui, sans-serif';
       ctx.fillStyle = Planet.isPlayable(i) ? '#ffdb8a' : '#7d8d86';
-      ctx.fillText(open ? `${l.number}. ${l.name}` : `${l.number}. Locked`,
+      // The teaching level gets no number in front of its name
+      const tag = l.number === 0 ? '' : `${l.number}. `;
+      ctx.fillText(open ? `${tag}${l.name}` : `${tag}Locked`,
                    CONFIG.WIDTH / 2, CONFIG.HEIGHT - 78);
 
       ctx.font = '20px system-ui, sans-serif';

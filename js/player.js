@@ -40,6 +40,9 @@ class Player {
     this.facing = 1;          // 1 = looking right, -1 = looking left
     this.coyoteTimer = 0;
     this.jumpBufferTimer = 0;
+    // Safe for a moment after coming back -- see CONFIG.MONSTERS.MERCY
+    this.mercy = (typeof CONFIG !== 'undefined' && CONFIG.MONSTERS)
+                   ? CONFIG.MONSTERS.MERCY : 0;
 
     // --- animation state ---
     this.stepPhase = 0;       // where we are in the walk cycle
@@ -49,6 +52,7 @@ class Player {
   }
 
   update(dt) {
+    if (this.mercy > 0) this.mercy -= dt;
     // Remember where we were, so the drawing can be smooth
     this.prevX = this.x;
     this.prevY = this.y;

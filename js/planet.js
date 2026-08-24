@@ -82,11 +82,23 @@ const Planet = {
         { key: 'the-last-jump',      name: 'The Last Jump' },
       ];
 
+      /*
+         THE TEACHING LEVEL ISN'T A NUMBER.
+
+         Nea: "level 2 changes to 1 -- the teaching level isnt a number."
+
+         She's right about how counting works in games: nobody says "I'm
+         on level 1" about the tutorial. The first marker is First Steps,
+         the place you learn -- it gets a star, not a digit -- and the
+         counting starts at the first REAL level. The Way Out is level 1.
+
+         number 0 means "the teaching level" everywhere below.
+      */
       this.levels.push({
-        number: i + 1,
+        number: i,                       // 0 = the tutorial, unnumbered
         lat, lon,
         key:  built[i] ? built[i].key  : null,
-        name: built[i] ? built[i].name : 'Level ' + (i + 1),
+        name: built[i] ? built[i].name : 'Level ' + i,
         done: false,
       });
     }

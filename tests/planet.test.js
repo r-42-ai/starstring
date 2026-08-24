@@ -22,8 +22,14 @@ Planet.init();
 
 console.log('\n--- fifteen levels on a path ---');
 check('there are fifteen', Planet.levels.length === 15, `${Planet.levels.length}`);
-check('they are numbered 1 to 15',
-      Planet.levels.every((l,i) => l.number === i+1));
+/*
+   Nea: "the teaching level isnt a number." The tutorial is number 0 --
+   drawn as a star, never as a digit -- and counting starts at the first
+   REAL level: The Way Out is level 1.
+*/
+check('the teaching level has no number', Planet.levels[0].number === 0);
+check('the real levels are numbered 1 to 14',
+      Planet.levels.slice(1).every((l,i) => l.number === i+1));
 check('level 1 is the tutorial', Planet.levels[0].key === 'tutorial');
 check('level 2 is The Way Out',  Planet.levels[1].key === 'crystal-caves-1');
 check('level 3 is The Illusions', Planet.levels[2].key === 'illusions');
