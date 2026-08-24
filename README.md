@@ -72,6 +72,71 @@ matter get skipped as well.**
 words GREEN, RED, FLAG, JUMP, GRAPPLE, run or swing, and the hint count
 can never go back up.
 
+## Levels 4, 5 and 6 — the climb
+
+> **"make lev 4 5 and 6 every level gets a bit harder"** — Nea
+
+She chose what *harder* means, and picked three things: **less time on
+the clock**, **less and less ground**, and — her own addition — **the
+portal in more difficult places to reach**. Each level takes all three
+a step further.
+
+| | | | |
+|---|---|---|---|
+| **4. The Long Fall** | 79% thin air | 2:10 | portal at the **top of the arc** — launch late and you sail under it |
+| **5. Nothing Underneath** | 85% thin air | 2:05 | portal behind a **two-row slot** — too high you hit the roof, too low the floor |
+| **6. The Last Jump** | 88% thin air | 1:30 | portal in a **pocket** with rock above, below and behind. One way in. |
+
+Level 4 still has islands of floor. Level 5 shrinks them to ledges five
+blocks wide with nothing at all underneath. Level 6 cuts them to three,
+runs chains of ten, eleven and twelve rings, and gives you **one flag in
+the whole level**.
+
+### These levels were not drawn by hand
+
+`tools/make_levels.py` builds them. Levels 2 and 3 were drawn by hand and
+**both were impossible the first time** — not unfair, actually impossible.
+Every failure was the same kind of mistake: a shape that looks fine on a
+grid but that the physics won't allow. So the shapes that work now live
+in one place, measured once, and levels are assembled from them.
+
+The portals aren't placed by eye either. `node tools/flight.js <level>
+<col>` plays the level thirty ways and prints a map of everywhere you
+actually end up after the last ring. The portal goes in the busiest
+square — where the game already sends people.
+
+### Why "how many robots finish it" is not a difficulty meter
+
+The obvious test is to count how many of the thirty playing styles finish
+each level and expect the number to fall. **It doesn't work**, and finding
+out why was the interesting part:
+
+- The robot has **one strategy**, played perfectly and identically every
+  time. A level either fits that strategy or it doesn't, so the count
+  sticks at 2 or 4 — doubling the ring chains from 5 to 11 moved it *not
+  at all*.
+- A robot is **never fooled**. Level 3 is ninety blocks of illusion and
+  the robot walks straight through them without noticing. The one thing
+  that makes level 3 hard for a person is invisible to the measurement.
+
+A test that can't tell two things apart must not be used to rank them.
+So the robot now answers one hard yes/no — *can this be finished at all,
+inside its own clock* — and the curve is measured from the levels
+themselves, on Nea's own two numbers:
+
+```
+less ground   39%  ->  79%  ->  85%  ->  88%   of the level is thin air
+less time    165s  -> 130s  -> 125s  ->  90s   on the clock
+less slack   17.7% -> 24.7% -> 30.8% -> 32.1%  of it the robot needs
+```
+
+Her third pick isn't a number — "hard to reach" is a shape — so the test
+counts how many **sides** of the portal are walled off: `0 → 2 → 3`.
+
+> If level 6 turns out cruel rather than hard, the 90-second clock is the
+> number to loosen. It's one line in `make_levels.py` and it changes
+> nothing else.
+
 ### Finishing a level
 
 The portal hands you straight back out to the planet, with the level
@@ -124,7 +189,7 @@ you're already going), and **jump to launch off** with a boost.
 | | |
 |---|---|
 | 🔵 **cyan** | the normal one — 6 swings |
-| 🔴 **red** | breaks after 4. Keep moving. |
+| 🔴 **red** | breaks after 3. Keep moving. |
 | 🟢 **green** | never breaks. Somewhere safe to stop and think. |
 
 The ring **blinks red and fast** when the rope is nearly gone.
@@ -296,6 +361,8 @@ docs/               ★ the design documents
 - [x] **Step 14** — flags you respawn at
 - [x] **Step 19** — a portal to finish the level
 - [x] A 236-block level (twelve screens), verified beatable by test
+- [x] **Levels 3-6** — illusions, then a difficulty curve measured
+      rather than guessed, built by `tools/make_levels.py`
 - [x] **Steps 20b, 22** — a clock, and the planet map with 15 levels
 - [x] **Step 22b** — a title screen, and a tutorial level that teaches
       by playing rather than by a page of text
@@ -347,5 +414,6 @@ node tools/render_swing.js         # plays the chasm and maps the whole path
 node tools/render_tour.js          # three snapshots from around the level
 node tools/measure_time.js         # ★ how long does my level take to finish?
 node tools/render_planet.js        # four views of the planet map
+node tools/flight.js <lvl> <col>   # ★ where do people ACTUALLY land?
 node tools/render_screens.js       # the title screen and the tutorial hints
 ```

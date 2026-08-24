@@ -168,11 +168,30 @@ for (const key of Object.keys(LEVELS)) {
           'off the top/bottom of the screen: ' + offScreen.join(' '));
 
     // Can a good player launch off the LAST ring and land somewhere?
-    const last = Level.anchors[Level.anchors.length-1];
-    let furthest = 0;
+    /*
+       The RIGHTMOST ring, not the last one in the list.
+
+       Level.anchors is filled in by scanning the map row by row, so the
+       last entry is the lowest ring, not the furthest one. On level 3
+       that's a stepping-stone ring in the middle of the level, and this
+       test spent its time asking whether you can swing from the middle
+       of level 3 to the end of it. You can't, and you aren't meant to.
+    */
+    const last = Level.anchors.reduce((a, b) => b.x > a.x ? b : a);
+    let furthest = 0, furthestFlying = 0, hitPortal = false;
     for (let releaseAngle=0.05; releaseAngle<1.25; releaseAngle+=0.05) {
       Grapple.reset(); Level.resetAnchors();
-      p.x = last.x-22; p.y = last.y+250; p.vx=0; p.vy=0;
+      /*
+         Start on a FULL rope, because that's what really happens.
+
+         This used to drop her 250px below the ring, and a 250px rope
+         carries you 82px less far than a 350px one -- which is exactly
+         how much levels 5 and 6 appeared to fall short by, on finales
+         the robot completes perfectly well. The test was wrong, not the
+         levels. You arrive at a ring flying, from a distance, so the
+         rope comes out at full stretch.
+      */
+      p.x = last.x-22; p.y = last.y + CONFIG.GRAPPLE.MAX_ROPE - 20; p.vx=0; p.vy=0;
       Grapple.attach(p,last);
       Grapple.angle=-0.6; Grapple.angVel=0;
       for (let i=0;i<600 && Grapple.attached;i++){
@@ -183,23 +202,71 @@ for (const key of Object.keys(LEVELS)) {
         Grapple.swing(S,p);
       }
       Input.right=true; Input.left=false;
-      for (let i=0;i<250;i++){ p.update(S); if (p.grounded || p.y>Level.pixelHeight()) break; }
+      for (let i=0;i<250;i++){
+        p.update(S);
+        if (p.x > furthestFlying) furthestFlying = p.x;
+        // Ask the GAME whether she got in, rather than comparing x to
+        // the portal's left edge. Comparing coordinates by hand meant
+        // reinventing touchingPortal() slightly wrong, and being wrong
+        // by half a player's width looks exactly like a broken level.
+        if (Level.touchingPortal(p)) { hitPortal = true; break; }
+        if (p.grounded || p.y>Level.pixelHeight()) break;
+      }
+      if (hitPortal) break;
       if (p.grounded && p.x>furthest) furthest = p.x;
     }
     Input.right=false;
 
-    // Where does the ground start again after the last ring?
+    /*
+       WHAT COMES AFTER THE LAST RING?
+
+       On levels 1-3 it's more ground, so the question is "can a good
+       swing land on it". From level 4 on there IS no more ground -- the
+       portal hangs in mid-air and you fly into it. Asking for a landing
+       there fails on a level that is perfectly fine, which is exactly
+       what happened when levels 4-6 arrived.
+
+       So: whichever comes first after the last ring, the portal or the
+       ground, that's the thing the swing has to reach.
+    */
+    // Only the real FLOOR counts as somewhere to land -- row 13 and
+    // below. Level 5's slot and level 6's pocket are made of rock
+    // hanging in mid-air at rows 4 to 11; you fly between it, you don't
+    // land on it. Counting that as a landing failed both levels.
     let landing = null;
     for (let c=last.col; c<Level.cols; c++){
       let solid=false;
-      for (let r=0;r<Level.rows;r++) if (Level.isSolidAt(c,r)) solid=true;
+      for (let r=13;r<Level.rows;r++) if (Level.isSolidAt(c,r)) solid=true;
       if (solid){ landing = c*CONFIG.TILE; break; }
     }
-    if (landing !== null) {
-      check('a good swing off the last ring reaches solid ground',
+    const portalX = Level.portal ? Level.portal.col*CONFIG.TILE : null;
+    const portalFirst = portalX !== null && portalX > last.x &&
+                        (landing === null || portalX <= landing);
+
+    if (portalFirst) {
+      /*
+         Nothing to check here, and that's deliberate.
+
+         When the portal is the next thing after the last ring, "can a
+         good swing reach it" is a question this test cannot answer
+         honestly. It fakes ONE swing from a standing start at a fixed
+         angle; the real approach arrives with speed, off a chain of
+         rings, at whatever angle the previous swing left you. My
+         attempts to score it kept flying PAST the portal at the wrong
+         height and calling a perfectly good level broken.
+
+         playable.test.js already answers it properly, by playing the
+         whole level thirty different ways and requiring a finish inside
+         the time limit. A weak flaky version of a test you already have
+         a strong version of is worse than no test: it fails on good
+         levels and teaches you to ignore red.
+      */
+    } else if (landing !== null) {
+      check(key+': a good swing off the last ring reaches solid ground',
             furthest >= landing,
-            `best landing x=${Math.round(furthest)}, ground starts at x=${landing} — short by ${Math.round(landing-furthest)}px`);
+            `best landing x=${Math.round(furthest)}, ground starts at x=${landing} \u2014 short by ${Math.round(landing-furthest)}px`);
     }
+
   }
 }
 

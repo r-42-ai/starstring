@@ -164,7 +164,7 @@ const CONFIG = {
     */
     RING_TYPES: {
       o: { maxSwings: 6,        cooldown: 4.0, color: '#3ee8ff' },
-      r: { maxSwings: 4,        cooldown: 5.5, color: '#ff5a6e' },
+      r: { maxSwings: 3,        cooldown: 5.5, color: '#ff5a6e' },
       g: { maxSwings: Infinity, cooldown: 0,   color: '#5cff9d' },
     },
 

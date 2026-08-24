@@ -114,18 +114,25 @@ console.log('\n--- unlocked is not the same as playable ---');
    Finishing level 3 unlocks level 4, which hasn't been built. The map
    used to pulse it gold and say "play me", and tapping did nothing.
 */
-Planet.levels.forEach(l => { l.done = false; });
-Planet.levels[0].done = true; Planet.levels[1].done = true; Planet.levels[2].done = true;
-check('finishing level 3 unlocks level 4', Planet.isUnlocked(3));
-check('...but level 4 is NOT playable, because it does not exist yet',
-      !Planet.isPlayable(3));
+/*
+   Don't hardcode WHICH level isn't built -- that number changes every
+   time a level ships. Ask the map. This test named level 4 and broke
+   the day level 4 was built, which is a test failing for being out of
+   date rather than for finding anything.
+*/
+const nextUp = Planet.levels.findIndex(l => !l.key);
+Planet.levels.forEach((l, i) => { l.done = i < nextUp; });
+check(`finishing level ${nextUp} unlocks level ${nextUp + 1}`,
+      Planet.isUnlocked(nextUp));
+check(`...but level ${nextUp + 1} is NOT playable, because it does not exist yet`,
+      !Planet.isPlayable(nextUp));
 check('every built level that is unlocked IS playable',
-      [0,1,2].every(i => Planet.isPlayable(i)));
+      Planet.levels.slice(0, nextUp).every((_, i) => Planet.isPlayable(i)));
 check('a locked level is never playable',
-      !Planet.isPlayable(4) && !Planet.isUnlocked(4));
+      !Planet.isPlayable(nextUp + 1) && !Planet.isUnlocked(nextUp + 1));
 Game.started = null;
-Planet.yaw = -Planet.levels[3].lon; Planet.pitch = Planet.levels[3].lat;
-const notBuilt = Planet.project(Planet.levels[3].lat, Planet.levels[3].lon);
+Planet.yaw = -Planet.levels[nextUp].lon; Planet.pitch = Planet.levels[nextUp].lat;
+const notBuilt = Planet.project(Planet.levels[nextUp].lat, Planet.levels[nextUp].lon);
 Planet.tap(notBuilt.x, notBuilt.y);
 check('tapping a level that is not built does nothing at all',
       Game.started === null, `started ${Game.started}`);

@@ -113,10 +113,15 @@ function finish(key) {
   return { Game, Planet, startedIn, seconds: steps * CONFIG.STEP };
 }
 
+// Every level that exists, in the order the map offers them -- so a new
+// level is covered the moment it's added to Planet, with no edit here.
+const BUILT = (() => {
+  const { Planet } = makeGame();
+  return Planet.levels.filter(l => l.key).map(l => [l.key, l.name]);
+})();
+
 console.log('\n--- every level hands you back to the map ---');
-for (const [key, name] of [['tutorial', 'First Steps'],
-                           ['crystal-caves-1', 'The Way Out'],
-                           ['illusions', 'The Illusions']]) {
+for (const [key, name] of BUILT) {
   const r = finish(key);
   check(`${name}: starts in the level`, r.startedIn === 'playing', r.startedIn);
   check(`${name}: the portal takes you back out to the planet`,
@@ -130,19 +135,21 @@ for (const [key, name] of [['tutorial', 'First Steps'],
 console.log('\n--- finishing level 3 does not promise a level 4 ---');
 {
   const { Game, Planet } = makeGame();
-  Planet.levels.forEach(l => { l.done = false; });
-  Planet.complete('tutorial'); Planet.complete('crystal-caves-1');
-  Planet.complete('illusions');
-  check('levels 1-3 are done', Planet.levels.slice(0, 3).every(l => l.done));
-  check('level 4 is unlocked...', Planet.isUnlocked(3));
-  check('...but it is not offered as playable', !Planet.isPlayable(3));
+  // Whichever level is next to be BUILT -- not a hardcoded number,
+  // which goes stale the moment that level ships.
+  const nextUp = Planet.levels.findIndex(l => !l.key);
+  Planet.levels.forEach((l, i) => { l.done = i < nextUp; });
+  check(`all ${nextUp} built levels are done`,
+        Planet.levels.slice(0, nextUp).every(l => l.done));
+  check(`level ${nextUp + 1} is unlocked...`, Planet.isUnlocked(nextUp));
+  check('...but it is not offered as playable', !Planet.isPlayable(nextUp));
   check('nothing was left running in a level', Game.mode !== 'playing');
 }
 
 console.log('\n--- each level only says what the one before it did not ---');
 {
   const { Level } = makeGame();
-  const LEVELS = ['tutorial', 'crystal-caves-1', 'illusions'].map(k => {
+  const LEVELS = BUILT.map(([k]) => {
     Level.load(k);
     return { key: k, name: Level.name, hints: (Level.hints || []).map(h => h.text) };
   });
@@ -172,6 +179,9 @@ console.log('\n--- each level only says what the one before it did not ---');
 
   check('The Illusions gives the rule and never an answer',
         LEVELS[2].hints.length === 1, LEVELS[2].hints.join(' | '));
+  for (const l of LEVELS.slice(3))
+    check(`${l.name} says one thing and then shuts up`,
+          l.hints.length <= 1, `${l.hints.length} hints`);
 }
 
 console.log(`\n${pass} passed, ${fail} failed\n`);

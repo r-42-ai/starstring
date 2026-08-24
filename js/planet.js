@@ -70,9 +70,12 @@ const Planet = {
       // The two levels that exist so far. Everything after them is
       // waiting to be built.
       const built = [
-        { key: 'tutorial',        name: 'First Steps' },
-        { key: 'crystal-caves-1', name: 'The Way Out' },
-        { key: 'illusions',       name: 'The Illusions' },
+        { key: 'tutorial',           name: 'First Steps' },
+        { key: 'crystal-caves-1',    name: 'The Way Out' },
+        { key: 'illusions',          name: 'The Illusions' },
+        { key: 'the-long-fall',      name: 'The Long Fall' },
+        { key: 'nothing-underneath', name: 'Nothing Underneath' },
+        { key: 'the-last-jump',      name: 'The Last Jump' },
       ];
 
       this.levels.push({
