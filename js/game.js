@@ -87,6 +87,10 @@ const Game = {
 
   // Leave the map and drop into a level.
   startLevel(key) {
+    // The tap that STARTED the level is spent. Without this it could
+    // arrive inside the level as a press on whatever button happens to
+    // sit where the finger was.
+    Input.tapped = null;
     Level.load(key);
     Monsters.load(Level);          // read the monsters out of the map
     Terrain.build();               // repaint all the rock for this level
@@ -102,6 +106,11 @@ const Game = {
   // Finished it — back out to the map, with this level ticked off.
   returnToPlanet(finished) {
     if (finished) Planet.complete(this.currentKey);
+    // Whatever the fingers were doing in the level, it's over. Without
+    // this, the touch you were making when the level ended arrives on
+    // the map as a tap -- and taps on the map start levels.
+    Input.tapped = null;
+    Planet.tapGrace = 0.5;
     this.mode = 'planet';
   },
 
@@ -236,15 +245,34 @@ const Game = {
         if (this.outOfTime <= 0) {
           this.outOfTime = 0;
 
-          // Running out of time sends you right back to the START —
-          // flags and all. Falling down a hole only costs you the last
-          // stretch; the clock costs you the whole level. Two different
-          // punishments for two different mistakes, and the clock
-          // wouldn't be frightening if a flag saved you from it.
-          Level.restart();
-          this.player.respawn();
-          Camera.snap(this.player);
-          this.timeLeft = Level.timeLimit;
+          /*
+             OUT OF TIME PUTS YOU BACK ON THE PLANET.
+
+             Nea: "at lev 4 you go back to the start of the level not to
+             the planet map change that."
+
+             It used to restart the level where you stood, silently. On
+             levels 2 and 3 you almost never saw it -- the clock is
+             generous there. Level 4 is the first one tight enough to
+             really run out, and what it felt like was the game throwing
+             you back to the beginning for no visible reason. Same
+             screen, same music, hero at the start again.
+
+             Going out to the map fixes that by making the failure
+             VISIBLE. You see the planet, you see the level you didn't
+             finish still unlit, and going again is your decision rather
+             than something that happened to you.
+
+             The punishments still differ, which was the point of having
+             a clock at all:
+
+               fall in a hole   -> back to the last flag, keep playing
+               run out of time  -> out of the level altogether
+
+             It's still the harsher of the two. It just says so now.
+          */
+          this.returnToPlanet(false);   // false: the level is NOT ticked off
+          return true;
         }
       }
 
@@ -846,7 +874,7 @@ const Game = {
     ctx.fillText("TIME'S UP", CONFIG.WIDTH / 2, CONFIG.HEIGHT / 2);
     ctx.fillStyle = 'rgba(255,255,255,0.75)';
     ctx.font = '26px system-ui, sans-serif';
-    ctx.fillText('back to the very beginning', CONFIG.WIDTH / 2, CONFIG.HEIGHT / 2 + 48);
+    ctx.fillText('back to the planet', CONFIG.WIDTH / 2, CONFIG.HEIGHT / 2 + 48);
     ctx.restore();
   },
 

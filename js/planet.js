@@ -34,6 +34,10 @@
 
 const Planet = {
 
+  // Seconds left in which the map ignores taps. Set when you arrive,
+  // so the touch you were still making in the level can't start one.
+  tapGrace: 0,
+
   /*
      Fifteen levels, wound around the planet in a spiral so the path
      between them travels across the whole surface instead of sitting
@@ -191,6 +195,34 @@ const Planet = {
 
   update(dt) {
     const P = CONFIG.PLANET;
+
+    /*
+       IGNORE TAPS FOR THE FIRST MOMENT ON THE MAP.
+
+       Nea: "in level 3 when you complete the level it just starts
+       again. it should go back to the planet map."
+
+       It DID go back to the planet map -- for one frame. Her thumb was
+       still on the screen from playing (jump and grapple live under the
+       right thumb), and the moment the mode flipped, that touch ended
+       and became a TAP on the map. The map asked "which level is near
+       this tap?", found one, and started it. From the outside it looks
+       exactly like the level restarting itself.
+
+       The headless test never caught it because the test has no thumbs.
+       It finished the level with no touches on screen, saw mode ===
+       'planet', and passed. The bug lived in the half second BETWEEN
+       screens, and only a hand on real glass ever went there.
+
+       So the map is deaf to taps for its first half second. Dragging
+       and zooming still work instantly -- only the tap, the one gesture
+       that can yank you into a level, has to wait out the beat.
+    */
+    if (this.tapGrace > 0) {
+      this.tapGrace -= dt;
+      Input.tapped = null;
+    }
+
     const touches = [...Input._touches.values()];
 
     if (touches.length >= 2) {

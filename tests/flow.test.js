@@ -93,7 +93,8 @@ function makeGame() {
   Game.ctx = canvas.getContext('2d');
   G('Planet').init();
   G('Input')._defineButtons();
-  return { Game, Planet: G('Planet'), Level: G('Level'), CONFIG: G('CONFIG') };
+  return { Game, Planet: G('Planet'), Level: G('Level'), CONFIG: G('CONFIG'),
+           Input: G('Input') };
 }
 
 // Play a level's ending: stand in the portal and let time run.
@@ -130,6 +131,96 @@ for (const [key, name] of BUILT) {
         r.Planet.levels.find(l => l.key === key).done === true);
   check(`${name}: the way out is a moment, not a wait`,
         r.seconds > 0.2 && r.seconds < 6, `${r.seconds.toFixed(2)}s`);
+}
+
+console.log('\n--- running out of time puts you back on the planet ---');
+{
+  /*
+     Nea: "at lev 4 you go back to the start of the level not to the
+     planet map change that."
+
+     It used to restart the level in place, silently -- same screen, hero
+     back at the beginning, no explanation. On levels 2 and 3 the clock
+     is generous enough that you rarely saw it; level 4 is the first one
+     tight enough to really run out.
+
+     The two punishments still differ, which is the whole reason for
+     having a clock:
+
+       fall in a hole   -> back to the last flag, keep playing
+       run out of time  -> out of the level altogether
+
+     What changed is that the harsher one is now VISIBLE.
+  */
+  for (const [key, name] of BUILT) {
+    const { Game, Planet, Level, CONFIG } = makeGame();
+    Planet.levels.forEach(l => { l.done = true; });
+    Game.startLevel(key);
+    if (!Level.timeLimit) {
+      check(`${name} has no clock to run out`, key === 'tutorial');
+      continue;
+    }
+    Planet.levels.find(l => l.key === key).done = false;
+
+    Game.timeLeft = CONFIG.STEP;          // one step left on the clock
+    let steps = 0;
+    while (Game.mode === 'playing' && steps < 60 * 20) { Game.step(); steps++; }
+
+    check(`${name}: the clock running out takes you to the planet`,
+          Game.mode === 'planet', `ended in ${Game.mode}`);
+    check(`${name}: ...and does NOT tick the level off`,
+          Planet.levels.find(l => l.key === key).done === false);
+    check(`${name}: ...after a moment to read why`,
+          steps * CONFIG.STEP > 0.5 && steps * CONFIG.STEP < 5,
+          `${(steps * CONFIG.STEP).toFixed(2)}s`);
+  }
+}
+
+console.log('\n--- your thumb cannot restart the level you just finished ---');
+{
+  /*
+     Nea: "in level 3 when you complete the level it just starts again.
+     it should go back to the planet map."
+
+     It DID go back -- for one frame. Her thumb was still on the glass
+     from playing, the touch ended a moment after the mode flipped, and
+     landed on the map as a TAP. Taps on the map start levels. From the
+     outside: the level restarted itself.
+
+     Every earlier test missed it because tests have no thumbs -- they
+     all finished levels with no touches on screen. This one taps the
+     map deliberately in the first instant after arriving, right on a
+     level marker, and expects NOTHING to happen. Half a second later
+     the same tap must work normally, because a map that has gone deaf
+     is its own bug.
+  */
+  const { Game, Planet, Level, CONFIG, Input } = makeGame();
+  Planet.levels.forEach(l => { l.done = true; });
+  Game.startLevel('illusions');
+  const P = Level.portal;
+  Game.player.x = P.col * CONFIG.TILE;
+  Game.player.y = P.row * CONFIG.TILE;
+  Game.player.vx = 0; Game.player.vy = 0;
+  let steps = 0;
+  while (Game.mode === 'playing' && steps < 60 * 30) { Game.step(); steps++; }
+  check('the portal put us on the planet', Game.mode === 'planet');
+
+  // The thumb lifts NOW, exactly on the marker of the level just played
+  const lvl = Planet.levels.find(l => l.key === 'illusions');
+  Planet.yaw = -lvl.lon; Planet.pitch = lvl.lat;
+  const spot = Planet.project(lvl.lat, lvl.lon);
+  Input.tapped = { x: spot.x, y: spot.y };
+  Planet.update(1 / 60);
+  check('a tap in the first instant on the map starts nothing',
+        Game.mode === 'planet', `started a level: mode ${Game.mode}`);
+  check('...and the stale tap is thrown away', Input.tapped === null);
+
+  // Let the grace pass, then the very same tap must work
+  for (let i = 0; i < 40; i++) Planet.update(1 / 60);
+  Input.tapped = { x: spot.x, y: spot.y };
+  Planet.update(1 / 60);
+  check('the same tap half a second later works normally',
+        Game.mode === 'playing', `still in ${Game.mode}`);
 }
 
 console.log('\n--- finishing level 3 does not promise a level 4 ---');

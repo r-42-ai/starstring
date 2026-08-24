@@ -279,6 +279,35 @@ The portal hands you straight back out to the planet, with the level
 ticked off — from every level, which `flow.test.js` checks by actually
 playing each ending.
 
+**Running out of time also puts you back on the planet now.**
+
+> **"at lev 4 you go back to the start of the level not to the planet
+> map — change that"** — Nea
+
+It used to restart the level in place, silently — same screen, hero back
+at the beginning, no explanation. Levels 2 and 3 have generous clocks so
+you rarely saw it; level 4 is the first one tight enough to really run
+out. Going out to the map makes the failure *visible*: you see the level
+still unlit, and going again is your decision instead of something that
+happened to you. The two punishments still differ — a hole costs you the
+last stretch, the clock costs you the level — the harsher one just says
+so now.
+
+**And the bug with no code in it.** Nea again: *"in level 3 when you
+complete the level it just starts again."* It didn't — it went to the
+planet for one frame. Her thumb was still on the glass from playing, the
+touch ended a beat after the screen changed, and it landed on the map as
+a **tap**. Taps on the map start levels. From the outside, the level
+restarted itself.
+
+Every test missed it, and the reason is worth keeping: **tests have no
+thumbs.** They all finished levels with nothing touching the screen. The
+bug lived in the half second *between* screens, and only a hand on real
+glass ever went there. The map now ignores taps for its first half
+second (dragging and zooming still work instantly), and there's a test
+that taps a level marker in that first instant and expects nothing to
+happen.
+
 One thing that needed fixing there: finishing the last built level
 unlocks the next one, **which doesn't exist yet**. The map lit it up
 gold, pulsed it, and said *play me* — and tapping did nothing at all. A
