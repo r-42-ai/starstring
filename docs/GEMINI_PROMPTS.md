@@ -6,7 +6,7 @@ Copy-paste ready. Do these two batches now; everything else waits until the game
 
 # BATCH 1 — The Style Bible
 
-**This is the most important image in the entire project.** Every other picture gets made by showing Gemini this one and saying "same style". Re-roll it until Nea genuinely loves it. Twenty attempts is normal and fine.
+**This is the most important image in the entire project.** Every other picture gets made by showing Gemini this one and saying "same style". Re-roll it until AXY genuinely loves it. Twenty attempts is normal and fine.
 
 ### The prompt
 
@@ -47,7 +47,7 @@ Before accepting it, check:
 - [ ] Are the outlines thick and dark on *everything*?
 - [ ] Is the background flat magenta with no gradient or texture?
 - [ ] Is the suit actually white, and the blob actually pale?
-- [ ] Does Nea like it? ← this is the real test
+- [ ] Does AXY like it? ← this is the real test
 
 Save it as `assets/raw/STYLE_BIBLE.png` and never delete it.
 
@@ -106,7 +106,7 @@ Do **not** do this by hand — you'll be repeating it for sixty more images late
 
 Then drop the finished PNGs into `assets/ui/` and reload the game. The buttons appear on their own. **You won't need to change a single line of code** — the game already checks whether the pictures exist and uses them if they do.
 
-That moment — dropping in a file and watching the game change — is worth showing Nea deliberately. It's the first time the art and the code meet.
+That moment — dropping in a file and watching the game change — is worth showing AXY deliberately. It's the first time the art and the code meet.
 
 ---
 

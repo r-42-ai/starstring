@@ -127,7 +127,7 @@ def the_long_fall():
     of the arc you fly after the last ring, so you have to launch at the
     right moment -- a beat late and you sail underneath it.
 
-    Nea, after playing it: "level 4 is to hard." She was right, and the
+    AXY, after playing it: "level 4 is to hard." She was right, and the
     packer was why: it filled the level to one monster every FOUR blocks,
     denser than levels 5 and 6 -- the entrance to the climb was the
     cruellest room in it. The packer only knows "finishable"; it has no
@@ -148,7 +148,7 @@ def the_long_fall():
             m.put(last + 5, 12, 'F')     # a flag on every island
         last = m.chain(c, n, ty)
     cyan_finish(m, last)
-    # Monsters, thinned BY HAND after Nea's verdict -- the packer only
+    # Monsters, thinned BY HAND after AXY's verdict -- the packer only
     # knows "finishable", not "fair". None on the starting pad, flyers
     # under every other ring.
     # No monster within three columns of a flag -- the flag rule.
@@ -223,7 +223,7 @@ def the_last_jump():
     portal is inside an alcove with rock above it, below it and behind
     it: one way in, and if you miss you hit the back wall.
 
-    NOT many rings -- that's level 5's job. Nea: "aendere das es nur bei
+    NOT many rings -- that's level 5's job. AXY: "aendere das es nur bei
     lev fuenf so viel ringe gibt bei 4 und 6 it shouldnt have so much
     rings." Level 6 is hard because there is nowhere to stand and the
     portal is in a box, not because the chains go on forever.
@@ -246,7 +246,7 @@ def the_last_jump():
     m.guard(6, '^'); m.guard(5, '^'); m.guard(9, 'c'); m.guard(10, '^')
     # The lurker was at column 52 -- ONE BLOCK from the flag at 51.
     # Fall, respawn at the flag, and it hit you before you could move,
-    # which respawned you again, sixty times a second: Nea's "everything
+    # which respawned you again, sixty times a second: AXY's "everything
     # wont move any more". The mercy timer fixes the freeze in general;
     # this fixes the insult of a monster camped on a rescue point.
     m.guard(70, 'z'); m.guard(99, 'c'); m.guard(100, '^'); m.guard(150, '^')
@@ -273,7 +273,7 @@ def cyan_finish(m, last):
     """
     The last ring before the portal is never red.
 
-    Nea moved red rings from four swings to three, and three is not
+    AXY moved red rings from four swings to three, and three is not
     enough to build the swing that carries you into a portal: the level
     test measured the best possible launch off each level's final ring
     and came up 82px short on two of them. A ring that breaks before you
@@ -297,7 +297,7 @@ def shafts(width, n):
 #
 #            robot   limit   a person gets
 #   level 3   29.9s   165s      5.5x
-#   level 4   27.4s   145s      5.3x   (was 130 -- Nea: "level 4 is to hard")
+#   level 4   27.4s   145s      5.3x   (was 130 -- AXY: "level 4 is to hard")
 #   level 5   33.9s   125s      3.7x
 #   level 6   19.4s    70s      3.6x
 #

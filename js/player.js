@@ -330,7 +330,7 @@ class Player {
 
      The result: the game flickers between "on the ground" and
      "in the air" sixty times a second while you stand perfectly
-     still. Nea spotted this within a minute of playing.
+     still. AXY spotted this within a minute of playing.
 
      The fix is to stop asking "did I bump into something" and ask
      a better question instead:

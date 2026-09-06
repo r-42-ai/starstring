@@ -85,7 +85,7 @@ const Planet = {
       /*
          THE TEACHING LEVEL ISN'T A NUMBER.
 
-         Nea: "level 2 changes to 1 -- the teaching level isnt a number."
+         AXY: "level 2 changes to 1 -- the teaching level isnt a number."
 
          She's right about how counting works in games: nobody says "I'm
          on level 1" about the tutorial. The first marker is First Steps,
@@ -211,7 +211,7 @@ const Planet = {
     /*
        IGNORE TAPS FOR THE FIRST MOMENT ON THE MAP.
 
-       Nea: "in level 3 when you complete the level it just starts
+       AXY: "in level 3 when you complete the level it just starts
        again. it should go back to the planet map."
 
        It DID go back to the planet map -- for one frame. Her thumb was

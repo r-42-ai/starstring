@@ -133,7 +133,7 @@ Health, losing hearts, respawning, the hurt animation. Falling in a pit.
 
 ### ☑ Step 14 — Flags (checkpoints) ✅ DONE
 They light up when passed, and wave. You respawn at the last one.
-Nea's rule: **only before the hard parts.** A flag every few blocks means
+AXY's rule: **only before the hard parts.** A flag every few blocks means
 never really being in danger, and the danger is the game.
 
 ### ☐ Step 15 — Hazards
@@ -183,7 +183,7 @@ A level timer, target times per level, gold/silver/bronze on the level-complete 
 Three hidden per level, plus Blob's glowing trail as decoration showing the path it took. A counter. Finding all three on a planet unlocks a bonus level.
 
 ### ☑ Step 23 — The planet map ✅ DONE
-Not a flat star map in the end — Nea wanted **the whole planet**, turning
+Not a flat star map in the end — AXY wanted **the whole planet**, turning
 in space, that you can drag to rotate and pinch to zoom, with fifteen
 levels on a path around it. Levels unlock one at a time.
 

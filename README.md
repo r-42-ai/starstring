@@ -4,7 +4,7 @@
 
 A jump-and-run game for tablets. You crash on an alien planet, your glowing pet blob runs off, and you follow its trail across a star system with a grappling hook.
 
-**Designed by Nea. Built with AI.**
+**Designed by AXY. Built with AI.**
 
 ---
 
@@ -32,7 +32,7 @@ teaches nobody anything.
 It has no clock, and every dip has a floor you can jump back out of. A
 tutorial that punishes you teaches you to be frightened.
 
-> **"conclude monsters to the teaching level"** — Nea. She's right: a
+> **"conclude monsters to the teaching level"** — AXY. She's right: a
 > thing the game can kill you with, that it never showed you how to deal
 > with, isn't difficulty, it's a trap. So level 1 introduces both of her
 > ways of fighting back — a flyer hanging where you'll swing through it,
@@ -56,7 +56,7 @@ it's meant to be harder.
 
 ### Say each thing once
 
-Two corrections from Nea, both the same rule:
+Two corrections from AXY, both the same rule:
 
 > **"in the illusions there are too many clues"**
 > **"the rules you had in lev 1 don't have to pop up again in lev 2"**
@@ -82,7 +82,7 @@ can never go back up.
 
 ## Monsters
 
-> **"now i want to put monsters in — how do i do that"** — Nea
+> **"now i want to put monsters in — how do i do that"** — AXY
 
 **You type a letter in the map.** That's the whole answer. Open
 `js/level.js`, find the level, put a letter where you want it, save,
@@ -99,7 +99,7 @@ reload. Same as a ring or a flag — no code.
 The letters look like the thing: `^` points up out of the floor, `v`
 points down at your head, `~` bobs, `z` is asleep.
 
-**Nea's rules.** Touch one and you go back to your last flag — the same
+**AXY's rules.** Touch one and you go back to your last flag — the same
 punishment as falling in a hole, so there's nothing new to learn. **Land
 on its head** and it's squashed, and you bounce. **Hit one while
 swinging** and you smash straight through it. Spikes and fallers can
@@ -114,7 +114,7 @@ instead of a wall.
 
 ### How many
 
-> **"more monsters there are much to little"** — Nea
+> **"more monsters there are much to little"** — AXY
 
 She was right. The first pass put **four** monsters in a level 236 blocks
 long — one every sixty blocks, so you could play the whole thing and
@@ -136,7 +136,7 @@ The tutorial stays the quiet one — it's still teaching.
 
 ### The teaching level isn't a number
 
-> **"level 2 changes to 1 — the teaching level isnt a number"** — Nea
+> **"level 2 changes to 1 — the teaching level isnt a number"** — AXY
 
 She's right about how counting works: nobody says "I'm on level 1" about
 a tutorial. So First Steps has **no number** — its marker on the planet
@@ -147,7 +147,7 @@ is level 1.** Everything below uses her numbering.
 ### The packer only knows "finishable" — it has no idea of "fair"
 
 > **"level 4 is to hard"** and **"lev 1 should be easier because it's the
-> first level"** — Nea
+> first level"** — AXY
 
 Both true, and both the same lesson. The packer stuffed level 4 to one
 monster every **four** blocks — denser than levels 5 and 6 — so the
@@ -189,7 +189,7 @@ isn't difficult, it's a wall.**
 - **Don't let a crawler reach somewhere you can't fight it.** One of
   mine walked into an illusion tunnel one block high and camped there.
 
-- **Never within three columns of a flag.** Nea found what happens
+- **Never within three columns of a flag.** AXY found what happens
   otherwise, on the last level: *"if you fall down and respawn by the
   flag the red monster will bump into you and everything won't move any
   more."* A lurker lived **one block** from a flag — respawn, get hit
@@ -212,13 +212,13 @@ better than quietly deleting something.
 ### Draw icons, never type them
 
 > **"when you complete the level it still shows the number but the
-> button is green"** — Nea
+> button is green"** — AXY
 
 The finished-level tick was the *character* `'✓'` pushed through
 `fillText` — and a text glyph is only as reliable as whatever font the
 device resolves `system-ui` to. Canvas gives no warning when a glyph is
 missing; it just draws the wrong thing, differently wrong on every
-machine — Nea's tablet showed the number, the test renderer showed
+machine — AXY's tablet showed the number, the test renderer showed
 nothing. The tick is three stroked lines now, identical everywhere.
 Numbers are safe to *type* — every font has digits. Icons are not.
 
@@ -245,7 +245,7 @@ they are* now — still out of step with each other, identical every run.
 
 ## Levels 3, 4 and 5 — the climb
 
-> **"make lev 4 5 and 6 every level gets a bit harder"** — Nea
+> **"make lev 4 5 and 6 every level gets a bit harder"** — AXY
 
 She chose what *harder* means, and picked three things: **less time on
 the clock**, **less and less ground**, and — her own addition — **the
@@ -268,7 +268,7 @@ ledges four wide, and gives you **one flag in the whole level**.
 **Nothing Underneath is the ring level** — and only it:
 
 > **"ändere das es nur bei lev fünf so viel ringe gibt, bei 4 und 6 it
-> shouldn't have so much rings"** — Nea
+> shouldn't have so much rings"** — AXY
 
 She's right, and it's a real design point: if levels 4 and 6 also ran
 endless chains, level 5 would have no trick of its own. So level 4 hops
@@ -314,7 +314,7 @@ out why was the interesting part:
 A test that can't tell two things apart must not be used to rank them.
 So the robot now answers one hard yes/no — *can this be finished at all,
 inside its own clock* — and the curve is measured from the levels
-themselves, on Nea's own two numbers:
+themselves, on AXY's own two numbers:
 
 ```
 less ground   125  ->   52  ->   35  ->   29   columns to stand on
@@ -338,7 +338,7 @@ playing each ending.
 **Running out of time also puts you back on the planet now.**
 
 > **"at lev 4 you go back to the start of the level not to the planet
-> map — change that"** — Nea
+> map — change that"** — AXY
 
 It used to restart the level in place, silently — same screen, hero back
 at the beginning, no explanation. Levels 2 and 3 have generous clocks so
@@ -349,7 +349,7 @@ happened to you. The two punishments still differ — a hole costs you the
 last stretch, the clock costs you the level — the harsher one just says
 so now.
 
-**And the bug with no code in it.** Nea again: *"in level 3 when you
+**And the bug with no code in it.** AXY again: *"in level 3 when you
 complete the level it just starts again."* It didn't — it went to the
 planet for one frame. Her thumb was still on the glass from playing, the
 touch ended a beat after the screen changed, and it landed on the map as
@@ -409,7 +409,7 @@ right thumb, so if you had to hold grapple you could never press jump.
 While swinging: **left/right to pump** (timing matters — press the way
 you're already going), and **jump to launch off** with a boost.
 
-**Three kinds of ring** (Nea's idea):
+**Three kinds of ring** (AXY's idea):
 
 | | |
 |---|---|
@@ -544,7 +544,7 @@ assets/             pictures go here
 docs/               ★ the design documents
 ```
 
-★ = the files Nea will spend the most time in.
+★ = the files AXY will spend the most time in.
 
 ---
 
@@ -615,7 +615,7 @@ node tests/planet.test.js      # the map: projection, zooming, unlocking
 node tests/flow.test.js        # finishing a level takes you back to the map
 ```
 
-**The last two are the ones for Nea.** Run them whenever you change a level.
+**The last two are the ones for AXY.** Run them whenever you change a level.
 
 `level.test.js` catches the obvious breakages: rows of different lengths,
 a missing P, a ring stuck inside a rock.

@@ -2,13 +2,13 @@
 
 *A string between stars.*
 
-**Designer:** Nea
-**Built with:** AI, guided by Nea's specifications
+**Designer:** AXY
+**Built with:** AI, guided by AXY's specifications
 **Platform:** Tablet first, phone second. Must work offline.
 
 ---
 
-## 0. New Ideas From Nea — being folded in
+## 0. New Ideas From AXY — being folded in
 
 Three changes she made after the first draft. Recorded here word-for-word
 so nothing gets lost; the sections below are being updated to match.
@@ -21,7 +21,7 @@ so nothing gets lost; the sections below are being updated to match.
    All different — the Crystal Caves one has diamonds on its head.
 
 3. **Anchors recharge.** ✅ folded into §5. Four seconds rather than a
-   minute, with the reasoning written out so Nea can judge it herself.
+   minute, with the reasoning written out so AXY can judge it herself.
 
 *All three are now part of the spec proper. This section can be deleted
 once everyone has read it.*
@@ -73,7 +73,7 @@ Everyone can run and jump. The power is the *extra*.
 
 ### Every hero has their own path
 
-*(Nea's rule, and it's the heart of the game.)*
+*(AXY's rule, and it's the heart of the game.)*
 
 A level is **not** one route with optional extras. It's **four routes braided together**.
 
@@ -200,7 +200,7 @@ This stops you swinging back and forth on the same ring forever, and turns a row
 
 | | |
 |---|---|
-| Recharge time | **4 seconds** *(Nea originally said a minute — see below)* |
+| Recharge time | **4 seconds** *(AXY originally said a minute — see below)* |
 | Recharging anchor | dark, dull, obviously not usable |
 | Nearly ready | starts to flicker back on |
 | Ready | glowing brightly again |
@@ -318,7 +318,7 @@ own, with shards breaking the outline. Gold and teal running in veins.
 
 ### The level plays tricks on you
 
-*(Nea's idea.)* Some blocks look **exactly** like solid rock and aren't
+*(AXY's idea.)* Some blocks look **exactly** like solid rock and aren't
 there at all. Not drawn differently, not see-through — painted by the
 very same code as every other block in the cave, because anything else
 would give it away.
@@ -428,7 +428,7 @@ Landscape orientation. Big, forgiving buttons — invisible hit areas extend wel
 
 **Stack:** plain HTML + CSS + JavaScript, Canvas 2D. No frameworks, no build step, no npm.
 
-**Why:** instant refresh, no toolchain between Nea and the result, and AI assistants generate reliable vanilla canvas code.
+**Why:** instant refresh, no toolchain between AXY and the result, and AI assistants generate reliable vanilla canvas code.
 
 **Files:**
 
@@ -451,7 +451,7 @@ Landscape orientation. Big, forgiving buttons — invisible hit areas extend wel
 - **Fixed timestep** physics with an accumulator, rendering interpolated. Keeps the game feeling identical on a fast tablet and a slow phone.
 - **Collision: resolve X and Y separately.** Move on X, resolve X overlaps; then move on Y, resolve Y overlaps. Doing both at once is the single most common source of bugs in platformers — the character catches on seams between tiles and jitters.
 - **Levels are plain JS objects**, not JSON files. Opening `index.html` from disk blocks `fetch()`, so JSON level loading will silently fail. Levels are `<script>` includes.
-- **Every tunable number lives in `config.js`** — gravity, run speed, acceleration, friction, jump velocity, coyote time, jump buffer, fall multiplier, corner-correction distance, grapple range, rope pump force, rope damping, max angular speed, terminal velocity. Nea should be able to change how the game feels without touching any logic.
+- **Every tunable number lives in `config.js`** — gravity, run speed, acceleration, friction, jump velocity, coyote time, jump buffer, fall multiplier, corner-correction distance, grapple range, rope pump force, rope damping, max angular speed, terminal velocity. AXY should be able to change how the game feels without touching any logic.
 - **Grapple swing physics — use a proper pendulum, not a position constraint.** The obvious approach (move the player, then snap them back onto a circle and delete the outward velocity) leaks energy every frame, so the swing quietly dies out instead of building up. Track the swing in **polar coordinates** instead:
 
   - State while attached: rope length `L`, angle `θ` from straight down, angular velocity `ω`
@@ -472,7 +472,7 @@ Landscape orientation. Big, forgiving buttons — invisible hit areas extend wel
 
 ## 15. The Name
 
-**STARSTRING** — chosen by Nea.
+**STARSTRING** — chosen by AXY.
 
 A string between stars: the rope you swing on, and the thread connecting you to Blob.
 

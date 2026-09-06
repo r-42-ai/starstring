@@ -1,7 +1,7 @@
 /*
   LEVEL CHECKS
 
-  For Nea: run this after you change a level. It won't tell you whether
+  For AXY: run this after you change a level. It won't tell you whether
   your level is FUN — only you can judge that — but it will tell you if
   it's broken in a way that makes it impossible or unfair.
 */
@@ -43,7 +43,7 @@ for (const key of Object.keys(LEVELS)) {
   /*
      NO MONSTER NEAR A FLAG OR THE START.
 
-     Nea found what happens otherwise, on level 6: a lurker lived one
+     AXY found what happens otherwise, on level 6: a lurker lived one
      block from a flag. Fall, respawn at the flag, and it hit you before
      you could move -- which respawned you at the flag, which it hit
      again, sixty times a second. "Everything wont move any more."
@@ -163,7 +163,7 @@ for (const key of Object.keys(LEVELS)) {
     /*
        CAN YOU SEE THE RINGS?
 
-       Nea spotted this one by playing: some rings were off the top of
+       AXY spotted this one by playing: some rings were off the top of
        the screen. The camera deliberately stays low so that jumping
        doesn't bounce the view — which means a ring placed very high
        above the ground is simply invisible until you're already in

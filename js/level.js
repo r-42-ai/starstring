@@ -2,7 +2,7 @@
    STARSTRING — LEVEL
    ============================================================
 
-   NEA: THIS IS THE FUN ONE.
+   AXY: THIS IS THE FUN ONE.
 
    The level below is drawn with letters. You can rearrange it
    like drawing on squared paper, save the file, reload the game,
@@ -181,7 +181,7 @@ const LEVELS = {
     /*
        ONE hint, at the very start, and then silence.
 
-       Nea's note: "in the illusions there are too many clues." She was
+       AXY's note: "in the illusions there are too many clues." She was
        right. The first version put a sign before every trap naming the
        trap, which means the level never actually tricks you once — you
        are just following instructions. A level called The Illusions
@@ -245,7 +245,7 @@ const LEVELS = {
     /*
        ONLY WHAT LEVEL 1 DIDN'T ALREADY SAY.
 
-       Nea: "the rules you had in lev 1 don't have to pop up again in
+       AXY: "the rules you had in lev 1 don't have to pop up again in
        lev 2." She's right — this used to re-explain green rings, red
        rings, flags and the portal, all four of which level 1 teaches
        properly, with a whole dip of its own for each. Repeating them
@@ -288,7 +288,7 @@ const LEVELS = {
     //   190-230  THE FINALE — six rings, then swing into the portal.
     //            No jump can reach it. Only a rope.
     //
-    // THE TRICKS (Nea's idea): the level lies to you in three places.
+    // THE TRICKS (AXY's idea): the level lies to you in three places.
     //   148-149  a wall of fake rock hiding a shortcut
     //   112-116  a ledge across the chasm that isn't there at all
     //   156-160  a ledge that looks like the way on and goes nowhere
@@ -549,7 +549,7 @@ const Level = {
   },
 
   /*
-     ILLUSIONS (Nea's idea)
+     ILLUSIONS (AXY's idea)
 
      There are two different questions you can ask about a block, and
      the whole trick is that they can disagree:
@@ -601,7 +601,7 @@ const Level = {
   },
 
   /*
-     FLAGS — Nea's idea, and the thing that makes a long level bearable.
+     FLAGS — AXY's idea, and the thing that makes a long level bearable.
 
      Walk past one and it lights up. From then on, falling down a hole
      puts you back at that flag rather than all the way at the start.

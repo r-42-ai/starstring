@@ -1,7 +1,7 @@
 /*
   GETTING IN AND BACK OUT AGAIN
 
-  Nea: "make that after the level 3 u come back to planet sight."
+  AXY: "make that after the level 3 u come back to planet sight."
 
   Every level has to hand you back to the map when you finish it, and
   tick itself off on the way. That sounds obvious, and it was already
@@ -12,7 +12,7 @@
   That's why Game.step() exists: one step of a level, no frames, no
   drawing, no browser. Which means a test can play the ending.
 
-  This file also checks the OTHER rule Nea gave about levels, which is
+  This file also checks the OTHER rule AXY gave about levels, which is
   about hints:
 
     "the rules you had in lev 1 dont have to pop up again in lev 2"
@@ -136,7 +136,7 @@ for (const [key, name] of BUILT) {
 console.log('\n--- running out of time puts you back on the planet ---');
 {
   /*
-     Nea: "at lev 4 you go back to the start of the level not to the
+     AXY: "at lev 4 you go back to the start of the level not to the
      planet map change that."
 
      It used to restart the level in place, silently -- same screen, hero
@@ -179,7 +179,7 @@ console.log('\n--- running out of time puts you back on the planet ---');
 console.log('\n--- your thumb cannot restart the level you just finished ---');
 {
   /*
-     Nea: "in level 3 when you complete the level it just starts again.
+     AXY: "in level 3 when you complete the level it just starts again.
      it should go back to the planet map."
 
      It DID go back -- for one frame. Her thumb was still on the glass
@@ -226,7 +226,7 @@ console.log('\n--- your thumb cannot restart the level you just finished ---');
 console.log('\n--- a monster beside a flag cannot freeze the game ---');
 {
   /*
-     Nea, on level 6: "if you fall down and respawn by the flag the red
+     AXY, on level 6: "if you fall down and respawn by the flag the red
      monster will bump in to you and everythig wont move any more."
 
      A lurker lived one block from the flag. Respawn, get hit before you
@@ -323,7 +323,7 @@ console.log('\n--- each level only says what the one before it did not ---');
 console.log('\n--- the teaching level teaches monsters too ---');
 {
   /*
-     Nea: "conclude monsters to the teaching level."
+     AXY: "conclude monsters to the teaching level."
 
      A thing the game can kill you with, that it never showed you how to
      deal with, is not difficulty -- it's a trap. Level 1 introduces both
@@ -348,7 +348,7 @@ console.log('\n--- the teaching level teaches monsters too ---');
   const text = Level.hints.map(h => h.text).join(' ');
   check('and it says what to do about them',
         /MONSTER/i.test(text), text);
-  check('...both of the ways Nea picked',
+  check('...both of the ways AXY picked',
         /HEAD/i.test(text) && /through/i.test(text), text);
 
   check('every level after the tutorial has some too',
@@ -356,7 +356,7 @@ console.log('\n--- the teaching level teaches monsters too ---');
         BUILT.slice(1).filter(([k]) => !count(k)).map(([, n]) => n).join(', '));
 
   /*
-     Nea: "more monsters there are much to little."
+     AXY: "more monsters there are much to little."
 
      She was right -- the first pass put four in a level two hundred and
      thirty-six blocks long, which is a monster every sixty blocks, so
@@ -371,7 +371,7 @@ console.log('\n--- the teaching level teaches monsters too ---');
   console.log('  one monster every:  ' +
               BUILT.map(([k, n]) => `${n} ${(width(k) / count(k)).toFixed(0)}`).join('   '));
   /*
-     The FIRST real level gets a gentler floor. Nea: "level 2 is to hard
+     The FIRST real level gets a gentler floor. AXY: "level 2 is to hard
      it is the first level it should be easey" -- and she renumbered it
      while she was at it, so The Way Out IS level 1 now. It keeps enough
      monsters to matter, but nothing like the levels after it.

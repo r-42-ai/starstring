@@ -124,6 +124,6 @@ const Title = {
 
     ctx.fillStyle = 'rgba(160,190,175,0.55)';
     ctx.font = '19px system-ui, sans-serif';
-    ctx.fillText('designed by Nea', W/2, H - 28);
+    ctx.fillText('designed by AXY', W/2, H - 28);
   },
 };

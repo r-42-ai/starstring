@@ -14,7 +14,7 @@ If you skip this, you get twenty assets that each look nice on their own and loo
 
 ## STEP 1 — The Style Bible
 
-Generate this **one image** and keep re-rolling it until Nea genuinely loves it. This might take twenty tries. It is worth every one of them, because everything else in the game inherits from it.
+Generate this **one image** and keep re-rolling it until AXY genuinely loves it. This might take twenty tries. It is worth every one of them, because everything else in the game inherits from it.
 
 > A single reference sheet for a 2D mobile platformer game, bold colourful cartoon style. Shown on one image: a child astronaut with long dark hair, wearing a **white and light grey** space suit with a large clear round glass helmet, a small round **pale white glowing** blob creature, a chunk of deep green crystal cave rock platform, a glowing cyan crystal ring, and a small gold star collectible. Art style: bold flat colours, thick dark outlines around every shape, minimal shading with only one or two tones per colour, very high contrast, clean readable silhouettes, modern mobile game art, vector-like. Side view, orthographic, no perspective. Solid flat magenta background, hex FF00FF. No text, no labels, no watermark.
 
@@ -128,7 +128,7 @@ Anchors go dim after use and recharge, so they need three looks, not two.
 
 ## THE CRYSTAL PLANET — Tiles
 
-> 🎨 **The planet is DEEP GREEN rock with GOLD crystals** (Nea's choice), not
+> 🎨 **The planet is DEEP GREEN rock with GOLD crystals** (AXY's choice), not
 > purple and pink. The Style Bible you already generated is still fine for
 > the hero, Blob, the star and the cyan ring — only the rock changes colour.
 > You don't need to redo it. Just say "same style, but the rock is deep

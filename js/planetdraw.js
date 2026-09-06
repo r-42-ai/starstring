@@ -407,7 +407,7 @@ const PlanetDraw = {
          A TICK on finished levels -- DRAWN, not typed.
 
          The first version put the character '✓' through fillText, and
-         Nea's tablet showed the number on a green button instead; the
+         AXY's tablet showed the number on a green button instead; the
          headless renderer showed nothing at all. A text glyph is only
          as reliable as whatever font the device happens to resolve
          'system-ui' to, and canvas gives you no warning when a glyph is
@@ -429,7 +429,7 @@ const PlanetDraw = {
         ctx.lineTo(p.x + r * 0.45, p.y - r * 0.32);
         ctx.stroke();
       } else if (unlocked && l.number === 0) {
-        // The teaching level isn't a number (Nea's rule), so it gets a
+        // The teaching level isn't a number (AXY's rule), so it gets a
         // four-pointed star -- drawn with strokes, like the tick,
         // because typed icons render differently on every device.
         ctx.strokeStyle = '#0a1a12';

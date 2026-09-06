@@ -1,7 +1,7 @@
 /*
   MONSTERS
 
-  Five kinds, all chosen by Nea. Each one is a single letter you type
+  Five kinds, all chosen by AXY. Each one is a single letter you type
   into the map in level.js -- exactly like a ring or a flag. There is
   nothing else to do: put the letter in, save, reload.
 
@@ -14,7 +14,7 @@
   The letters are meant to look like the thing:  ^ points up out of the
   floor, v points down at your head, ~ bobs, z is asleep.
 
-  THE RULES, all Nea's:
+  THE RULES, all AXY's:
 
     - touch one and you go back to the last flag. The same punishment as
       falling in a hole, so there is nothing new to learn.

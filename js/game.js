@@ -251,7 +251,7 @@ const Game = {
           /*
              OUT OF TIME PUTS YOU BACK ON THE PLANET.
 
-             Nea: "at lev 4 you go back to the start of the level not to
+             AXY: "at lev 4 you go back to the start of the level not to
              the planet map change that."
 
              It used to restart the level where you stood, silently. On

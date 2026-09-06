@@ -6,7 +6,7 @@
   range of playing styles — cautious, reckless, patient — and the
   level passes if ANY of them gets to the end.
 
-  For Nea: this is the test that answers "is my level possible?".
+  For AXY: this is the test that answers "is my level possible?".
   It can't tell you whether it's FUN. But if this fails, nobody can
   finish your level, however good a player they are.
 */
@@ -108,7 +108,7 @@ check('...inside its time limit', illBest.reachedPortal && illBest.seconds < ill
 /*
    ===================== THE DIFFICULTY CURVE =====================
 
-   Nea: "make lev 4 5 and 6 every level gets a bit harder."
+   AXY: "make lev 4 5 and 6 every level gets a bit harder."
 
    The obvious way to check that is to count how many of the thirty
    playing styles can finish each level, and expect the number to fall.
@@ -128,7 +128,7 @@ check('...inside its time limit', illBest.reachedPortal && illBest.seconds < ill
    them. So the robot's job is reduced to a single hard yes/no --
    CAN THIS BE FINISHED AT ALL, INSIDE ITS OWN CLOCK -- and the
    difficulty curve is measured from the levels themselves, using the
-   two things Nea actually chose:
+   two things AXY actually chose:
 
      "less and less ground"     -> what fraction is thin air
      "less time on the clock"   -> the robot's time as a share of the limit
@@ -147,7 +147,7 @@ function measure(key) {
   /*
      Ground measured as COLUMNS YOU CAN STAND ON, not as a percentage.
 
-     A percentage sounds tidier and is the wrong number. Nea asked for
+     A percentage sounds tidier and is the wrong number. AXY asked for
      level 5 to be the one with all the rings and for 4 and 6 to have
      fewer -- and a level with fewer rings has to be shorter, which
      shrinks the total and inflates the percentage even though there is
@@ -205,7 +205,7 @@ for (let i = 0; i < m.length; i++) {
 
 console.log('\n--- level 5 is THE ring level ---');
 /*
-   Nea: "aendere das es nur bei lev fuenf so viel ringe gibt bei 4 und 6
+   AXY: "aendere das es nur bei lev fuenf so viel ringe gibt bei 4 und 6
    it shouldnt have so much rings." Level 5 is the one that asks you to
    keep a swing going forever; levels 4 and 6 get their difficulty from
    somewhere else, and doing level 5's trick early would spoil it.
@@ -235,7 +235,7 @@ for (let i = 0; i < m.length; i++) {
 
 console.log('\n--- the portal gets harder to reach ---');
 /*
-   Nea's third pick. Not a number, so each level asserts its own shape.
+   AXY's third pick. Not a number, so each level asserts its own shape.
    What they share: from level 4 on you can never simply WALK to the
    portal. There is no floor anywhere in its column.
 */

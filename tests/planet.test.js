@@ -23,7 +23,7 @@ Planet.init();
 console.log('\n--- fifteen levels on a path ---');
 check('there are fifteen', Planet.levels.length === 15, `${Planet.levels.length}`);
 /*
-   Nea: "the teaching level isnt a number." The tutorial is number 0 --
+   AXY: "the teaching level isnt a number." The tutorial is number 0 --
    drawn as a star, never as a digit -- and counting starts at the first
    REAL level: The Way Out is level 1.
 */

@@ -1,7 +1,7 @@
 /*
   THE MONSTERS
 
-  Five kinds, all chosen by Nea, plus her two ways of fighting back:
+  Five kinds, all chosen by AXY, plus her two ways of fighting back:
   land on a head, or smash through one while swinging.
 
   Most of what's checked here is the stuff that is easy to get subtly
@@ -223,7 +223,7 @@ console.log('\n--- the faller waits until you are underneath ---');
         `${m.state} at y=${Math.round(m.y)}, home ${Math.round(m.homeY)}`);
 }
 
-console.log('\n--- fighting back, both of Nea\'s ways ---');
+console.log('\n--- fighting back, both of AXY\'s ways ---');
 {
   const w = world([
     '................',

@@ -2,7 +2,7 @@
    STARSTRING — CONFIG
    ============================================================
 
-   THIS IS NEA'S FILE.
+   THIS IS AXY'S FILE.
 
    Every number that decides how the game FEELS lives here.
    Nothing else does. You can change anything in this file and
@@ -152,7 +152,7 @@ const CONFIG = {
     RELEASE_BOOST: 210,
 
     /*
-       THE THREE KINDS OF RING (Nea's idea)
+       THE THREE KINDS OF RING (AXY's idea)
 
          o  CYAN   the normal one
          r  RED    breaks much sooner. Keep moving.
@@ -170,7 +170,7 @@ const CONFIG = {
 
     // HOW MANY SWINGS BEFORE THE ROPE GIVES OUT (for a normal ring).
     //
-    // Nea spotted this: if you can hang on forever, you can just dangle
+    // AXY spotted this: if you can hang on forever, you can just dangle
     // out of reach and monsters can never touch you. Hanging becomes a
     // hiding place, and hiding places ruin games.
     //
@@ -209,7 +209,7 @@ const CONFIG = {
     MIN_HOLD_FOR_COOLDOWN: 0.25,
 
     // How long an anchor stays dark after you've used it.
-    // Nea originally wanted 60. Set it to 60 and see what happens —
+    // AXY originally wanted 60. Set it to 60 and see what happens —
     // you swing once and then stand around doing nothing.
     ANCHOR_COOLDOWN: 4.0,
 
@@ -297,7 +297,7 @@ const CONFIG = {
   // makes where it's placed the last puzzle of the level.
   /* ---------- THE MONSTERS ---------- */
 
-  // Five kinds, all Nea's choice. Each is one letter in the map, and the
+  // Five kinds, all AXY's choice. Each is one letter in the map, and the
   // letters are meant to look like the thing: ^ points up out of the
   // floor, v points down at your head, ~ bobs about, z is asleep.
   MONSTERS: {
@@ -324,7 +324,7 @@ const CONFIG = {
     /*
        Seconds of safety after coming back at a flag.
 
-       Nea found the freeze this prevents: on level 6 a lurker lived one
+       AXY found the freeze this prevents: on level 6 a lurker lived one
        block from a flag. Fall, respawn at the flag, and the lurker hits
        you before you can move -- which respawns you at the flag, which
        it hits again, every single frame, forever. The game looks frozen;
@@ -489,7 +489,7 @@ const CONFIG = {
   /* ---------- COLOURS (until the real artwork arrives) ---------- */
 
   /*
-     THE CRYSTAL PLANET — deep green and gold. (Nea's choice.)
+     THE CRYSTAL PLANET — deep green and gold. (AXY's choice.)
 
      One rule decides everything here:
 
@@ -539,7 +539,7 @@ const CONFIG = {
 
   /* ---------- THE GLITTER ---------- */
 
-  // Nea's "wow" for this planet: the crystals glitter.
+  // AXY's "wow" for this planet: the crystals glitter.
   //
   // Nothing is stored for any of this. Each sparkle's position and
   // timing is worked out from the block it sits on, so the same block

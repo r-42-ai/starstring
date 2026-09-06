@@ -1,4 +1,4 @@
-// Button tests. Both bugs Nea hit were here, so this is worth having.
+// Button tests. Both bugs AXY hit were here, so this is worth having.
 const fs=require('fs'), vm=require('vm'), path=require('path');
 const ROOT = __dirname + '/..';
 const sandbox = { console: {log:()=>{}, warn:()=>{}, error:console.error}, Math };
@@ -32,7 +32,7 @@ const off = Input._buttons.filter(b =>
   b.y - CONFIG.BUTTONS.RADIUS < 0 || b.y + CONFIG.BUTTONS.RADIUS > CONFIG.HEIGHT);
 check('every button fits on screen', off.length===0, off.map(b=>b.id).join(','));
 
-console.log('\n--- ONE FINGER CAN ONLY PRESS ONE BUTTON (the bug Nea found) ---');
+console.log('\n--- ONE FINGER CAN ONLY PRESS ONE BUTTON (the bug AXY found) ---');
 const pairs = [['left','right'], ['jump','grapple']];
 for (const [a,b] of pairs) {
   const A=btn(a), B=btn(b);

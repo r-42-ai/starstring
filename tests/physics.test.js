@@ -17,7 +17,7 @@ const get = n => vm.runInContext(n, sandbox);
 const CONFIG = get('CONFIG'), Level = get('Level'), Input = get('Input');
 sandbox.Player = get('Player');
 // The tests get their OWN level, so they don't break every time
-// Nea rearranges the real one. A long flat floor with high ceilings:
+// AXY rearranges the real one. A long flat floor with high ceilings:
 // plenty of room to run and jump without bumping into anything.
 vm.runInContext(`LEVELS['__test__'] = {
   name: 'test',

@@ -118,7 +118,7 @@ const Grapple = {
 
            HOLD and release   ->  you drop off the moment you let go.
                                   What you'd expect on a keyboard, and
-                                  what Nea asked for.
+                                  what AXY asked for.
 
            QUICK TAP          ->  you stay hanging with nothing held
                                   down. Tap again to drop off.
