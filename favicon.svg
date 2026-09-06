@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <title>Starstring</title>
+  <defs>
+    <radialGradient id="sky" cx="38%" cy="30%" r="85%">
+      <stop offset="0%" stop-color="#1f2e4e"/>
+      <stop offset="55%" stop-color="#0d1428"/>
+      <stop offset="100%" stop-color="#05070f"/>
+    </radialGradient>
+    <linearGradient id="ringG" x1="18%" y1="2%" x2="82%" y2="98%">
+      <stop offset="0%" stop-color="#d6fdff"/>
+      <stop offset="30%" stop-color="#4feeff"/>
+      <stop offset="100%" stop-color="#0b7fa4"/>
+    </linearGradient>
+    <linearGradient id="starG" x1="18%" y1="0%" x2="78%" y2="100%">
+      <stop offset="0%" stop-color="#fff6d6"/>
+      <stop offset="42%" stop-color="#ffcf5e"/>
+      <stop offset="100%" stop-color="#dd9518"/>
+    </linearGradient>
+    <filter id="glowC" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="11"/>
+    </filter>
+    <filter id="glowG" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" fill="url(#sky)"/>
+
+  <g fill="#dff0ff">
+    <circle cx="58" cy="68" r="4" opacity=".7"/>
+    <circle cx="454" cy="98" r="3.4" opacity=".55"/>
+    <circle cx="416" cy="40" r="2.6" opacity=".4"/>
+    <circle cx="92" cy="432" r="3.2" opacity=".5"/>
+    <circle cx="468" cy="454" r="3.8" opacity=".45"/>
+    <circle cx="32" cy="248" r="2.6" opacity=".35"/>
+  </g>
+
+  <g filter="url(#glowC)" opacity=".8">
+    <circle cx="184" cy="174" r="102" fill="none" stroke="#3ee8ff" stroke-width="48"/>
+  </g>
+  <g filter="url(#glowG)" opacity=".75" transform="translate(348 366) rotate(8)">
+    <path d="M0 -96 L26 -33 L94 -30 L41 12 L60 78 L0 41 L-60 78 L-41 12 L-94 -30 L-26 -33 Z" fill="#ffce5c"/>
+  </g>
+
+  <path d="M180 288 Q 210 392 326 372" fill="none" stroke="#123049"
+        stroke-width="34" stroke-linecap="round"/>
+  <path d="M180 288 Q 210 392 326 372" fill="none" stroke="#0e86a2"
+        stroke-width="24" stroke-linecap="round"/>
+  <path d="M180 288 Q 210 392 326 372" fill="none" stroke="#a8f7ff"
+        stroke-width="10" stroke-linecap="round"/>
+
+  <circle cx="184" cy="174" r="102" fill="none" stroke="#123049" stroke-width="56"/>
+  <circle cx="184" cy="174" r="102" fill="none" stroke="url(#ringG)" stroke-width="44"/>
+  <path d="M184 76 A98 98 0 0 0 110 238" fill="none" stroke="#eafeff"
+        stroke-width="13" stroke-linecap="round" opacity=".8"/>
+
+  <g transform="translate(348 366) rotate(8)">
+    <path d="M0 -96 L26 -33 L94 -30 L41 12 L60 78 L0 41 L-60 78 L-41 12 L-94 -30 L-26 -33 Z" fill="#123049" stroke="#123049"
+          stroke-width="22" stroke-linejoin="round"/>
+    <path d="M0 -96 L26 -33 L94 -30 L41 12 L60 78 L0 41 L-60 78 L-41 12 L-94 -30 L-26 -33 Z" fill="url(#starG)"/>
+    <path d="M0 -96 L26 -33 L94 -30 L41 12 L60 78 L0 41 Z" fill="#fff2c2" opacity=".3"/>
+  </g>
+</svg>
